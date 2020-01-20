@@ -1,0 +1,27 @@
+{
+  "name": "filemanger-plguin",
+  "version": "0.0.1",
+  "description": "This is file manager plugin for webpack",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {},
+  "contributors": [
+    "Xianwei wu",
+    "Xuan tan",
+    "Chang xu"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xianweics/filemanger-plguin.git"
+  },
+  "keywords": [
+    "webpack",
+    "file manger",
+    "nodejs"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xianweics/filemanger-plguin/issues"
+  },
+  "homepage": "https://github.com/xianweics/filemanger-plguin#readme"
+}
