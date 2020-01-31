@@ -1,9 +1,11 @@
 {
-  "name": "filemanager-plguin",
-  "version": "0.0.2",
+  "name": "filemanager-plugin",
+  "version": "0.0.3",
   "description": "This is file manager plugin for webpack",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "rollup --config rollup.config.js"
+  },
   "dependencies": {},
   "contributors": [
     "Xianwei wu",
@@ -12,16 +14,30 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xianweics/filemanager-plguin.git"
+    "url": "git+https://github.com/xianweics/filemanager-plugin.git"
   },
   "keywords": [
     "webpack",
     "file manger",
-    "nodejs"
+    "nodejs",
+    "rollup"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xianweics/filemanager-plguin/issues"
+    "url": "https://github.com/xianweics/filemanager-plugin/issues"
   },
-  "homepage": "https://github.com/xianweics/filemanager-plguin#readme"
+  "homepage": "https://github.com/xianweics/filemanager-plugin#readme",
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-external-helpers": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "@rollup/plugin-commonjs": "^11.0.1",
+    "@rollup/plugin-json": "^4.0.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "core-js": "^3.6.4",
+    "rollup": "^1.31.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "@babel/runtime": "^7.8.4"
+  }
 }

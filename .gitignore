@@ -1,3 +1,8 @@
 .idea
 node_modules
 package-lock.json
+lib
+example/node_modules
+package-lock.json/**
+example/dist
+example/package-lock.json

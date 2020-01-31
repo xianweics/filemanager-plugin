@@ -1,0 +1,21 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "ie >= 10"
+          ]
+        },
+        "debug": false,
+        "modules": false
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-external-helpers",
+    "@babel/plugin-transform-runtime"
+  ]
+}
