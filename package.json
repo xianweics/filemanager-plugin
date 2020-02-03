@@ -4,7 +4,7 @@
   "description": "This is file manager plugin for webpack",
   "main": "index.js",
   "scripts": {
-    "start": "rollup --config rollup.config.js"
+    "build": "rollup --config rollup.config.js"
   },
   "dependencies": {},
   "contributors": [
