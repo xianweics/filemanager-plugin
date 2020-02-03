@@ -15,3 +15,17 @@ before and after builds. Also, you can customize the lifecycle of webpack during
 
 # Usage
 Not finish
+
+# Development Setup
+```text
+# install deps
+npm install
+
+# build lib files
+npm run build
+
+# run example to see result
+cd example
+npm run start
+```
+
