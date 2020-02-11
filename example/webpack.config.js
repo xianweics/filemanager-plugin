@@ -19,12 +19,17 @@ module.exports = {
         removeComments: true,
         collapseWhitespace: true,
         minifyCSS: true,
-        removeEmptyAttributes: true,
-      },
+        removeEmptyAttributes: true
+      }
     }),
     new FileMangerPlugin({
       start: {},
-      end: {}
+      end: {
+        copy: [
+          { source: './cp1', destination: './dist/cp1' },
+          { source: './cp2', destination: './dist/cp2' }
+        ]
+      }
     })
   ]
 };

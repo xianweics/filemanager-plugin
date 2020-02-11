@@ -1,9 +1,12 @@
+import { cp } from "./command";
+
 class FileManagerPlugin {
   constructor (opts) {
     this.options = opts;
   }
   
-  static sleep (time, cb = () => {}) {
+  static sleep (time, cb = () => {
+  }) {
     return new Promise(resolve => {
       setTimeout(() => {
         cb();
@@ -13,8 +16,14 @@ class FileManagerPlugin {
   }
   
   apply (compiler) {
+    const { end } = this.options;
     compiler.hooks.afterEmit.tapAsync('afterEmit', async (compilation, cb) => {
-      await FileManagerPlugin.sleep(5);
+      if (end) {
+        if (end.copy) {
+          end.copy.forEach(item => cp(item.source, item.destination));
+        }
+      }
+      await FileManagerPlugin.sleep(1);
       cb();
       console.info('after emit done');
     });

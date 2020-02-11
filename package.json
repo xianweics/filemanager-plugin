@@ -1,6 +1,6 @@
 {
   "name": "filemanager-plugin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "This is file manager plugin for webpack",
   "main": "index.js",
   "scripts": {
