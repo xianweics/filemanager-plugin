@@ -1,6 +1,6 @@
 # File manager plugin
 
-[![Build Status](https://travis-ci.org/xianweics/filemanager-plugin.svg?branch=master)](https://travis-ci.org/xianweics/filemanager-plugin)
+[![Build Status](https://travis-ci.org/xianweics/filemanager-plugin.svg?branch=master)](https://travis-ci.org/xianweics/filemanager-plugin)[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/xianweics/filemanager-plugin/blob/master/LICENSE)[![GitHub forks](https://img.shields.io/github/forks/xianweics/filemanager-plugin?color=brightgreen)](https://github.com/xianweics/filemanager-plugin/network)[![GitHub stars](https://img.shields.io/github/stars/xianweics/filemanager-plugin?color=brightgreen)](https://github.com/xianweics/filemanager-plugin/stargazers)
 
 This filemanager plugin allows you to copy, compress/uncompress (.zip/.tar/.tar.gz), move, delete files or directories
 before and after builds. Also, you can customize the lifecycle of webpack during building.
