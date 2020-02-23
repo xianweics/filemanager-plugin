@@ -1,4 +1,11 @@
-import { cp } from "./command";
+/*
+ * @Author: Tan Xuan
+ * @Date: 2020-02-16 14:34:59
+ * @LastEditors: Tan Xuan
+ * @LastEditTime: 2020-02-23 19:24:36
+ * @Description: File content
+ */
+import { cp, del } from "./command";
 
 class FileManagerPlugin {
   constructor (opts) {
@@ -21,6 +28,11 @@ class FileManagerPlugin {
       if (end) {
         if (end.copy) {
           end.copy.forEach(item => cp(item.source, item.destination));
+        }
+        if (end.del) {
+          setTimeout(() => {
+            end.del.forEach(item => del(item))
+          }, 300)
         }
       }
       await FileManagerPlugin.sleep(1);

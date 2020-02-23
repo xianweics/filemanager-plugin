@@ -1,3 +1,10 @@
+/*
+ * @Author: Tan Xuan
+ * @Date: 2020-02-16 14:34:59
+ * @LastEditors: Tan Xuan
+ * @LastEditTime: 2020-02-23 19:19:44
+ * @Description: File content
+ */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { resolve } = require('path');
@@ -28,6 +35,9 @@ module.exports = {
         copy: [
           { source: './cp1', destination: './dist/cp1' },
           { source: './cp2', destination: './dist/cp2' }
+        ],
+        del: [
+          './dist/cp2/index.html'
         ]
       }
     })
