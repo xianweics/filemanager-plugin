@@ -1,4 +1,5 @@
-import fs from 'fs';
+const fs = require('fs');
+
 const copy = (src, dst) => {
   let paths = fs.readdirSync(src);
   paths.forEach(function (path) {

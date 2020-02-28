@@ -11,12 +11,9 @@ export default {
     sourcemap: true
   },
   plugins: [
-    resolve({
-      preferBuiltins: true
-    }),
+    resolve(),
     json(),
     babel({
-      exclude: 'node_modules/**',
       runtimeHelpers: true
     }),
     commonjs()

@@ -1,10 +1,3 @@
-/*
- * @Author: Tan Xuan
- * @Date: 2020-02-16 14:34:59
- * @LastEditors: Tan Xuan
- * @LastEditTime: 2020-02-23 19:19:44
- * @Description: File content
- */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { resolve } = require('path');
@@ -16,6 +9,22 @@ module.exports = {
   output: {
     path: resolve(__dirname, 'dist'),
     filename: '[hash:5].js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+            }
+          }
+        ],
+        exclude: /node_modules/
+      }
+    ]
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -32,12 +41,22 @@ module.exports = {
     new FileMangerPlugin({
       start: {},
       end: {
-        copy: [
-          { source: './cp1', destination: './dist/cp1' },
-          { source: './cp2', destination: './dist/cp2' }
+        // copy: [
+        //   { source: './cp1', destination: './dist/cp1' },
+        //   { source: './cp2', destination: './dist/cp2' }
+        // ],
+        compress: [
+          { source: './cp2/', destination: './dist/cp2-compress.tar', type: 'tar' },
+          { source: './cp2/index.html', destination: './dist/index-compress.html.zip' },
+          { source: './cp3', destination: './dist/cp3-compress.gz', type: 'gzip' }
         ],
-        del: [
-          './dist/cp2/index.html'
+        // del: [
+        //   './dist/cp2/index.html'
+        // ],
+        uncompress: [
+          { source: './dist/index-compress.html.zip', destination: './dist/index-compress.html' },
+          { source: './dist/cp2-compress.tar', destination: './dist/cop2-uncompress', type: 'tar' },
+          { source: './dist/cp3-compress.gz', destination: './dist/cp3-uncompress', type: 'gzip' }
         ]
       }
     })
