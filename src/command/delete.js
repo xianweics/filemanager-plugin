@@ -1,15 +1,25 @@
-const fs = require('fs');
+import fs from 'fs';
 
-const del = (src) => {
-  // console.log('del', src);
-  fs.stat(src, function (err, stats) {
-    if (err) throw Error('the file or directory is not exist');
-    if (stats.isFile()) {
-      fs.unlinkSync(src)
-    } else if (stats.isDirectory()) {
-      fs.rmdirSync(src)
+const del = function (path) {
+  let files = [];
+  if (fs.existsSync(path)) {
+    if (fs.statSync(path).isDirectory()) {
+      files = fs.readdirSync(path);
+      files.forEach(function (file) {
+        let curPath = path + "/" + file;
+        if (fs.statSync(curPath).isDirectory()) {
+          del(curPath);
+        } else {
+          fs.unlinkSync(curPath);
+        }
+      });
+      fs.rmdirSync(path);
+    } else {
+      fs.unlinkSync(path);
     }
-  })
-};
 
-export default del;
+  } else {
+    throw Error('path is not find')
+  }
+}
+export default del

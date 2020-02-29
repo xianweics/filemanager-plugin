@@ -52,7 +52,9 @@ class FileManagerPlugin {
           await command[type](item.source, item.destination);
         }
       } else if (type === 'del') {
-        // await optionDel.forEach(item => del(item));
+        for (const item of arr) {
+          await command[type](item)
+        }
       }
     }
   }
