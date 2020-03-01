@@ -1,4 +1,4 @@
-import fs from 'fs';
+const fs = require('fs');
 
 const del = function (path) {
   if (fs.existsSync(path)) {

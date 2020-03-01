@@ -45,20 +45,20 @@ module.exports = {
           { source: './cp1', destination: './dist/cp1' },
           { source: './cp2', destination: './dist/cp2' }
         ],
-        // compress: [
-        //   { source: './cp2/', destination: './dist/cp2-compress.tar', type: 'tar' },
-        //   { source: './cp2/index.html', destination: './dist/index-compress.html.zip' },
-        //   { source: './cp3', destination: './dist/cp3-compress.gz', type: 'gzip' }
-        // ],
+        compress: [
+          { source: './cp2/', destination: './dist/cp2-compress.tar', type: 'tar' },
+          { source: './cp2/index.html', destination: './dist/index-compress.html.zip' },
+          { source: './cp3', destination: './dist/cp3-compress.gz', type: 'gzip' }
+        ],
         del: [
           './cp2/cp-back',
           './cp1/index.html'
         ],
-        // uncompress: [
-        //   { source: './dist/index-compress.html.zip', destination: './dist/index-compress.html' },
-        //   { source: './dist/cp2-compress.tar', destination: './dist/cop2-uncompress', type: 'tar' },
-        //   { source: './dist/cp3-compress.gz', destination: './dist/cp3-uncompress', type: 'gzip' }
-        // ]
+        uncompress: [
+          { source: './dist/index-compress.html.zip', destination: './dist/index-compress.html' },
+          { source: './dist/cp2-compress.tar', destination: './dist/cop2-uncompress', type: 'tar' },
+          { source: './dist/cp3-compress.gz', destination: './dist/cp3-uncompress', type: 'gzip' }
+        ]
       }
     })
   ]
