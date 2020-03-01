@@ -51,7 +51,8 @@ module.exports = {
         //   { source: './cp3', destination: './dist/cp3-compress.gz', type: 'gzip' }
         // ],
         del: [
-          './cp2/cp-back'
+          './cp2/cp-back',
+          './cp1/index.html'
         ],
         // uncompress: [
         //   { source: './dist/index-compress.html.zip', destination: './dist/index-compress.html' },
