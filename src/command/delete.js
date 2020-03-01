@@ -1,11 +1,10 @@
-import fs from 'fs';
+const fs = require('fs');
 
 const del = function (path) {
-  let files = [];
   if (fs.existsSync(path)) {
     if (fs.statSync(path).isDirectory()) {
-      files = fs.readdirSync(path);
-      files.forEach(function (file) {
+      const files = fs.readdirSync(path);
+      files.forEach((file) => {
         let curPath = path + "/" + file;
         if (fs.statSync(curPath).isDirectory()) {
           del(curPath);
@@ -17,9 +16,9 @@ const del = function (path) {
     } else {
       fs.unlinkSync(path);
     }
-
   } else {
-    throw Error('path is not find')
+    throw Error('path is not find');
   }
-}
-export default del
+};
+
+export default del;
