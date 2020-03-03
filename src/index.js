@@ -1,6 +1,5 @@
 import * as command from "./command";
-
-const info = console.info;
+import { printDebug } from './utils';
 
 class FileManagerPlugin {
   static HOOK_NAME = 'FileManagerPlugin';
@@ -40,20 +39,20 @@ class FileManagerPlugin {
   
   /**
    * todo: need to be optimized
-   * @desc execute according command information
+   * @desc execute according jobs type
    * @param jobs {Object}
    * @returns {Promise<void>}
    */
   static async handlerJobs (jobs) {
     for (const job of Object.entries(jobs)) {
       const [type, arr] = job;
-      if (type === 'compress' || type === 'uncompress') {
+      if (type === 'zip' || type === 'unzip') {
         for (const item of arr) {
           await command[type](item.source, item.destination);
         }
       } else if (type === 'del') {
         for (const item of arr) {
-          await command[type](item)
+          await command[type](item);
         }
       }
     }
@@ -109,19 +108,19 @@ class FileManagerPlugin {
       const { hookType, hookName, jobs, customHookName } = hookItem;
       if (hookType === 'tap') {
         compiler.hooks[hookName][hookType](customHookName, async () => {
-          info(`start: tap ${customHookName}`);
+          printDebug(`start: tap ${customHookName}`);
           await FileManagerPlugin.handlerJobs(jobs);
-          info(`waiting: ${customHookName}`);
+          printDebug(`waiting: ${customHookName}`);
           await FileManagerPlugin.sleep(3);
-          info(`finish: ${customHookName}`);
+          printDebug(`finish: ${customHookName}`);
         });
       } else if (hookType === 'tapAsync') {
         compiler.hooks[hookName][hookType](customHookName, async (compilation, callback) => {
-          info(`start: tapAsync ${customHookName}`);
+          printDebug(`start: tapAsync ${customHookName}`);
           await FileManagerPlugin.handlerJobs(jobs);
-          info(`waiting: ${customHookName}`);
+          printDebug(`waiting: ${customHookName}`);
           await FileManagerPlugin.sleep(3);
-          info(`finish: ${customHookName}`);
+          printDebug(`finish: ${customHookName}`);
           callback();
         });
       }

@@ -1,7 +1,8 @@
 import cp from './copy';
 import mv from './move';
 import del from './delete';
-import compress from './compress';
-import uncompress from './uncompress';
+import zip from './zip';
+import unzip from './unzip';
+import rename from './rename';
 
-export { cp, mv, del, compress, uncompress };
+export { cp, mv, del, zip, unzip, rename };
