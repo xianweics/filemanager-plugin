@@ -4,7 +4,8 @@
   "description": "This is file manager plugin for webpack",
   "main": "index.js",
   "scripts": {
-    "build": "rollup --config rollup.config.js"
+    "build": "rollup --config rollup.config.js",
+    "test": "cross-env NODE_ENV=test nyc mocha test/**/*.spec.js -b -c -R spec"
   },
   "dependencies": {
     "compressing": "^1.5.0"
@@ -30,15 +31,34 @@
   },
   "homepage": "https://github.com/xianweics/filemanager-plugin#readme",
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-env": "^7.8.6",
+    "@babel/register": "^7.8.6",
     "@babel/runtime": "^7.8.4",
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-json": "^4.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
+    "babel-plugin-istanbul": "^6.0.0",
+    "chai": "^4.2.0",
+    "cross-env": "^7.0.0",
+    "mocha": "^7.1.0",
+    "mochawesome": "^5.0.0",
+    "nyc": "^15.0.0",
     "rollup": "^1.31.0",
     "rollup-plugin-babel": "^4.3.3"
+  },
+  "nyc": {
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "sourceMap": false,
+    "instrument": false
   }
 }

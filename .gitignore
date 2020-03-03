@@ -8,3 +8,6 @@ example/dist
 example/package-lock.json
 .DS_Store
 example/.DS_Store
+coverage
+.nyc_output
+mochawesome-report
