@@ -10,6 +10,7 @@ export default {
     format: 'cjs',
     sourcemap: true
   },
+  external: ['fs'],
   plugins: [
     resolve(),
     json(),

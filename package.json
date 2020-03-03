@@ -8,6 +8,7 @@
     "test": "cross-env NODE_ENV=test nyc mocha test/**/*.spec.js -b -c -R spec"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "compressing": "^1.5.0"
   },
   "contributors": [
