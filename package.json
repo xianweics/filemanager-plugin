@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "test": "mocha",
-    "coverage": "nyc mocha"
+    "test:watch": "mocha --watch",
+    "test:converage": "nyc mocha"
   },
   "dependencies": {
     "colors": "^1.4.0",
