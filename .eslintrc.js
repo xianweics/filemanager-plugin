@@ -259,7 +259,7 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'no-tabs': 'error',
     'no-ternary': 'off',
-    'no-trailing-spaces': 'error',
+    'no-trailing-spaces': 'off',
     'no-underscore-dangle': 'off',
     'no-unneeded-ternary': 'off',
     'no-whitespace-before-property': 'error',

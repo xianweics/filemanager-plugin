@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { resolve } = require('path');
-const FileMangerPlugin = require('../lib/index');
+const FileManagerPlugin = require('../lib/index');
 
 module.exports = {
   entry: './index.js',
@@ -38,7 +38,7 @@ module.exports = {
         removeEmptyAttributes: true
       }
     }),
-    new FileMangerPlugin({
+    new FileManagerPlugin({
       start: {},
       end: {
         // copy: [
@@ -47,17 +47,18 @@ module.exports = {
         // ],
         zip: [
           { source: './cp2/', destination: './dist/cp2-compress.tar', type: 'tar' },
-          { source: './cp2/index.html', destination: './dist/index-compress.html.zip' },
-          { source: './cp3', destination: './dist/cp3-compress.gz', type: 'gzip' }
+          { source: './cp2/index.html', destination: './dist/index-compress.zip' },
+          { source: './cp3', destination: './dist/cp3-compress.tgz', type: 'tgz' },
+          { source: './cp3/index.html', destination: './dist/index-gz.html.gz', type: 'gzip' }
         ],
         del: [
-          // './cp2/cp-back'
-          // './cp1/index.html'
+          // { source: './del1' }
         ],
         unzip: [
-          { source: './dist/index-compress.html.zip', destination: './dist/index-compress.html' },
+          { source: './dist/index-compress.zip', destination: './dist/index-compress.html' },
           { source: './dist/cp2-compress.tar', destination: './dist/cop2-uncompress', type: 'tar' },
-          { source: './dist/cp3-compress.gz', destination: './dist/cp3-uncompress', type: 'gzip' }
+          { source: './dist/cp3-compress.tgz', destination: './dist/cp3-uncompress', type: 'tgz' },
+          { source: './dist/index-gz.html.gz', destination: './dist/index-gz.html', type: 'gzip' }
         ]
       }
     })

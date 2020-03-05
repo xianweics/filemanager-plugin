@@ -1,8 +1,12 @@
 import * as command from './command';
-import { printDebug } from './utils';
+import { checkType, handlerError, printDebug, sleep } from './utils';
+
+const preErrorNotice = 'file manager error:';
 
 class FileManagerPlugin {
   static HOOK_NAME = 'FileManagerPlugin';
+  // static VALID_COMMANDS = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
+  static VALID_COMMANDS = ['del', 'zip', 'unzip'];
   static HOOKS_MAP = {
     'start': {
       hookType: 'tapAsync',
@@ -15,30 +19,13 @@ class FileManagerPlugin {
       customHookName: 'afterEmit'
     }
   };
-  static USER_VALID_HOOKS = Object.keys(this.HOOKS_MAP);
+  static USER_VALID_LIFE_HOOKS = Object.keys(this.HOOKS_MAP);
 
   constructor (opts) {
     this.options = opts;
   }
 
   /**
-   * @todo need to removed
-   * @desc mock runtime for testing
-   * @param time {number}
-   * @param cb
-   * @returns {Promise<void>}
-   */
-  static sleep (time, cb) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        cb && cb();
-        resolve();
-      }, time * 1000);
-    });
-  }
-
-  /**
-   * todo: need to be optimized
    * @desc execute according jobs type
    * @param jobs {Object}
    * @returns {Promise<void>}
@@ -46,14 +33,8 @@ class FileManagerPlugin {
   static async handlerJobs (jobs) {
     for (const job of Object.entries(jobs)) {
       const [type, arr] = job;
-      if (type === 'zip' || type === 'unzip') {
-        for (const item of arr) {
-          await command[type](item.source, item.destination);
-        }
-      } else if (type === 'del') {
-        for (const item of arr) {
-          await command[type](item);
-        }
+      for (const item of arr) {
+        await command[type](item);
       }
     }
   }
@@ -73,7 +54,7 @@ class FileManagerPlugin {
    */
   static translateHooks (options) {
     const result = [];
-    for (let o in options) {
+    for (const o in options) {
       if (options.hasOwnProperty(o)) {
         const { hookType, hookName, customHookName = hookName } = this.HOOKS_MAP[o];
         result.push({
@@ -88,20 +69,48 @@ class FileManagerPlugin {
   }
 
   /**
-   * @desc check whether hook of 'option' is valid
+   * @desc check the 'option' input which comes from user
    * @param options {Object}
    */
-  static checkHooks (options) {
-    const possibleLifeTypes = Object.keys(options);
-    const isValid = possibleLifeTypes.every(
-      type => this.USER_VALID_HOOKS.includes(type));
-    if (!isValid) {
-      throw new Error('Not valid hooks of webpack.');
+  static checkInput (options) {
+    try {
+      if (!checkType.isObject(options)) {
+        handlerError(`${preErrorNotice} the input is not valid`);
+      }
+
+      for (const lifeHook in options) {
+        if (options.hasOwnProperty(lifeHook)) {
+          if (!this.USER_VALID_LIFE_HOOKS.includes(lifeHook)) {
+            handlerError(`${preErrorNotice} ${lifeHook} is not found`);
+          }
+          const jobs = options[lifeHook];
+          if (!checkType.isObject(jobs)) {
+            handlerError(`${preErrorNotice} the input is not valid`);
+          }
+          if (Object.keys(jobs).length === 0) {
+            continue;
+          }
+          for (const job of Object.entries(jobs)) {
+            const [commandType, commandQueue] =  job;
+            if (!this.VALID_COMMANDS.includes(commandType) || !checkType.isArray(commandQueue)) {
+              handlerError(`${preErrorNotice} the input is not valid`);
+            }
+            for (const cq of commandQueue) {
+              // eslint-disable-next-line max-depth
+              if (!checkType.isObject(cq)) {
+                handlerError(`${preErrorNotice} the input is not valid`);
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      handlerError(`${preErrorNotice} ${e}`);
     }
   }
 
   apply (compiler) {
-    FileManagerPlugin.checkHooks(this.options);
+    FileManagerPlugin.checkInput(this.options);
 
     const options = FileManagerPlugin.translateHooks(this.options);
 
@@ -112,7 +121,7 @@ class FileManagerPlugin {
           printDebug(`start: tap ${customHookName}`);
           await FileManagerPlugin.handlerJobs(jobs);
           printDebug(`waiting: ${customHookName}`);
-          await FileManagerPlugin.sleep(3);
+          await sleep(1);
           printDebug(`finish: ${customHookName}`);
         });
       } else if (hookType === 'tapAsync') {
@@ -121,7 +130,7 @@ class FileManagerPlugin {
             printDebug(`start: tapAsync ${customHookName}`);
             await FileManagerPlugin.handlerJobs(jobs);
             printDebug(`waiting: ${customHookName}`);
-            await FileManagerPlugin.sleep(3);
+            await sleep(3);
             printDebug(`finish: ${customHookName}`);
             callback();
           });

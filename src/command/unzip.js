@@ -1,35 +1,51 @@
 const compressing = require('compressing');
 import fs from 'fs';
-import { handlerError, handlerInfo, handlerWarn } from '../utils';
+import { checkType, handlerError, handlerInfo, handlerWarn } from '../utils';
 
-const checkParams = (srcPath, destPath, type) => {
-  const VALID_TYPES = ['zip', 'tar', 'gzip'];
-
+const checkParams = (srcPath, destinationPath, type) => {
+  const VALID_TYPES = ['zip', 'tar', 'gzip', 'tgz'];
+  
+  if (!checkType.isString(srcPath)) {
+    handlerError(`unzip error: '${srcPath}' is not a string value`);
+  }
+  
+  if (!checkType.isString(destinationPath)) {
+    handlerError(`unzip error: '${destinationPath}' is not a string value`);
+  }
+  
+  if (!checkType.isString(type)) {
+    handlerError(`unzip error: '${type}' is not a string value`);
+  }
+  
   if (!fs.existsSync(srcPath)) {
     handlerError(`unzip error: '${srcPath}' is not found in path`);
   }
+  
   if (!VALID_TYPES.includes(type)) {
     handlerError(`unzip error: '${type}' is not valid`);
   }
-  if (fs.existsSync(destPath)) {
-    handlerWarn(`unzip warning: '${destPath}' will be override`);
+  if (!destinationPath) {
+    handlerError(`zip error: '${destinationPath}' is not found in path`);
+  }
+  if (fs.existsSync(destinationPath)) {
+    handlerWarn(`unzip warning: '${destinationPath}' would be override`);
   }
 };
 
 /**
  * @desc Unzip file/folder. Support zip, tar, gzip.
- * @param src {string}
- * @param dest {string}
+ * @param source {string}
+ * @param destination {string}
  * @param type {string}
  * @returns {Promise<void>}
  */
-const unzip = async (src, dest, type = 'zip') => {
-  checkParams(src, dest, type);
+const unzip = async ({ source, destination, type = 'zip' }) => {
+  checkParams(source, destination, type);
 
-  await compressing[type].uncompress(src, dest).catch((e) => {
+  await compressing[type].uncompress(source, destination).catch((e) => {
     handlerError(`unzip error: ${e}`);
   });
-  handlerInfo(`success: unzip '${src}' to ${dest}`);
+  handlerInfo(`success: unzip '${source}' to ${destination}`);
 };
 
 export default unzip;

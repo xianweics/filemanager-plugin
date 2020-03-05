@@ -1,8 +1,8 @@
-import cp from './copy';
-import mv from './move';
-import del from './delete';
+import copy from './copy';
+import move from './move';
+import del from './del';
 import zip from './zip';
 import unzip from './unzip';
 import rename from './rename';
 
-export { cp, mv, del, zip, unzip, rename };
+export { copy, move, del, zip, unzip, rename };
