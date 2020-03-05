@@ -1,12 +1,21 @@
+# idea
 .idea
-node_modules
-package-lock.json
-lib
-example/node_modules
-package-lock.json/**
-example/dist
-example/package-lock.json
 .DS_Store
+
+# example temporary files/folders
+example/dist
 example/.DS_Store
+example/package-lock.json
+
+# unit test temporary files/folders
 .nyc_output
 coverage
+
+# dependencies
+node_modules
+
+# build temporary files/folders
+lib
+
+# other
+package-lock.json

@@ -2,6 +2,8 @@ import babel from 'rollup-plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
+import { eslint } from 'rollup-plugin-eslint';
+import friendlyFormatter from 'eslint-friendly-formatter';
 
 export default {
   input: 'src/index.js',
@@ -12,11 +14,14 @@ export default {
   },
   external: ['fs'],
   plugins: [
+    eslint({
+      include: ['src/**'],
+      formatter: friendlyFormatter,
+      throwOnError: true
+    }),
     resolve(),
     json(),
-    babel({
-      runtimeHelpers: true
-    }),
+    babel({ runtimeHelpers: true }),
     commonjs()
   ]
 };

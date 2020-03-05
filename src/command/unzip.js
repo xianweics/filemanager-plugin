@@ -4,7 +4,7 @@ import { handlerError, handlerInfo, handlerWarn } from '../utils';
 
 const checkParams = (srcPath, destPath, type) => {
   const VALID_TYPES = ['zip', 'tar', 'gzip'];
-  
+
   if (!fs.existsSync(srcPath)) {
     handlerError(`unzip error: '${srcPath}' is not found in path`);
   }
@@ -25,7 +25,7 @@ const checkParams = (srcPath, destPath, type) => {
  */
 const unzip = async (src, dest, type = 'zip') => {
   checkParams(src, dest, type);
-  
+
   await compressing[type].uncompress(src, dest).catch((e) => {
     handlerError(`unzip error: ${e}`);
   });

@@ -1,4 +1,4 @@
-import * as command from "./command";
+import * as command from './command';
 import { printDebug } from './utils';
 
 class FileManagerPlugin {
@@ -16,11 +16,11 @@ class FileManagerPlugin {
     }
   };
   static USER_VALID_HOOKS = Object.keys(this.HOOKS_MAP);
-  
+
   constructor (opts) {
     this.options = opts;
   }
-  
+
   /**
    * @todo need to removed
    * @desc mock runtime for testing
@@ -36,7 +36,7 @@ class FileManagerPlugin {
       }, time * 1000);
     });
   }
-  
+
   /**
    * todo: need to be optimized
    * @desc execute according jobs type
@@ -57,7 +57,7 @@ class FileManagerPlugin {
       }
     }
   }
-  
+
   /**
    * @desc translate 'options' to other options with hooks and types of webpack
    * @param options {Object}
@@ -86,24 +86,25 @@ class FileManagerPlugin {
     }
     return result;
   }
-  
+
   /**
    * @desc check whether hook of 'option' is valid
    * @param options {Object}
    */
   static checkHooks (options) {
     const possibleLifeTypes = Object.keys(options);
-    const isValid = possibleLifeTypes.every(type => this.USER_VALID_HOOKS.includes(type));
+    const isValid = possibleLifeTypes.every(
+      type => this.USER_VALID_HOOKS.includes(type));
     if (!isValid) {
       throw new Error('Not valid hooks of webpack.');
     }
   }
-  
+
   apply (compiler) {
     FileManagerPlugin.checkHooks(this.options);
-  
+
     const options = FileManagerPlugin.translateHooks(this.options);
-  
+
     for (const hookItem of options) {
       const { hookType, hookName, jobs, customHookName } = hookItem;
       if (hookType === 'tap') {
@@ -115,14 +116,15 @@ class FileManagerPlugin {
           printDebug(`finish: ${customHookName}`);
         });
       } else if (hookType === 'tapAsync') {
-        compiler.hooks[hookName][hookType](customHookName, async (compilation, callback) => {
-          printDebug(`start: tapAsync ${customHookName}`);
-          await FileManagerPlugin.handlerJobs(jobs);
-          printDebug(`waiting: ${customHookName}`);
-          await FileManagerPlugin.sleep(3);
-          printDebug(`finish: ${customHookName}`);
-          callback();
-        });
+        compiler.hooks[hookName][hookType](customHookName,
+          async (compilation, callback) => {
+            printDebug(`start: tapAsync ${customHookName}`);
+            await FileManagerPlugin.handlerJobs(jobs);
+            printDebug(`waiting: ${customHookName}`);
+            await FileManagerPlugin.sleep(3);
+            printDebug(`finish: ${customHookName}`);
+            callback();
+          });
       }
     }
   }
