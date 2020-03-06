@@ -16,10 +16,6 @@ cache: npm
 install:
   - npm install
 
-branches:
-  only:
-    - master
-
 git:
   quiet: true
   depth: 1

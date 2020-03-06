@@ -25,13 +25,13 @@ module.exports = {
       },
       end: {
         zip: [
-          { source: './src/demo', destination: './src/demo.zip', type: 'zip'}
+          { source: './src/demo', destination: './src/demo.zip', type: 'zip', option: { }}
         ],
         del: [
           { source: './src/demo' } 
         ],
         unzip: [
-          { source: './src/demo.zip', destination: './src/demo', type: 'zip'},
+          { source: './src/demo.zip', destination: './src/demo', type: 'zip', option: { }},
         ]  
       }
     })
@@ -70,17 +70,20 @@ module.exports = {
     new FileManagerPlugin({
       end: {
         zip: [
-          { source: './src/demo1', destination: './src/demo1.zip', type: 'zip'},
+          { source: './src/demo1', destination: './src/demo1.zip', type: 'zip', option: { }},
           { source: './src/demo2', destination: './src/demo2.tar', type: 'tar'},
           { source: './src/demo3', destination: './src/demo3.tgz', type: 'tgz'},
           { source: './src/demo4.html', destination: './src/demo4.html.gz', type: 'gzip'},
-          { source: './src/demo5.html', destination: './src/demo5.zip'} // Default type: zip
+          { source: './src/demo5.html', destination: './src/demo5.zip'}
         ]
       }
     })
   ]
 }
 ```
+
+- Default `type`: `zip`
+- option: the same as [opts](https://github.com/node-modules/compressing#compressfile)
 
 #### `unzip` example
 
@@ -90,7 +93,7 @@ module.exports = {
     new FileManagerPlugin({
       end: {
         unzip: [
-          { source: './src/demo1.zip', destination: './src/demo.zip'}, // Default type: zip
+          { source: './src/demo1.zip', destination: './src/demo.zip'},
           { source: './src/demo2.tar', destination: './src/demo.tar', type: 'tar'},
           { source: './src/demo3.tgz', destination: './src/demo.tgz', type: 'tgz'},
           { source: './src/demo4.html.gz', destination: './src/demo4.html', type: 'gzip'},
@@ -101,6 +104,9 @@ module.exports = {
   ]
 }
 ```
+
+- Default `type`: `zip`
+- option: the same as [opts](https://github.com/node-modules/compressing#uncompress)
 
 #### `del` example
 

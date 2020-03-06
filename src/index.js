@@ -1,8 +1,6 @@
 import * as command from './command';
 import { checkType, handlerError, printDebug, sleep } from './utils';
 
-const preErrorNotice = 'file manager error:';
-
 class FileManagerPlugin {
   static HOOK_NAME = 'FileManagerPlugin';
   // static VALID_COMMANDS = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
@@ -33,6 +31,9 @@ class FileManagerPlugin {
   static async handlerJobs (jobs) {
     for (const job of Object.entries(jobs)) {
       const [type, arr] = job;
+      if (!this.VALID_COMMANDS.includes(type)) {
+        continue;
+      }
       for (const item of arr) {
         await command[type](item);
       }
@@ -54,14 +55,14 @@ class FileManagerPlugin {
    */
   static translateHooks (options) {
     const result = [];
-    for (const o in options) {
-      if (options.hasOwnProperty(o)) {
-        const { hookType, hookName, customHookName = hookName } = this.HOOKS_MAP[o];
+    for (const lifeHook in options) {
+      if (options.hasOwnProperty(lifeHook) && this.USER_VALID_LIFE_HOOKS.includes(lifeHook)) {
+        const { hookType, hookName, customHookName = hookName } = this.HOOKS_MAP[lifeHook];
         result.push({
           hookType,
           hookName,
           customHookName,
-          jobs: options[o]
+          jobs: options[lifeHook]
         });
       }
     }
@@ -69,10 +70,12 @@ class FileManagerPlugin {
   }
 
   /**
-   * @desc check the 'option' input which comes from user
+   * @desc check the 'option' which comes from user input
    * @param options {Object}
    */
   static checkInput (options) {
+    const preErrorNotice = 'file manager error:';
+    
     try {
       if (!checkType.isObject(options)) {
         handlerError(`${preErrorNotice} the input is not valid`);
@@ -81,7 +84,7 @@ class FileManagerPlugin {
       for (const lifeHook in options) {
         if (options.hasOwnProperty(lifeHook)) {
           if (!this.USER_VALID_LIFE_HOOKS.includes(lifeHook)) {
-            handlerError(`${preErrorNotice} ${lifeHook} is not found`);
+            continue;
           }
           const jobs = options[lifeHook];
           if (!checkType.isObject(jobs)) {
@@ -92,7 +95,10 @@ class FileManagerPlugin {
           }
           for (const job of Object.entries(jobs)) {
             const [commandType, commandQueue] =  job;
-            if (!this.VALID_COMMANDS.includes(commandType) || !checkType.isArray(commandQueue)) {
+            if (!this.VALID_COMMANDS.includes(commandType)) {
+              continue;
+            }
+            if (!checkType.isArray(commandQueue)) {
               handlerError(`${preErrorNotice} the input is not valid`);
             }
             for (const cq of commandQueue) {
@@ -121,7 +127,7 @@ class FileManagerPlugin {
           printDebug(`start: tap ${customHookName}`);
           await FileManagerPlugin.handlerJobs(jobs);
           printDebug(`waiting: ${customHookName}`);
-          await sleep(1);
+          await sleep(2);
           printDebug(`finish: ${customHookName}`);
         });
       } else if (hookType === 'tapAsync') {
@@ -130,7 +136,7 @@ class FileManagerPlugin {
             printDebug(`start: tapAsync ${customHookName}`);
             await FileManagerPlugin.handlerJobs(jobs);
             printDebug(`waiting: ${customHookName}`);
-            await sleep(3);
+            await sleep(2);
             printDebug(`finish: ${customHookName}`);
             callback();
           });
