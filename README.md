@@ -1,9 +1,8 @@
 # File manager plugin
 
 [![Build Status](https://travis-ci.org/xianweics/filemanager-plugin.svg?branch=master)](https://travis-ci.org/xianweics/filemanager-plugin)
+[![Coverage Status](https://coveralls.io/repos/github/xianweics/filemanager-plugin/badge.svg)](https://coveralls.io/github/xianweics/filemanager-plugin)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/xianweics/filemanager-plugin/blob/master/LICENSE)
-[![GitHub forks](https://img.shields.io/github/forks/xianweics/filemanager-plugin?color=brightgreen)](https://github.com/xianweics/filemanager-plugin/network)
-[![GitHub stars](https://img.shields.io/github/stars/xianweics/filemanager-plugin?color=brightgreen)](https://github.com/xianweics/filemanager-plugin/stargazers)
 
 This filemanager plugin allows you to copy, zip/unzip (.zip/.tar/.tar.gz), move, rename, delete files or directories
 before and after builds. Also, you can customize the lifecycle of webpack during building.
@@ -40,22 +39,22 @@ module.exports = {
 }
 ```
 
-## Options
+## APIs
 
 ### webpack.config.js
 
-```javascript
+```javascrip
 module.exports = {
   plugins: [new FileManagerPlugin(Option)],
 };
 ```
 
-#### Option
+#### Options
 
 - **start**: Hook into the compiler before it begins reading records.
 - **end**: Called after emitting assets to output directory.
 
-### Command of Option
+### Commands
 
 |  Name   | Type  |  Description |
 |  :---   | :---  |      ---     |
@@ -63,7 +62,7 @@ module.exports = {
 | `unzip`  | `{Array}` | Unzip files or directories. The usage is Same as `zip`. |
 | `del`    | `{Array}` | Delete multiple files or directories. |
 
-#### example of `zip`
+#### `zip` example
 
 ```javascript
 module.exports = {
@@ -83,18 +82,19 @@ module.exports = {
 }
 ```
 
-#### example of `unzip`
+#### `unzip` example
 
 ```javascript
 module.exports = {
   plugins: [
     new FileManagerPlugin({
       end: {
-        zip: [
+        unzip: [
           { source: './src/demo1.zip', destination: './src/demo.zip'}, // Default type: zip
           { source: './src/demo2.tar', destination: './src/demo.tar', type: 'tar'},
           { source: './src/demo3.tgz', destination: './src/demo.tgz', type: 'tgz'},
-          { source: './src/index.html.gz', destination: './src/index.html', type: 'gzip'}
+          { source: './src/demo4.html.gz', destination: './src/demo4.html', type: 'gzip'},
+          { source: './src/demo5.html.zip', destination: './src/demo5.html', type: 'zip'},
         ]
       }
     })
@@ -102,7 +102,7 @@ module.exports = {
 }
 ```
 
-#### example of `del`
+#### `del` example
 
 ```javascript
 module.exports = {

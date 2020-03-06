@@ -7,7 +7,7 @@
     "build": "rollup --config rollup.config.js",
     "test": "mocha",
     "test:watch": "mocha --watch",
-    "test:converage": "nyc mocha"
+    "test:coverage": "nyc mocha"
   },
   "dependencies": {
     "colors": "^1.4.0",
@@ -45,6 +45,7 @@
     "@rollup/plugin-node-resolve": "^7.0.0",
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
+    "coveralls": "^3.0.9",
     "eslint-friendly-formatter": "^4.0.1",
     "mocha": "^7.1.0",
     "nyc": "^15.0.0",
