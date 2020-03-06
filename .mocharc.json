@@ -6,5 +6,6 @@
   "ui": "bdd",
   "watch-files": [
     "test/**/*.spec.js"
-  ]
+  ],
+  "require": ["@babel/register"]
 }
