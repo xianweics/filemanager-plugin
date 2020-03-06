@@ -42,8 +42,8 @@ module.exports = {
       start: {},
       end: {
         copy: [
-          { source: './cp1/index.html', destination: './dist/cp1/indeex.html' },
-          // { source: './cp2', destination: './dist/cp2' }
+          { source: './cp1/index.html', destination: './dist/cp1/cp2/indeex.html' },
+          { source: './cp2', destination: './dist/cp2/cp3' }
         ],
         // zip: [
         //   { source: './cp2/', destination: './dist/cp2-compress.tar', type: 'tar' },
@@ -57,14 +57,15 @@ module.exports = {
         //   { source: './dist/cp3-compress.tgz', destination: './dist/cp3-uncompress', type: 'tgz' },
         //   { source: './dist/index-gz.html.gz', destination: './dist/index-gz.html', type: 'gzip' }
         // ],
-        // move: [
-        //   { source: './cp2', destination: './dist/cpp/dpp' },
-        // ],
-        // del: [
-        //   { source: './del1/a' },
-        //   { source: './del1/a.css' },
-        //   { source: './del1/b/b.css' }
-        // ],
+        move: [
+          // { source: './cp2', destination: './dist/cpp/dpp' },
+        ],
+        del: [
+          // { source: './cp2' }
+        ],
+        rename: [
+          { source: './cp2', destination: './cpp2' },
+        ]
       }
     })
   ]

@@ -3,8 +3,8 @@ import { checkType, handlerError, printDebug, sleep } from './utils';
 
 class FileManagerPlugin {
   static HOOK_NAME = 'FileManagerPlugin';
-  // static VALID_COMMANDS = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
-  static VALID_COMMANDS = ['copy'];
+  static VALID_COMMANDS = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
+  // static VALID_COMMANDS = ['move', 'copy'];
   static HOOKS_MAP = {
     'start': {
       hookType: 'tapAsync',
