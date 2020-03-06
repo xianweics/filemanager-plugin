@@ -6,7 +6,7 @@ const preErrorNotice = 'file manager error:';
 class FileManagerPlugin {
   static HOOK_NAME = 'FileManagerPlugin';
   // static VALID_COMMANDS = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
-  static VALID_COMMANDS = ['del', 'zip', 'unzip'];
+  static VALID_COMMANDS = ['copy'];
   static HOOKS_MAP = {
     'start': {
       hookType: 'tapAsync',
