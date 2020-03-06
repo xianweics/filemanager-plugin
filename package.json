@@ -7,7 +7,8 @@
     "build": "rollup --config rollup.config.js",
     "test": "mocha",
     "test:watch": "mocha --watch",
-    "test:coverage": "nyc mocha"
+    "test:coverage": "nyc mocha",
+    "test:coveralls": "nyc npm test report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
     "colors": "^1.4.0",
