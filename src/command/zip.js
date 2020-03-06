@@ -2,19 +2,23 @@ const compressing = require('compressing');
 import fs from 'fs';
 import { checkType, handlerError, handlerInfo, handlerWarn } from '../utils';
 
-const checkParams = (srcPath, destinationPath, type) => {
+const checkParams = (srcPath, destinationPath, type, option) => {
   const VALID_TYPES = ['zip', 'tar', 'gzip', 'tgz'];
   
   if (!checkType.isString(srcPath)) {
-    handlerError(`unzip error: '${srcPath}' is not a string value`);
+    handlerError(`zip error: '${srcPath}' is not a string value`);
   }
   
   if (!checkType.isString(destinationPath)) {
-    handlerError(`unzip error: '${destinationPath}' is not a string value`);
+    handlerError(`zip error: '${destinationPath}' is not a string value`);
   }
   
   if (!checkType.isString(type)) {
-    handlerError(`unzip error: '${type}' is not a string value`);
+    handlerError(`zip error: '${type}' is not a string value`);
+  }
+  
+  if (!checkType.isObject(option)) {
+    handlerError(`zip error: '${option}' is not a object`);
   }
   
   if (!srcPath || !fs.existsSync(srcPath)) {
@@ -36,20 +40,21 @@ const checkParams = (srcPath, destinationPath, type) => {
  * @param source {string}
  * @param destination {string}
  * @param type {string}
+ * @param option {Object}
  * @returns {Promise<void>}
  */
-const zip = async ({ source, destination, type = 'zip' }) => {
-  checkParams(source, destination, type);
+const zip = async ({ source, destination, type = 'zip', option = {}}) => {
+  checkParams(source, destination, type, option);
 
   const isDirectory = fs.statSync(source).isDirectory();
   let fileType = 'compressFile';
   if (isDirectory) {
     fileType = 'compressDir';
     if (type === 'gzip') {
-      handlerError(`zip error: Gzip only support compressing a single file. if you want to compress a dir with gzip, then you may need tgz instead.`);
+      handlerError(`zip error: Gzip only support compressing a single file. if you want to compress a dir with 'gzip', then you may need 'tgz' instead.`);
     }
   }
-  await compressing[type][fileType](source, destination)
+  await compressing[type][fileType](source, destination, option)
     .catch((e) => {
       handlerError(`zip error: ${e}`);
     });
