@@ -5,36 +5,36 @@ import { checkType, handlerError, handlerInfo } from '../utils';
  * @desc Delete file/folder.
  * @param source {String}
  */
-const del = function ({ source }) {
+const del = ({ source }) => {
   if (!checkType.isString(source)) {
     handlerError(`delete error: '${source}' is not a string value`);
   }
   if (!fs.existsSync(source)) {
     handlerError(`delete error: '${source}' is not found in path`);
   }
-  if (fs.statSync(source).isDirectory()) {
-    deleteFolder(source);
+  try {
+    if (fs.statSync(source).isDirectory()) {
+      deleteFolder(source);
+    } else {
+      fs.unlinkSync(source);
+    }
     handlerInfo(`success: delete '${source}'`);
-  } else {
-    fs.unlinkSync(source);
-    handlerInfo(`success: delete '${source}'`);
+  } catch (e) {
+    handlerError(`delete error: ${e}`);
   }
 };
 
 function deleteFolder (path) {
-  let files = fs.readdirSync(path);
+  const files = fs.readdirSync(path);
   files.forEach(function (file) {
-    let curPath = path + '/' + file;
+    const curPath = path + '/' + file;
     if (fs.statSync(curPath).isDirectory()) {
-      del(curPath);
-      handlerInfo(`success: delete '${curPath}'`);
+      deleteFolder(curPath);
     } else {
       fs.unlinkSync(curPath);
-      handlerInfo(`success: delete '${curPath}'`);
     }
   });
   fs.rmdirSync(path);
-  handlerInfo(`success: delete '${path}'`);
 }
 
 export default del;
