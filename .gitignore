@@ -17,5 +17,10 @@ node_modules
 # build temporary files/folders
 lib
 
+# submit to npm
+publish.sh
+
 # other
 package-lock.json
+
+

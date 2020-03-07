@@ -4,8 +4,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/xianweics/filemanager-plugin/badge.svg)](https://coveralls.io/github/xianweics/filemanager-plugin)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/xianweics/filemanager-plugin/blob/master/LICENSE)
 
-This filemanager plugin allows you to copy, zip/unzip (.zip/.tar/.tar.gz), move, rename, delete files or directories
-before and after builds. Also, you can customize the lifecycle of webpack during building.
+This filemanager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or
+ directories
+before and after builds. ~~Also, you can customize the lifecycle of webpack during building.~~(**release soon**)
 
 # Install
 `npm install filemanager-plugin --save-dev`

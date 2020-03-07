@@ -12,7 +12,7 @@ export default {
     format: 'cjs',
     sourcemap: true
   },
-  external: ['fs'],
+  external: ['fs', 'path'],
   plugins: [
     eslint({
       include: ['src/**'],

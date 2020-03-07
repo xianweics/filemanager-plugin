@@ -39,32 +39,34 @@ module.exports = {
       }
     }),
     new FileManagerPlugin({
-      start: {},
-      end: {
+      end: {},
+      start: {
         copy: [
-          { source: './cp1/index.html', destination: './dist/cp1/cp2/indeex.html' },
-          { source: './cp2', destination: './dist/cp2/cp3' }
+          { source: './copy/a', destination: './dist/copy/a' },
+          { source: './copy/b.html', destination: './dist/copy/b.html' }
         ],
-        // zip: [
-        //   { source: './cp2/', destination: './dist/cp2-compress.tar', type: 'tar' },
-        //   { source: './cp2/index.html', destination: './dist/index-compress.zip' },
-        //   { source: './cp3', destination: './dist/cp3-compress.tgz', type: 'tgz' },
-        //   { source: './cp3/index.html', destination: './dist/index-gz.html.gz', type: 'gzip' }
-        // ],
-        // unzip: [
-        //   { source: './dist/index-compress.zip', destination: './dist/index-compress.html' },
-        //   { source: './dist/cp2-compress.tar', destination: './dist/cop2-uncompress', type: 'tar' },
-        //   { source: './dist/cp3-compress.tgz', destination: './dist/cp3-uncompress', type: 'tgz' },
-        //   { source: './dist/index-gz.html.gz', destination: './dist/index-gz.html', type: 'gzip' }
-        // ],
-        move: [
-          // { source: './cp2', destination: './dist/cpp/dpp' },
-        ],
-        del: [
-          // { source: './cp2' }
+        zip: [
+          { source: './zip/a', destination: './dist/zip/a.tar', type: 'tar' },
+          { source: './zip/b', destination: './dist/zip/b.zip' },
+          { source: './zip/c', destination: './dist/zip/c.tgz', type: 'tgz' },
+          { source: './zip/b.html', destination: './dist/zip/b.gz', type: 'gzip' }
         ],
         rename: [
-          { source: './cp2', destination: './cpp2' },
+          { source: './rename/b', destination: './rename/a' },
+        ],
+        unzip: [
+          { source: './unzip/a.tar', destination: './dist/unzip/a', type: 'tar' },
+          { source: './unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz' },
+          { source: './unzip/c.zip', destination: './dist/unzip/c' },
+          { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip' }
+        ],
+        move: [
+          { source: './move/a', destination: './dist/move/a' },
+          { source: './move/b.html', destination: './dist/move/b.html' },
+        ],
+        del: [
+          { source: './del/a' },
+          { source: './del/b.html' }
         ]
       }
     })

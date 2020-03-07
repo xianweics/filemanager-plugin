@@ -1,8 +1,8 @@
 {
   "name": "filemanager-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "This is file manager plugin for webpack",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "test": "mocha",
@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "colors": "^1.4.0",
-    "compressing": "^1.5.0"
+    "compressing": "^1.5.0",
+    "fs-extra": "^8.1.0"
   },
   "contributors": [
     "Xianwei wu",
@@ -36,6 +37,7 @@
   },
   "homepage": "https://github.com/xianweics/filemanager-plugin#readme",
   "devDependencies": {
+    "acorn": "^7.1.1",
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",

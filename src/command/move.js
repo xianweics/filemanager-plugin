@@ -1,21 +1,21 @@
-import fs from 'fs';
-import copy from './copy';
-import del from './del';
-import { checkType, handlerError } from '../utils';
+import { handlerError, handlerInfo } from '../utils';
 
+const fs = require('fs-extra');
+
+/**
+ * @desc move files or directories
+ * @param source {String}
+ * @param destination {String}
+ * @returns {Promise<void>}
+ */
 const move = async ({ source, destination }) => {
-  if (!checkType.isString(source)) {
-    handlerError(`move error: '${source}' is not a string value`);
+  try {
+    fs.copySync(source, destination);
+    fs.removeSync(source);
+    handlerInfo(`success: move '${source}' to '${destination}'`);
+  } catch (e) {
+    handlerError(`move error: ${e}`);
   }
-  if (!fs.existsSync(source)) {
-    handlerError(`move error: '${source}' is not found in path`);
-  }
-
-  await copy({ source, destination });
-
-  del({ source });
-
 };
-
 
 export default move;
