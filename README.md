@@ -4,9 +4,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/xianweics/filemanager-plugin/badge.svg)](https://coveralls.io/github/xianweics/filemanager-plugin)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/xianweics/filemanager-plugin/blob/master/LICENSE)
 
-This filemanager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or
- directories
-before and after builds. ~~Also, you can customize the lifecycle of webpack during building.~~(**release soon**)
+This filemanager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or directories
+ before and after builds.
 
 # Install
 `npm install filemanager-plugin --save-dev`
@@ -62,6 +61,9 @@ module.exports = {
 | `zip`    | `{Array}` | Zip files or directories by using `tar`, `tgz`, `gzip` or `zip`. However, `gzip` only supports compress single file. You need to use `tgz` to zip a directory. |
 | `unzip`  | `{Array}` | Unzip files or directories. The usage is Same as `zip`. |
 | `del`    | `{Array}` | Delete multiple files or directories. |
+| `copy`   | `{Array}` | Copy multiple files or directories. |
+| `move`   | `{Array}` | Move multiple files or directories. |
+| `rename` | `{Array}` | Rename multiple files or directories. |
 
 #### `zip` example
 
@@ -126,8 +128,56 @@ module.exports = {
 }
 ```
 
+#### `copy` example
+
+```javascript
+module.exports = {
+  plugins: [
+    new FileManagerPlugin({
+      end: {
+        copy: [
+          { source: './src/demo', destination: './dest/demo'}
+        ]  
+      }
+    })
+  ]
+}
+```
+
+#### `move` example
+
+```javascript
+module.exports = {
+  plugins: [
+    new FileManagerPlugin({
+      end: {
+        move: [
+          { source: './src/demo1.zip', destination: './dest/demo.zip'}
+        ]   
+      }
+    })
+  ]
+}
+```
+
+#### `rename` example
+
+```javascript
+module.exports = {
+  plugins: [
+    new FileManagerPlugin({
+      end: {
+        rename: [
+          { source: './rename/b', destination: './rename/a' },
+        ]   
+      }
+    })
+  ]
+}
+```
+
 # Support
-[webpack](https://www.npmjs.com/search?q=keywords:webpack): **Upcoming Releases 12 Mar. 2020** <br/>
+[webpack](https://www.npmjs.com/search?q=keywords:webpack) <br/>
 [gulp](https://www.npmjs.com/search?q=keywords:gulp): during planning <br/>
 [rollup](https://www.npmjs.com/search?q=keywords:rollup): during planning <br/>
 
