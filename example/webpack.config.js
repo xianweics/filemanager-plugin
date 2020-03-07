@@ -39,8 +39,8 @@ module.exports = {
       }
     }),
     new FileManagerPlugin({
-      end: {},
-      start: {
+      start: {},
+      end: {
         copy: [
           { source: './copy/a', destination: './dist/copy/a' },
           { source: './copy/b.html', destination: './dist/copy/b.html' }
