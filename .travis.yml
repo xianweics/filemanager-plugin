@@ -24,5 +24,8 @@ script:
   - npm test
   - npm run build
 
+before_script:
+  - npm install mocha rollup -g
+
 after_success:
   - npm run test:coveralls
