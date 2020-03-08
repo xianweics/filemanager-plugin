@@ -228,7 +228,7 @@ module.exports = {
     new FileManagerPlugin({
       end: {
         rename: [
-          { source: './rename/b', destination: './rename/a' },
+          { source: './rename/b', destination: './rename/a' }
         ]   
       }
     })
