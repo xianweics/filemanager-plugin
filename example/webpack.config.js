@@ -1,5 +1,4 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { resolve } = require('path');
 const FileManagerPlugin = require('../lib/index');
 
@@ -27,7 +26,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './index.html',
@@ -39,17 +37,21 @@ module.exports = {
       }
     }),
     new FileManagerPlugin({
-      start: {},
+      start: {
+        del: [
+          { source: './dist' }
+        ]
+      },
       end: {
-        copy: [
-          { source: './copy/a', destination: './dist/copy/a' },
-          { source: './copy/b.html', destination: './dist/copy/b.html' }
-        ],
         zip: [
           { source: './zip/a', destination: './dist/zip/a.tar', type: 'tar' },
           { source: './zip/b', destination: './dist/zip/b.zip' },
           { source: './zip/c', destination: './dist/zip/c.tgz', type: 'tgz' },
           { source: './zip/b.html', destination: './dist/zip/b.gz', type: 'gzip' }
+        ],
+        copy: [
+          { source: './copy/a', destination: './dist/copy/a' },
+          { source: './copy/b.html', destination: './dist/copy/b.html' }
         ],
         rename: [
           { source: './rename/b', destination: './rename/a' },

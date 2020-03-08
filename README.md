@@ -25,13 +25,13 @@ module.exports = {
       },
       end: {
         zip: [
-          { source: './src/demo', destination: './src/demo.zip', type: 'zip', option: { }}
+          { source: './src/demo', destination: './dest/demo.zip', type: 'zip', option: { }}
         ],
         del: [
-          { source: './src/demo' } 
+          { source: './src/demo' }
         ],
         unzip: [
-          { source: './src/demo.zip', destination: './src/demo', type: 'zip', option: { }},
+          { source: './src/demo.zip', destination: './dest/demo', type: 'zip', option: { }},
         ]  
       }
     })
@@ -45,14 +45,40 @@ module.exports = {
 
 ```javascrip
 module.exports = {
-  plugins: [new FileManagerPlugin(Option)],
+  plugins: [new FileManagerPlugin(option)],
 };
 ```
 
-#### Options
+#### Events
 
-- **start**: Hook into the compiler before it begins reading records.
-- **end**: Called after emitting assets to output directory.
+- `start`: Adds a hook right before running the compiler.
+Refer to webpack [beforeRun](https://webpack.js.org/api/compiler-hooks/#beforeRun) hook.
+- `end`: Executed when the compilation has completed.
+Refer to webpack [done](https://webpack.js.org/api/compiler-hooks/#done) hook.
+
+The `start` and `end` events will register to compiler hooks in the
+right way. In the example below, the start event with `unzip` command will run first, 
+and then the end event with `zip` after.
+
+```javascript
+const FileManagerPlugin = require('filemanager-plugin');
+module.exports = {
+  plugins: [
+    new FileManagerPlugin({
+      start: {
+        unzip: [
+          { source: './src/demo0.zip', destination: './dest/demo0', type: 'zip'}
+        ]
+      },
+      end: {
+        zip: [
+          { source: './src/demo1', destination: './dest/demo1.zip', type: 'zip', option: { }}
+        ]
+      }
+    })
+  ]
+}
+```
 
 ### Commands
 
@@ -65,6 +91,29 @@ module.exports = {
 | `move`   | `{Array}` | Move multiple files or directories. |
 | `rename` | `{Array}` | Rename multiple files or directories. |
 
+These commands would be called when each hook which has been registered is called. 
+Also, each operate will be executed in order base on `Array` order.
+In this example below, in the end event, the zip command will run first, and then the delete after:
+
+```javascript
+const FileManagerPlugin = require('filemanager-plugin');
+
+module.exports = {
+  plugins: [
+    new FileManagerPlugin({
+      end: {
+        zip: [
+          { source: './src/demo1', destination: './dest/demo1.zip', type: 'zip', option: { }}
+        ],
+        del: [
+          { source: './src/demo2'}
+        ]
+      }
+    })
+  ]
+}
+```
+
 #### `zip` example
 
 ```javascript
@@ -73,20 +122,21 @@ module.exports = {
     new FileManagerPlugin({
       end: {
         zip: [
-          { source: './src/demo1', destination: './src/demo1.zip', type: 'zip', option: { }},
-          { source: './src/demo2', destination: './src/demo2.tar', type: 'tar'},
-          { source: './src/demo3', destination: './src/demo3.tgz', type: 'tgz'},
-          { source: './src/demo4.html', destination: './src/demo4.html.gz', type: 'gzip'},
-          { source: './src/demo5.html', destination: './src/demo5.zip'}
+          { source: './src/demo1', destination: './dest/demo1.zip', type: 'zip', option: { }},
+          { source: './src/demo2', destination: './dest/demo2.tar', type: 'tar'},
+          { source: './src/demo3', destination: './dest/demo3.tgz', type: 'tgz'},
+          { source: './src/demo4.html', destination: './dest/demo4.html.gz', type: 'gzip'},
+          { source: './src/demo5.html', destination: './dest/demo5.html.zip', type: 'zip'}
         ]
       }
     })
   ]
 }
 ```
-
-- Default `type`: `zip`
-- option: the same as [opts](https://github.com/node-modules/compressing#compressfile)
+- `source {String}`: Compressed source path which can be a file or directory.
+- `destination {String}`: Compressed destination path.
+- `type {String}`: Compressed type. Default is `zip`.
+- `option {String}`: The same as [opts](https://github.com/node-modules/compressing#compressfile)
 
 #### `unzip` example
 
@@ -96,11 +146,11 @@ module.exports = {
     new FileManagerPlugin({
       end: {
         unzip: [
-          { source: './src/demo1.zip', destination: './src/demo.zip'},
-          { source: './src/demo2.tar', destination: './src/demo.tar', type: 'tar'},
-          { source: './src/demo3.tgz', destination: './src/demo.tgz', type: 'tgz'},
-          { source: './src/demo4.html.gz', destination: './src/demo4.html', type: 'gzip'},
-          { source: './src/demo5.html.zip', destination: './src/demo5.html', type: 'zip'},
+          { source: './src/demo1.zip', destination: './dest/demo.zip'},
+          { source: './src/demo2.tar', destination: './dest/demo.tar', type: 'tar'},
+          { source: './src/demo3.tgz', destination: './dest/demo.tgz', type: 'tgz'},
+          { source: './src/demo4.html.gz', destination: './dest/demo4.html', type: 'gzip'},
+          { source: './src/demo5.html.zip', destination: './dest/demo5.html', type: 'zip'},
         ]
       }
     })
@@ -108,8 +158,10 @@ module.exports = {
 }
 ```
 
-- Default `type`: `zip`
-- option: the same as [opts](https://github.com/node-modules/compressing#uncompress)
+- `source {String}`: Uncompressed source path.
+- `destination {String}`: Uncompressed destination path.
+- `type {String}`: Uncompressed type. Default is `zip`.
+- `option {String}`: The same as [opts](https://github.com/node-modules/compressing#compressfile)
 
 #### `del` example
 
@@ -128,6 +180,8 @@ module.exports = {
 }
 ```
 
+- `source {String}`: Deleted path which can be a file or directory.
+
 #### `copy` example
 
 ```javascript
@@ -143,6 +197,9 @@ module.exports = {
   ]
 }
 ```
+
+- `source {String}`: Copied source path.
+- `destination {String}`: Copied destination path.
 
 #### `move` example
 
@@ -160,6 +217,9 @@ module.exports = {
 }
 ```
 
+- `source {String}`: Moved source path.
+- `destination {String}`: Moved destination path.
+
 #### `rename` example
 
 ```javascript
@@ -176,10 +236,13 @@ module.exports = {
 }
 ```
 
+- `source {String}`: Renamed source path.
+- `destination {String}`: Renamed destination path.
+
 # Support
 [webpack](https://www.npmjs.com/search?q=keywords:webpack) <br/>
-[gulp](https://www.npmjs.com/search?q=keywords:gulp): during planning <br/>
-[rollup](https://www.npmjs.com/search?q=keywords:rollup): during planning <br/>
+[gulp](https://www.npmjs.com/search?q=keywords:gulp): During planning <br/>
+[rollup](https://www.npmjs.com/search?q=keywords:rollup): During planning <br/>
 
 # Development Setup
 ```text

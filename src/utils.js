@@ -11,10 +11,6 @@ export function handlerInfo (msg) {
   log(colors.green(msg));
 }
 
-export function handlerWarn (msg) {
-  log(colors.yellow(msg));
-}
-
 export function printDebug (msg) {
   log(colors.blue(msg));
 }

@@ -10,8 +10,7 @@ const fs = require('fs-extra');
  */
 const move = async ({ source, destination }) => {
   try {
-    fs.copySync(source, destination);
-    fs.removeSync(source);
+    fs.moveSync(source, destination);
     handlerInfo(`success: move '${source}' to '${destination}'`);
   } catch (e) {
     handlerError(`move error: ${e}`);

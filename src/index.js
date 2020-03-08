@@ -1,5 +1,6 @@
 import * as command from './command';
-import { checkType, handlerError, printDebug, sleep } from './utils';
+// eslint-disable-next-line no-unused-vars
+import { checkType, handlerError } from './utils';
 
 class FileManagerPlugin {
   static HOOK_NAME = 'FileManagerPlugin';
@@ -7,13 +8,13 @@ class FileManagerPlugin {
   static HOOKS_MAP = {
     'start': {
       hookType: 'tapAsync',
-      hookName: 'run',
-      customHookName: 'run'
+      hookName: 'beforeRun',
+      customHookName: 'beforeRun'
     },
     'end': {
       hookType: 'tapAsync',
-      hookName: 'afterEmit',
-      customHookName: 'afterEmit'
+      hookName: 'done',
+      customHookName: 'done'
     }
   };
   static USER_VALID_LIFE_HOOKS = Object.keys(this.HOOKS_MAP);
@@ -123,20 +124,20 @@ class FileManagerPlugin {
       const { hookType, hookName, jobs, customHookName } = hookItem;
       if (hookType === 'tap') {
         compiler.hooks[hookName][hookType](customHookName, async () => {
-          printDebug(`start: tap ${customHookName}`);
+          // printDebug(`start: tap ${customHookName}`);
           await FileManagerPlugin.handlerJobs(jobs);
-          printDebug(`waiting: ${customHookName}`);
-          await sleep(0);
-          printDebug(`finish: ${customHookName}`);
+          // printDebug(`waiting: ${customHookName}`);
+          // await sleep(0);
+          // printDebug(`finish: ${customHookName}`);
         });
       } else if (hookType === 'tapAsync') {
         compiler.hooks[hookName][hookType](customHookName,
           async (compilation, callback) => {
-            printDebug(`start: tapAsync ${customHookName}`);
+            // printDebug(`start: tapAsync ${customHookName}`);
             await FileManagerPlugin.handlerJobs(jobs);
-            printDebug(`waiting: ${customHookName}`);
-            await sleep(2);
-            printDebug(`finish: ${customHookName}`);
+            // printDebug(`waiting: ${customHookName}`);
+            // await sleep(2);
+            // printDebug(`finish: ${customHookName}`);
             callback();
           });
       }
