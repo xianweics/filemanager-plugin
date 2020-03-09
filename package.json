@@ -8,7 +8,7 @@
     "test": "node_modules/.bin/mocha --config .mocharc.json",
     "test:watch": "node_modules/.bin/mocha --config .mocharc.json --watch",
     "test:coverage": "node_modules/.bin/nyc npm test",
-    "test:coveralls": "npm run test:coverage && node_modules/.bin/nyc report --reporter=text-lcov | coveralls"
+    "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
     "colors": "^1.4.0",
