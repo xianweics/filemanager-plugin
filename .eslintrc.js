@@ -4,12 +4,16 @@ module.exports = {
   env: {
     node: true,
     commonjs: true,
-    es6: true
+    es6: true,
+    mocha: true
   },
   globals: {
-    __dirname: true,
+    describe: true,
     document: true,
-    window: true
+    it: true,
+    expect: true,
+    alert: true,
+    __dirname: true
   },
   rules: {
     'for-direction': 'error',

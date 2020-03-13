@@ -1,13 +1,13 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve } = require('path');
 const FileManagerPlugin = require('../lib/index');
-
-module.exports = {
-  entry: './index.js',
-  mode: 'production',
+const Webpack = require('webpack');
+const config = {
+  entry: './src/index.js',
   output: {
+    publicPath: '.',
     path: resolve(__dirname, 'dist'),
-    filename: '[hash:5].js'
+    filename: 'name.[hash:5].js'
   },
   module: {
     rules: [
@@ -26,15 +26,10 @@ module.exports = {
     ]
   },
   plugins: [
+    new Webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './index.html',
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        minifyCSS: true,
-        removeEmptyAttributes: true
-      }
+      template: './src/index.html'
     }),
     new FileManagerPlugin({
       start: {
@@ -54,7 +49,7 @@ module.exports = {
           { source: './copy/b.html', destination: './dist/copy/b.html' }
         ],
         rename: [
-          { source: './rename/b', destination: './rename/a' },
+          // { source: './rename/b', destination: './rename/a' },
         ],
         unzip: [
           { source: './unzip/a.tar', destination: './dist/unzip/a', type: 'tar' },
@@ -63,14 +58,25 @@ module.exports = {
           { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip' }
         ],
         move: [
-          { source: './move/a', destination: './dist/move/a' },
-          { source: './move/b.html', destination: './dist/move/b.html' },
+          // { source: './move/a', destination: './dist/move/a' },
+          // { source: './move/b.html', destination: './dist/move/b.html' },
         ],
         del: [
-          { source: './del/a' },
-          { source: './del/b.html' }
+          // { source: './del/a' },
+          // { source: './del/b.html' }
         ]
       }
     })
-  ]
+  ],
+  devServer: {
+    contentBase: 'dist',
+    port: 9000,
+    host: 'localhost',
+    open: true,
+    hot: true,
+    inline: true,
+    progress: true
+  }
 };
+
+module.exports = config;
