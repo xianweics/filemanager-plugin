@@ -9,8 +9,7 @@ export default {
   input: 'src/index.js',
   output: {
     file: 'lib/index.js',
-    format: 'cjs',
-    sourcemap: true
+    format: 'cjs'
   },
   external: ['fs', 'path'],
   plugins: [
@@ -19,7 +18,9 @@ export default {
       formatter: friendlyFormatter,
       throwOnError: true
     }),
-    resolve(),
+    resolve({
+      mainFields: ['jsnext', 'module', 'main']
+    }),
     json(),
     babel({ runtimeHelpers: true }),
     commonjs()

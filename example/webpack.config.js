@@ -7,7 +7,7 @@ const config = {
   output: {
     publicPath: '.',
     path: resolve(__dirname, 'dist'),
-    filename: 'name.[hash:5].js'
+    filename: '[name].[hash:5].js'
   },
   module: {
     rules: [
