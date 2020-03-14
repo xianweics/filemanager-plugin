@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "node_modules/.bin/rollup --config rollup.config.js",
-    "test": "cross-env NODE_ENV=test node_modules/.bin/mocha --config .mocharc.json",
-    "test:watch": "cross-env NODE_ENV=test node_modules/.bin/mocha --config .mocharc.json --watch",
+    "test": "node_modules/.bin/mocha --config .mocharc.json",
+    "test:watch": "node_modules/.bin/mocha --config .mocharc.json --watch",
     "test:coverage": "node_modules/.bin/nyc npm test",
     "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls"
   },
@@ -49,7 +49,6 @@
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.9",
-    "cross-env": "^7.0.2",
     "eslint-friendly-formatter": "^4.0.1",
     "mocha": "^7.1.0",
     "nyc": "^15.0.0",
