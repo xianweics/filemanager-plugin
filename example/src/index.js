@@ -1,2 +1,2 @@
 const $body = document.querySelector('body');
-console.info($body, 1);
+console.info($body);

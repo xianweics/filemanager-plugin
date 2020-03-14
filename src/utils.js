@@ -24,11 +24,21 @@ export const checkType = (() => {
   return result;
 })();
 
-export function sleep (time, cb) {
+export function sleepAsync (time, cb) {
   return new Promise(resolve => {
     setTimeout(() => {
       cb && cb();
       resolve();
     }, time * 1000);
   });
+}
+
+export function sleepSync (time, cb) {
+  const exitTime = new Date().getTime() + time * 1000;
+  while (true) {
+    if (new Date().getTime() > exitTime) {
+      cb && cb();
+      return;
+    }
+  }
 }

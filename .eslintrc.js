@@ -1,6 +1,9 @@
 module.exports = {
   root: true,
   parser: 'babel-eslint',
+  ignorePatterns: [
+    'lib'
+  ],
   env: {
     node: true,
     commonjs: true,

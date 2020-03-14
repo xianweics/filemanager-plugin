@@ -4,10 +4,12 @@
 [![Coverage Status](https://coveralls.io/repos/github/xianweics/filemanager-plugin/badge.svg)](https://coveralls.io/github/xianweics/filemanager-plugin)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/xianweics/filemanager-plugin/blob/master/LICENSE)
 
+# Overview
+
 This filemanager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or directories
  before and after builds.
 
-# Install
+# Installation
 `npm install filemanager-plugin --save-dev`
 
 # Usage
@@ -252,9 +254,13 @@ npm install
 # build lib files
 npm run build
 
-# run example to see result
+# run example to test plugin
 cd example
 npm run start
+
+# build example to see final result
+cd example
+npm run build
 
 # run unit test
 npm run test

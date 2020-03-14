@@ -5,7 +5,7 @@ const Webpack = require('webpack');
 const config = {
   entry: './src/index.js',
   output: {
-    publicPath: '.',
+    publicPath: '/',
     path: resolve(__dirname, 'dist'),
     filename: '[name].[hash:5].js'
   },
@@ -69,7 +69,6 @@ const config = {
     })
   ],
   devServer: {
-    contentBase: 'dist',
     port: 9000,
     host: 'localhost',
     open: true,

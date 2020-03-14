@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "node_modules/.bin/rollup --config rollup.config.js",
-    "test": "node_modules/.bin/mocha --config .mocharc.json",
-    "test:watch": "node_modules/.bin/mocha --config .mocharc.json --watch",
+    "test": "cross-env NODE_ENV=test node_modules/.bin/mocha --config .mocharc.json",
+    "test:watch": "cross-env NODE_ENV=test node_modules/.bin/mocha --config .mocharc.json --watch",
     "test:coverage": "node_modules/.bin/nyc npm test",
     "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls"
   },
