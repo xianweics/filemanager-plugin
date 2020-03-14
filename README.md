@@ -14,7 +14,7 @@ This filemanager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move
 
 # Usage
 
-# Webpack.config.js
+## Webpack.config.js
 
 ```javascript
 const FileManagerPlugin = require('filemanager-plugin');
