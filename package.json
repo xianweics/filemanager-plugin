@@ -8,12 +8,15 @@
     "test": "node_modules/.bin/mocha --config .mocharc.json",
     "test:watch": "node_modules/.bin/mocha --config .mocharc.json --watch",
     "test:coverage": "node_modules/.bin/nyc npm test",
-    "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls"
+    "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls",
+    "doc": "./node_modules/.bin/jsdoc -c ./conf.json"
   },
   "dependencies": {
     "colors": "^1.4.0",
     "compressing": "^1.5.0",
-    "fs-extra": "^8.1.0"
+    "fs-extra": "^8.1.0",
+    "glob": "^7.1.6",
+    "jsdoc": "^3.6.3"
   },
   "contributors": [
     "Xianwei wu",
@@ -54,6 +57,8 @@
     "nyc": "^15.0.0",
     "rollup": "^1.31.0",
     "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-eslint": "^7.0.0"
+    "rollup-plugin-eslint": "^7.0.0",
+    "tui-jsdoc-template": "^1.2.2",
+    "typescript": "^3.8.3"
   }
 }

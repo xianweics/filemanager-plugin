@@ -1,0 +1,10 @@
+footer {
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  padding: 0;
+}
+.logo {
+  font-size: 0;
+  vertical-align: middle;
+}

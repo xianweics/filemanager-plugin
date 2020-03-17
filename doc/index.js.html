@@ -1,0 +1,235 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: index.js | filemanager-plugin</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+        
+            <link type="text/css" rel="stylesheet" href="custom.css">
+        
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 140px; height: 50px">
+        
+            <a href="https://www.npmjs.com/package/filemanager-plugin" rel="noopener noreferrer" target="_blank">
+                <img src="./logo.png" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">filemanager-plugin</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-color_mixer.html">color/mixer</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:color/mixer_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="module-color_mixer.html#.lastColor">lastColor</a></li><li><a href="module-color_mixer.html#.name">name</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="module-color_mixer.html#.blend">blend</a></li><li><a href="module-color_mixer.html#.blend">blend</a></li><li><a href="module-color_mixer.html#.darken">darken</a></li><li><a href="module-color_mixer.html#.toRgb">toRgb</a></li></ul></div></li><li><a href="module-my_jacket.html">my/jacket</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:my/jacket_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-my_jacket.html#zip">zip</a></li></ul></div></li><li><a href="module-my_shirt.html">my/shirt</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:my/shirt_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="module-my_shirt.html#.color">color</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="module-my_shirt.html#.button">button</a></li><li><a href="module-my_shirt.html#.unbutton">unbutton</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Dot.html">Dot</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Dot_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Dot.html#getWidth">getWidth</a></li><li><a href="Dot.html#getX">getX</a></li><li><a href="Dot.html#getY">getY</a></li></ul></div></li><li><a href="module-my_jacket.html">my/jacket</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:my/jacket_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-my_jacket.html#zip">zip</a></li></ul></div></li><li><a href="module-my_shirt.Turtleneck.html">Turtleneck</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:my/shirt.Turtleneck_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="module-my_shirt.Turtleneck.html#size">size</a></li></ul></div></li><li><a href="Point.html">Point</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Point_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Point.html#.fromString">fromString</a></li><li><a href="Point.html#getX">getX</a></li><li><a href="Point.html#getY">getY</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Global</h3><ul><li><a href="global.html#copy">copy</a></li><li><a href="global.html#del">del</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#unzip">unzip</a></li><li><a href="global.html#zip">zip</a></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import * as command from './command';
+// eslint-disable-next-line no-unused-vars
+import { checkType, handlerError } from './utils';
+
+// jsdoc 文档
+// https://www.html.cn/doc/jsdoc/howto-amd-modules.html
+
+class FileManagerPlugin {
+  static HOOK_NAME = 'FileManagerPlugin';
+  static VALID_COMMANDS = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
+  static HOOKS_MAP = {
+    'start': {
+      hookType: 'tapAsync',
+      hookName: 'beforeRun',
+      customHookName: 'beforeRun'
+    },
+    'end': {
+      hookType: 'tapAsync',
+      hookName: 'done',
+      customHookName: 'done'
+    }
+  };
+  static USER_VALID_LIFE_HOOKS = Object.keys(this.HOOKS_MAP);
+
+  constructor (opts) {
+    this.options = opts;
+  }
+
+  /**
+   * @desc execute according jobs type
+   * @param jobs {Object}
+   * @returns {Promise&lt;void>}
+   */
+  static async handlerJobs (jobs) {
+    for (const job of Object.entries(jobs)) {
+      const [type, arr] = job;
+      if (!this.VALID_COMMANDS.includes(type)) {
+        continue;
+      }
+      console.log(type, arr);
+      for (const item of arr) {
+        await command[type](item);
+      }
+    }
+  }
+
+  /**
+   * @desc translate 'options' to other options with hooks and types of webpack
+   * @param options {Object}
+   * @returns {Array}
+   * @example
+   * [{
+   *   hookType: 'tap',
+   *   hookName: 'compilation',
+   *   jobs: {
+   *     compress: []
+   *   }
+   * }]
+   */
+  static translateHooks (options) {
+    const result = [];
+    for (const lifeHook in options) {
+      if (options.hasOwnProperty(lifeHook) &amp;&amp; this.USER_VALID_LIFE_HOOKS.includes(lifeHook)) {
+        const { hookType, hookName, customHookName = hookName } = this.HOOKS_MAP[lifeHook];
+        result.push({
+          hookType,
+          hookName,
+          customHookName,
+          jobs: options[lifeHook]
+        });
+      }
+    }
+    return result;
+  }
+
+  /**
+   * @desc check the 'option' which comes from user input
+   * @param options {Object}
+   */
+  static checkInput (options) {
+    const preErrorNotice = 'file manager error:';
+    
+    try {
+      if (!checkType.isObject(options)) {
+        handlerError(`${preErrorNotice} the input is not valid`);
+      }
+
+      for (const lifeHook in options) {
+        if (options.hasOwnProperty(lifeHook)) {
+          if (!this.USER_VALID_LIFE_HOOKS.includes(lifeHook)) {
+            continue;
+          }
+          const jobs = options[lifeHook];
+          if (!checkType.isObject(jobs)) {
+            handlerError(`${preErrorNotice} the input is not valid`);
+          }
+          if (Object.keys(jobs).length === 0) {
+            continue;
+          }
+          for (const job of Object.entries(jobs)) {
+            const [commandType, commandQueue] =  job;
+            if (!this.VALID_COMMANDS.includes(commandType)) {
+              continue;
+            }
+            if (!checkType.isArray(commandQueue)) {
+              handlerError(`${preErrorNotice} the input is not valid`);
+            }
+            for (const cq of commandQueue) {
+              // eslint-disable-next-line max-depth
+              if (!checkType.isObject(cq)) {
+                handlerError(`${preErrorNotice} the input is not valid`);
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      handlerError(`${preErrorNotice} ${e}`);
+    }
+  }
+
+  apply (compiler) {
+    FileManagerPlugin.checkInput(this.options);
+
+    const options = FileManagerPlugin.translateHooks(this.options);
+
+    for (const hookItem of options) {
+      const { hookType, hookName, jobs, customHookName } = hookItem;
+      if (hookType === 'tap') {
+        compiler.hooks[hookName][hookType](customHookName, async () => {
+          // printDebug(`start: tap ${customHookName}`);
+          await FileManagerPlugin.handlerJobs(jobs);
+          // printDebug(`waiting: ${customHookName}`);
+          // await sleep(0);
+          // printDebug(`finish: ${customHookName}`);
+        });
+      } else if (hookType === 'tapAsync') {
+        compiler.hooks[hookName][hookType](customHookName,
+          async (compilation, callback) => {
+            // printDebug(`start: tapAsync ${customHookName}`);
+            await FileManagerPlugin.handlerJobs(jobs);
+            // printDebug(`waiting: ${customHookName}`);
+            // await sleep(2);
+            // printDebug(`finish: ${customHookName}`);
+            callback();
+          });
+      }
+    }
+  }
+}
+
+export default FileManagerPlugin;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="./logo.png" style="width: 140px; height: 50px">
+    <div class="footer-text">filemanager-plugin api doc</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

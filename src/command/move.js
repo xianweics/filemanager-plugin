@@ -4,8 +4,8 @@ const fs = require('fs-extra');
 
 /**
  * @desc move files or directories
- * @param source {String}
- * @param destination {String}
+ * @param source {String} the source you want to move from
+ * @param destination {String} the source you want to move to
  * @returns {Promise<void>}
  */
 const move = async ({ source, destination }) => {

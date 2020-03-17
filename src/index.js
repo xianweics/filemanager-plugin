@@ -2,6 +2,9 @@ import * as command from './command';
 // eslint-disable-next-line no-unused-vars
 import { checkType, handlerError } from './utils';
 
+// jsdoc 文档
+// https://www.html.cn/doc/jsdoc/howto-amd-modules.html
+
 class FileManagerPlugin {
   static HOOK_NAME = 'FileManagerPlugin';
   static VALID_COMMANDS = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
@@ -34,6 +37,7 @@ class FileManagerPlugin {
       if (!this.VALID_COMMANDS.includes(type)) {
         continue;
       }
+      console.log(type, arr);
       for (const item of arr) {
         await command[type](item);
       }
