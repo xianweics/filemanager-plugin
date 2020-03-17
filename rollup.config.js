@@ -12,6 +12,9 @@ export default {
     format: 'cjs'
   },
   external: ['fs', 'path'],
+  watch: {
+    include: 'src/**'
+  },
   plugins: [
     eslint({
       include: ['src/**'],

@@ -4,12 +4,12 @@ const fs = require('fs-extra');
 
 /**
  * @desc delete the file/folders and handle other condition, like capture exception, extension methods
- * @param source {String}
+ * @param path {String}
  */
-const del = ({ source }) => {
+const del = (path) => {
   try {
-    fs.removeSync(source);
-    handlerInfo(`success: delete '${source}'`);
+    fs.removeSync(path);
+    handlerInfo(`success: delete '${path}'`);
   } catch (e) {
     handlerError(`delete error: ${e}`);
   }

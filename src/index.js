@@ -1,147 +1,96 @@
-import * as command from './command';
-// eslint-disable-next-line no-unused-vars
-import { checkType, handlerError } from './utils';
-
-// jsdoc 文档
-// https://www.html.cn/doc/jsdoc/howto-amd-modules.html
+import * as commander from './command';
 
 class FileManagerPlugin {
   static HOOK_NAME = 'FileManagerPlugin';
-  static VALID_COMMANDS = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
-  static HOOKS_MAP = {
+  static COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
+  static NAMESPACE_REGISTER_NAME = 'REGISTER_';
+  static BUILTIN_EVENTS_MAP = {
     'start': {
       hookType: 'tapAsync',
       hookName: 'beforeRun',
-      customHookName: 'beforeRun'
+      registerName: this.NAMESPACE_REGISTER_NAME + 'beforeRun'
     },
     'end': {
       hookType: 'tapAsync',
-      hookName: 'done',
-      customHookName: 'done'
+      hookName: 'afterEmit',
+      registerName: this.NAMESPACE_REGISTER_NAME + 'afterEmit'
     }
   };
-  static USER_VALID_LIFE_HOOKS = Object.keys(this.HOOKS_MAP);
-
+  static BUILTIN_EVENT_NAMES = Object.keys(this.BUILTIN_EVENTS_MAP);
+  
   constructor (opts) {
     this.options = opts;
   }
-
+  
   /**
-   * @desc execute according jobs type
-   * @param jobs {Object}
+   * @desc execute according command type
+   * @param commands {Object}
    * @returns {Promise<void>}
    */
-  static async handlerJobs (jobs) {
-    for (const job of Object.entries(jobs)) {
-      const [type, arr] = job;
-      if (!this.VALID_COMMANDS.includes(type)) {
-        continue;
-      }
-      console.log(type, arr);
-      for (const item of arr) {
-        await command[type](item);
+  static async handleCommand (commands) {
+    for (const command in commands) {
+      if (commands.hasOwnProperty(command) &&
+        this.COMMAND_LIST.includes(command)) {
+        const { items = [], options = {}} = commands[command];
+        for (const item of items) {
+          await commander[command](item, options);
+        }
       }
     }
   }
-
+  
   /**
-   * @desc translate 'options' to other options with hooks and types of webpack
-   * @param options {Object}
+   * @description translate 'options' to other options with hooks and types of webpack
+   * @param opts {Object}
    * @returns {Array}
-   * @example
-   * [{
-   *   hookType: 'tap',
-   *   hookName: 'compilation',
-   *   jobs: {
-   *     compress: []
-   *   }
-   * }]
    */
-  static translateHooks (options) {
+  static translateHooks (opts) {
+    const { events = {}, customWebpackHooks = [] } = opts;
     const result = [];
-    for (const lifeHook in options) {
-      if (options.hasOwnProperty(lifeHook) && this.USER_VALID_LIFE_HOOKS.includes(lifeHook)) {
-        const { hookType, hookName, customHookName = hookName } = this.HOOKS_MAP[lifeHook];
-        result.push({
-          hookType,
-          hookName,
-          customHookName,
-          jobs: options[lifeHook]
-        });
+    if (customWebpackHooks.length > 0) {
+      // transfer
+    } else {
+      for (const event in events) {
+        if (events.hasOwnProperty(event) &&
+            this.BUILTIN_EVENT_NAMES.includes(event)) {
+          const commands = events[event];
+          if (!commands) continue;
+          const { hookType, hookName, registerName = hookName } = this.BUILTIN_EVENTS_MAP[event];
+          result.push({
+            hookType,
+            hookName,
+            registerName,
+            commands
+          });
+        }
       }
     }
     return result;
   }
-
-  /**
-   * @desc check the 'option' which comes from user input
-   * @param options {Object}
-   */
-  static checkInput (options) {
-    const preErrorNotice = 'file manager error:';
-    
-    try {
-      if (!checkType.isObject(options)) {
-        handlerError(`${preErrorNotice} the input is not valid`);
-      }
-
-      for (const lifeHook in options) {
-        if (options.hasOwnProperty(lifeHook)) {
-          if (!this.USER_VALID_LIFE_HOOKS.includes(lifeHook)) {
-            continue;
-          }
-          const jobs = options[lifeHook];
-          if (!checkType.isObject(jobs)) {
-            handlerError(`${preErrorNotice} the input is not valid`);
-          }
-          if (Object.keys(jobs).length === 0) {
-            continue;
-          }
-          for (const job of Object.entries(jobs)) {
-            const [commandType, commandQueue] =  job;
-            if (!this.VALID_COMMANDS.includes(commandType)) {
-              continue;
-            }
-            if (!checkType.isArray(commandQueue)) {
-              handlerError(`${preErrorNotice} the input is not valid`);
-            }
-            for (const cq of commandQueue) {
-              // eslint-disable-next-line max-depth
-              if (!checkType.isObject(cq)) {
-                handlerError(`${preErrorNotice} the input is not valid`);
-              }
-            }
-          }
-        }
-      }
-    } catch (e) {
-      handlerError(`${preErrorNotice} ${e}`);
-    }
-  }
-
+  
   apply (compiler) {
-    FileManagerPlugin.checkInput(this.options);
-
     const options = FileManagerPlugin.translateHooks(this.options);
-
+    
     for (const hookItem of options) {
-      const { hookType, hookName, jobs, customHookName } = hookItem;
+      const { hookType, hookName, commands, registerName } = hookItem;
       if (hookType === 'tap') {
-        compiler.hooks[hookName][hookType](customHookName, async () => {
-          // printDebug(`start: tap ${customHookName}`);
-          await FileManagerPlugin.handlerJobs(jobs);
-          // printDebug(`waiting: ${customHookName}`);
+        compiler.hooks[hookName][hookType](registerName, async () => {
+          // printDebug(`start: tap ${registerName}`);
+          // await sleepAsync(1);
+          await FileManagerPlugin.handleCommand(commands);
+          // printDebug(`waiting: ${registerName}`);
           // await sleep(0);
-          // printDebug(`finish: ${customHookName}`);
+          // printDebug(`finish: ${registerName}`);
         });
       } else if (hookType === 'tapAsync') {
-        compiler.hooks[hookName][hookType](customHookName,
+        compiler.hooks[hookName][hookType](registerName,
           async (compilation, callback) => {
-            // printDebug(`start: tapAsync ${customHookName}`);
-            await FileManagerPlugin.handlerJobs(jobs);
-            // printDebug(`waiting: ${customHookName}`);
-            // await sleep(2);
-            // printDebug(`finish: ${customHookName}`);
+            console.info(hookName, hookType);
+            // printDebug(`start: tapAsync ${registerName}`);
+            await FileManagerPlugin.handleCommand(commands);
+            // printDebug(`waiting: ${registerName}`);
+            // printDebug(`finish: ${registerName}`);
+            // await sleepAsync(3);
             callback();
           });
       }

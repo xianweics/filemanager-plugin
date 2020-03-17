@@ -7,7 +7,7 @@ const fs = require('fs-extra');
  * @param source {String}
  * @param destination {String}
  */
-const copy = ({ source, destination }) => {
+const copy = async ({ source, destination }) => {
   try {
     fs.copySync(source, destination);
     handlerInfo(`success: copy '${source}' to '${destination}'`);
