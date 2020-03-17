@@ -25,13 +25,15 @@ class FileManagerPlugin {
   /**
    * @desc execute according command type
    * @param commands {Object}
+   * @param globalOptions {Object}
    * @returns {Promise<void>}
    */
-  static async handleCommand (commands) {
+  static async handleCommand (commands, globalOptions) {
     for (const command in commands) {
       if (commands.hasOwnProperty(command) &&
         this.COMMAND_LIST.includes(command)) {
-        const { items = [], options = {}} = commands[command];
+        let { items = [], options = {}} = commands[command];
+        options = Object.assign(options, globalOptions);
         for (const item of items) {
           await commander[command](item, options);
         }
@@ -45,7 +47,7 @@ class FileManagerPlugin {
    * @returns {Array}
    */
   static translateHooks (opts) {
-    const { events = {}, customWebpackHooks = [] } = opts;
+    const { events = {}, customWebpackHooks = [], options: globalOptions = {}} = opts;
     const result = [];
     if (customWebpackHooks.length > 0) {
       // transfer
@@ -60,7 +62,8 @@ class FileManagerPlugin {
             hookType,
             hookName,
             registerName,
-            commands
+            commands,
+            globalOptions
           });
         }
       }
@@ -72,12 +75,12 @@ class FileManagerPlugin {
     const options = FileManagerPlugin.translateHooks(this.options);
     
     for (const hookItem of options) {
-      const { hookType, hookName, commands, registerName } = hookItem;
+      const { hookType, hookName, commands, registerName, globalOptions } = hookItem;
       if (hookType === 'tap') {
         compiler.hooks[hookName][hookType](registerName, async () => {
           // printDebug(`start: tap ${registerName}`);
           // await sleepAsync(1);
-          await FileManagerPlugin.handleCommand(commands);
+          await FileManagerPlugin.handleCommand(commands, globalOptions);
           // printDebug(`waiting: ${registerName}`);
           // await sleep(0);
           // printDebug(`finish: ${registerName}`);
@@ -87,7 +90,7 @@ class FileManagerPlugin {
           async (compilation, callback) => {
             console.info(hookName, hookType);
             // printDebug(`start: tapAsync ${registerName}`);
-            await FileManagerPlugin.handleCommand(commands);
+            await FileManagerPlugin.handleCommand(commands, globalOptions);
             // printDebug(`waiting: ${registerName}`);
             // printDebug(`finish: ${registerName}`);
             // await sleepAsync(3);
