@@ -10,6 +10,7 @@ example/package-lock.json
 # unit test temporary files/folders
 .nyc_output
 coverage
+doc
 
 # dependencies
 node_modules
