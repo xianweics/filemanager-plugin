@@ -3,7 +3,7 @@
 .DS_Store
 
 # example temporary files/folders
-example/dist
+example/webpack/dist
 example/.DS_Store
 example/package-lock.json
 

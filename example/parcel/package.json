@@ -1,0 +1,11 @@
+{
+  "name": "parcel",
+  "version": "1.0.0",
+  "scripts": {
+  },
+  "description": "This is an example",
+  "main": "src/index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
