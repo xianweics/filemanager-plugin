@@ -1,11 +1,8 @@
 {
-  "diff": true,
   "bail": false,
   "slow": 75,
   "timeout": 2000,
   "ui": "bdd",
-  "watch-files": [
-    "test/**/*.spec.js"
-  ],
+  "spec": ["test/**/*.spec.js"],
   "require": ["@babel/register"]
 }

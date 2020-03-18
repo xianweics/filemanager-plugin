@@ -11,7 +11,6 @@ const fs = require('fs-extra');
 const copy = async ({ source, destination }, options) => {
   try {
     fs.copySync(source, destination);
-    console.info(options);
     handlerInfo(`success: copy '${source}' to '${destination}'`);
   } catch (e) {
     handlerError(`copy error: ${e}`);
