@@ -1,11 +1,15 @@
 {
   "name": "parcel",
   "version": "1.0.0",
-  "scripts": {
-  },
   "description": "This is an example",
-  "main": "src/index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "main": "./src/index.js",
+  "license": "ISC",
+  "scripts": {
+    "start": "parcel serve ./src/index.html -d ./dist --no-cache --open",
+    "build": "parcel build ./src/index.html -d ./dist --no-cache --no-source-maps"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "parcel-bundler": "^1.12.4"
+  }
 }

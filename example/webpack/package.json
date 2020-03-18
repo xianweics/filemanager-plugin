@@ -2,12 +2,12 @@
   "name": "example",
   "version": "1.0.1",
   "description": "This is an example",
-  "main": "src/index.js",
+  "main": "./src/index.js",
+  "license": "ISC",
   "scripts": {
     "start": "webpack-dev-server --mode development --config webpack.config.js",
     "build": "webpack --mode production --config webpack.config.js"
   },
-  "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",

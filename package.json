@@ -3,15 +3,6 @@
   "version": "2.0.0",
   "description": "This is file manager plugin.",
   "main": "lib/index.js",
-  "scripts": {
-    "start": "node_modules/.bin/rollup --config rollup.config.js  --watch",
-    "build": "node_modules/.bin/rollup --config rollup.config.js",
-    "test": "node_modules/.bin/mocha --config .mocharc.json",
-    "test:watch": "node_modules/.bin/mocha --config .mocharc.json --watch",
-    "test:coverage": "node_modules/.bin/nyc npm test",
-    "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls",
-    "doc": "node_modules/.bin/jsdoc -c ./conf.json"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xianweics/filemanager-plugin.git"
@@ -28,6 +19,15 @@
     "url": "https://github.com/xianweics/filemanager-plugin/issues"
   },
   "homepage": "https://github.com/xianweics/filemanager-plugin#readme",
+  "scripts": {
+    "start": "node_modules/.bin/rollup --config rollup.config.js  --watch",
+    "build": "node_modules/.bin/rollup --config rollup.config.js",
+    "test": "node_modules/.bin/mocha --config .mocharc.json",
+    "test:watch": "node_modules/.bin/mocha --config .mocharc.json --watch",
+    "test:coverage": "node_modules/.bin/nyc npm test",
+    "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls",
+    "doc": "node_modules/.bin/jsdoc -c ./conf.json"
+  },
   "dependencies": {
     "colors": "^1.4.0",
     "compressing": "^1.5.0",

@@ -1,25 +1,11 @@
-# idea
 .idea
 .DS_Store
-
-# example temporary files/folders
-example/webpack/dist
-example/.DS_Store
-example/package-lock.json
-
-# unit test temporary files/folders
+dist
+.cache
 .nyc_output
 coverage
-
-# dependencies
 node_modules
-
-# build temporary files/folders
 lib
-
-# submit to npm
 publish.sh
-
-# other
 package-lock.json
 doc
