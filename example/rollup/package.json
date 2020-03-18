@@ -1,12 +1,20 @@
 {
-  "name": "rollup",
+  "name": "rollup-example",
   "version": "1.0.0",
-  "scripts": {
-  },
   "description": "This is an example",
-  "main": "src/index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "main": "./src/index.js",
+  "license": "ISC",
+  "scripts": {
+    "start": "node_modules/.bin/rollup --config rollup.config.js  --watch",
+    "build": "node_modules/.bin/rollup --config rollup.config.js"
+  },
+  "devDependencies": {
+    "rollup": "^2.1.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "@rollup/plugin-commonjs": "^11.0.1",
+    "@rollup/plugin-json": "^4.0.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@babel/preset-env": "^7.8.6",
+    "@babel/core": "^7.8.4"
+  }
 }
-
