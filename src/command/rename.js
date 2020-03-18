@@ -1,12 +1,9 @@
 import fs from 'fs';
-import { checkType, handlerError, handlerInfo } from '../utils';
+import { handlerError, handlerInfo } from '../utils';
 
 let times = 0;
 
 const rename = ({ source, destination }) => {
-  if (!checkType.isString(source)) {
-    handlerError(`rename error: '${source}' is not a string value`);
-  }
   if (!fs.existsSync(source)) {
     handlerError(`rename error: '${source}' is not found in path`);
   }

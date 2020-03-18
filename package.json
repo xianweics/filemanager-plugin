@@ -1,7 +1,7 @@
 {
   "name": "filemanager-plugin",
-  "version": "1.0.5",
-  "description": "This is file manager plugin for webpack",
+  "version": "2.0.0",
+  "description": "This is file manager plugin.",
   "main": "lib/index.js",
   "scripts": {
     "start": "node_modules/.bin/rollup --config rollup.config.js  --watch",
@@ -12,24 +12,15 @@
     "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls",
     "doc": "node_modules/.bin/jsdoc -c ./conf.json"
   },
-  "dependencies": {
-    "colors": "^1.4.0",
-    "compressing": "^1.5.0",
-    "fs-extra": "^8.1.0"
-  },
-  "contributors": [
-    "Xianwei wu",
-    "Xuan tan"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xianweics/filemanager-plugin.git"
   },
   "keywords": [
     "webpack",
+    "rollup",
     "file manager",
     "nodejs",
-    "rollup",
     "mocha"
   ],
   "license": "MIT",
@@ -37,6 +28,11 @@
     "url": "https://github.com/xianweics/filemanager-plugin/issues"
   },
   "homepage": "https://github.com/xianweics/filemanager-plugin#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "compressing": "^1.5.0",
+    "fs-extra": "^8.1.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -59,7 +55,6 @@
     "rollup": "^1.31.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-eslint": "^7.0.0",
-    "tui-jsdoc-template": "^1.2.2",
-    "typescript": "^3.8.3"
+    "tui-jsdoc-template": "^1.2.2"
   }
 }

@@ -7,11 +7,6 @@
     "start": "webpack-dev-server --mode development --config webpack.config.js",
     "build": "webpack --mode production --config webpack.config.js"
   },
-  "keywords": [],
-  "contributors": [
-    "Xianwei wu",
-    "Xuan tan"
-  ],
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.8.4",
