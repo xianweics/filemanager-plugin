@@ -69,8 +69,7 @@ const config = {
       //     },
       //     rename: {
       //       items: [
-      //         // { path: './rename', oldName: 'b', newName: 'a' }, // or
-      //         // { path: './rename/b', newName: 'a' },
+      //         // { path: './rename', oldName: 'b', newName: 'a' }
       //       ]
       //     },
       //     unzip: {
@@ -106,6 +105,11 @@ const config = {
               items: [
                 { source: './copy/a', destination: './dist/copy/a' },
                 { source: './copy/b.html', destination: './dist/copy/b.html' }
+              ]
+            },
+            rename: {
+              items: [
+                { path: './rename/', oldName: 'b.html', newName: 'b.html' }
               ]
             }
           }

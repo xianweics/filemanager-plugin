@@ -1,29 +1,24 @@
 import fs from 'fs';
 import { handlerError, handlerInfo } from '../utils';
 
-let times = 0;
-
-const rename = ({ source, destination }) => {
-  if (!fs.existsSync(source)) {
-    handlerError(`rename error: '${source}' is not found in path`);
+/**
+ * rename
+ * @param path {String}
+ * @param oldName {String}
+ * @param newName {String}
+ */
+const rename = ({ path, oldName, newName }) => {
+  if (!fs.existsSync(path)) {
+    handlerError(`rename error: '${path}' is not found in path`);
   }
-  let src = source.slice(0, source.lastIndexOf('/'));
-  let dst = destination.slice(0, destination.lastIndexOf('/'));
-  if (src !== dst) {
-    handlerError(`rename error: '${source}' and ${destination} are not in the same dir`);
-  }
-
+  const source = path[path.length - 1] !== '/' ? path + '/' : path;
   try {
-    fs.renameSync(source, destination);
-    handlerInfo(`success: rename '${source}' to '${destination}'`);
+    const oldPath = source + oldName;
+    const newPath = source + newName;
+    fs.renameSync(oldPath, newPath);
+    handlerInfo(`success: rename '${oldName}' to '${newName}'`);
   } catch (e) {
-    if (times < 3) {
-      handlerInfo(`rename notice: rename '${source}' to '${destination}', this is the ${times}th retry`);
-      fs.renameSync(source, destination);
-      times += 1;
-    } else {
-      handlerError(`rename error: rename '${source}' to '${destination}' failed`);
-    }
+    handlerError(`rename error: ${e}`);
   }
 };
 
