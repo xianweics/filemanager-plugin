@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve } = require('path');
-const FileManagerPlugin = require('../../lib');
+const FileManagerPlugin = require('../../lib').webpackFilemanager;
 const Webpack = require('webpack');
 const os = require('os');
 
@@ -39,8 +39,8 @@ const config = {
       //     del: {
       //       items: ['./dist'],
       //       options: {
-      //         beforeRun: () => {},
-      //         afterRun: () => {}
+      //         buildStart: () => {},
+      //         buildEnd: () => {}
       //       }
       //     }
       //   },
@@ -53,8 +53,8 @@ const config = {
       //         { source: './zip/b.html', destination: './dist/zip/b.gz', type: 'gzip', options: {}}
       //       ],
       //       options: {
-      //         beforeRun: () => {},
-      //         afterRun: () => {}
+      //         buildStart: () => {},
+      //         buildEnd: () => {}
       //       }
       //     },
       //     copy: {
@@ -63,8 +63,8 @@ const config = {
       //         { source: './copy/b.html', destination: './dist/copy/b.html' }
       //       ],
       //       options: {
-      //         beforeRun: () => {},
-      //         afterRun: () => {}
+      //         buildStart: () => {},
+      //         buildEnd: () => {}
       //       }
       //     },
       //     rename: {
@@ -81,8 +81,8 @@ const config = {
       //         { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {}}
       //       ],
       //       options: {
-      //         beforeRun: () => {},
-      //         afterRun: () => {}
+      //         buildStart: () => {},
+      //         buildEnd: () => {}
       //       }
       //     },
       //     move: {
@@ -91,8 +91,8 @@ const config = {
       //         // { source: './move/b.html', destination: './dist/move/b.html' },
       //       ],
       //       options: {
-      //         beforeRun: () => {},
-      //         afterRun: () => {}
+      //         buildStart: () => {},
+      //         buildEnd: () => {}
       //       }
       //     }
       //   }

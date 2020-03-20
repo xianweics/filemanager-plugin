@@ -1,4 +1,5 @@
 import * as commander from './commander';
+
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
 const BUILTIN_EVENTS_MAP = {
@@ -16,6 +17,10 @@ const BUILTIN_EVENTS_MAP = {
 const BUILTIN_EVENT_NAMES = Object.keys(BUILTIN_EVENTS_MAP);
 
 class webpackPlugin {
+  constructor (opts) {
+    this.options = opts;
+  }
+  
   /**
    * @desc execute according command type
    * @param commands {Object}
@@ -119,6 +124,19 @@ class webpackPlugin {
       await webpackPlugin.handleCommand(commands, options);
       callback();
     };
+  }
+  
+  apply (compiler) {
+    const options = webpackPlugin.translateHooks(this.options);
+    const hookTypesMap = {
+      'tap': (commands, options) => webpackPlugin.tabCallback(commands, options),
+      'tapAsync': (commands, options) => webpackPlugin.tapAsyncCallback(commands, options)
+    };
+    for (const hookItem of options) {
+      const { hookType, hookName, commands, registerName, globalOptions } = hookItem;
+      if (!hookTypesMap[hookType]) continue;
+      compiler.hooks[hookName][hookType](registerName, hookTypesMap[hookType](commands, globalOptions));
+    }
   }
 }
 
