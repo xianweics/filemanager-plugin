@@ -2,7 +2,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
 import path from 'path';
-import zip from '../../src/command/zip';
+import zip from '../../src/commander/zip';
 
 describe('test zip', () => {
   let mockData;

@@ -2,8 +2,8 @@ const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
 import path from 'path';
-import del from '../../src/command/del';
-import copy from '../../src/command/copy';
+import del from '../../src/commander/del';
+import copy from '../../src/commander/copy';
 
 
 describe('test delete', () => {

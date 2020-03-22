@@ -23,9 +23,7 @@ const zip = async ({ source, destination, type = 'zip', option = {} }) => {
       return;
     }
     let fileType = getFileType(isDirectory);
-    await compressing[type][fileType](source, destination, option).catch(e => {
-      handlerError(`zip error: ${e}`);
-    });
+    await compressing[type][fileType](source, destination, option);
     handlerInfo(`success: zip '${source}' to '${destination}'`);
   } catch (e) {
     handlerError(`zip error: ${e}`);
@@ -47,6 +45,11 @@ const zip = async ({ source, destination, type = 'zip', option = {} }) => {
     return result;
   }
 
+  /**
+   * check path is same
+   * @param {*} source 
+   * @param {*} destination 
+   */
   function isCheckDirectorySame(source, destination) {
     let result = true;
     let parseInfo = path.parse(source);
@@ -61,6 +64,10 @@ const zip = async ({ source, destination, type = 'zip', option = {} }) => {
     return result;
   }
 
+  /**
+   * get file type
+   * @param {*} isDirectory 
+   */
   function getFileType(isDirectory) {
     return isDirectory ? 'compressDir' : 'compressFile';
   }

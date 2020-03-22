@@ -2,8 +2,8 @@ const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
 import path from 'path';
-import move from '../../src/command/move';
-import copy from '../../src/command/copy';
+import move from '../../src/commander/move';
+import copy from '../../src/commander/copy';
 
 
 
