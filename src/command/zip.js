@@ -1,8 +1,8 @@
-const compressing = require("compressing");
-const fsExtra = require("fs-extra");
-import fs from "fs";
-import { handlerError, handlerInfo } from "../utils";
-import path from "path";
+const compressing = require('compressing');
+const fsExtra = require('fs-extra');
+import fs from 'fs';
+import { handlerError, handlerInfo } from '../utils';
+import path from 'path';
 
 /**
  * @desc Zip file/folder. Support zip, tar, gzip.
@@ -12,16 +12,17 @@ import path from "path";
  * @param option {Object}
  * @returns {Promise<void>}
  */
-const zip = async ({ source, destination, type = "zip", option = {} }) => {
+const zip = async ({ source, destination, type = 'zip', option = {} }) => {
   try {
     await fsExtra.ensureDir(path.dirname(destination));
     const isDirectory = fs.statSync(source).isDirectory();
-    if (isCheckGzipType(isDirectory, type)) {
+    if (
+      !isCheckGzipType(isDirectory, type) ||
+      !isCheckDirectorySame(source, destination)
+    ) {
       return;
     }
-    if (isCheckDirectorySame(source, destination)) {
-      return;
-    }
+
     let fileType = getFileType(isDirectory);
     await compressing[type][fileType](source, destination, option).catch(e => {
       handlerError(`zip error: ${e}`);
@@ -32,13 +33,13 @@ const zip = async ({ source, destination, type = "zip", option = {} }) => {
   }
 
   /**
-   * to check type is error when the source is directory and the type is gzip
+   * to check compressing is error when the source is directory and the type is gzip
    * @param {*} isDirectory directory is true or false
    * @param {*} type type of compressing
    */
   function isCheckGzipType(isDirectory, type) {
     let result = true;
-    if (isDirectory && type === "gzip") {
+    if (isDirectory && type === 'gzip') {
       handlerError(
         `zip error: Gzip only support compressing a single file. if you want to compress a dir with 'gzip', then you may need 'tgz' instead.`
       );
@@ -62,7 +63,7 @@ const zip = async ({ source, destination, type = "zip", option = {} }) => {
   }
 
   function getFileType(isDirectory) {
-    return isDirectory ? "compressDir" : "compressFile";
+    return isDirectory ? 'compressDir' : 'compressFile';
   }
 };
 
