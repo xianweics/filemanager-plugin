@@ -9,3 +9,4 @@ lib
 publish.sh
 package-lock.json
 doc
+.vscode
