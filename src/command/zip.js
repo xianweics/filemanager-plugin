@@ -16,13 +16,12 @@ const zip = async ({ source, destination, type = 'zip', option = {} }) => {
   try {
     await fsExtra.ensureDir(path.dirname(destination));
     const isDirectory = fs.statSync(source).isDirectory();
-    if (
-      !isCheckGzipType(isDirectory, type) ||
-      !isCheckDirectorySame(source, destination)
-    ) {
+    if (!isCheckGzipType(isDirectory, type)) {
       return;
     }
-
+    if (!isCheckDirectorySame(source, destination)) {
+      return;
+    }
     let fileType = getFileType(isDirectory);
     await compressing[type][fileType](source, destination, option).catch(e => {
       handlerError(`zip error: ${e}`);

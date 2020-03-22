@@ -282,7 +282,7 @@ module.exports = {
     'object-curly-spacing': [
       'error', 'always', {
         arraysInObjects: true,
-        objectsInObjects: false
+        objectsInObjects: true
       }],
     'object-property-newline': 'off',
     'one-var': ['error', 'never'],
@@ -308,7 +308,11 @@ module.exports = {
     'sort-keys': 'off',
     'sort-vars': 'off',
     'space-before-blocks': ['error', 'always'],
-    'space-before-function-paren': ['error', 'always'],
+    'space-before-function-paren': ['error', {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "always"
+  }],
     'space-in-parens': ['error', 'never'],
     'space-infix-ops': 'error',
     'space-unary-ops': [
