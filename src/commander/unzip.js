@@ -11,10 +11,10 @@ import path from 'path';
  * @param option {Object}
  * @returns {Promise<void>}
  */
-const unzip = async ({ source, destination, type = 'zip', option = { }}) => {
+const unzip = async ({ source, destination, type = 'zip', option = {} }) => {
   try {
     await fsExtra.ensureDir(path.dirname(destination));
-    await compressing[type].uncompress(source, destination, option).catch((e) => {
+    await compressing[type].uncompress(source, destination, option).catch(e => {
       handlerError(`unzip error: ${e}`);
     });
     handlerInfo(`success: unzip '${source}' to ${destination}`);

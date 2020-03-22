@@ -3,12 +3,12 @@ import * as commander from './commander';
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
 const BUILTIN_EVENTS_MAP = {
-  'start': {
+  start: {
     hookType: 'tapAsync',
     hookName: 'beforeRun',
     registerName: NAMESPACE_REGISTER_NAME + 'beforeRun'
   },
-  'end': {
+  end: {
     hookType: 'tapAsync',
     hookName: 'afterEmit',
     registerName: NAMESPACE_REGISTER_NAME + 'afterEmit'
@@ -17,21 +17,20 @@ const BUILTIN_EVENTS_MAP = {
 const BUILTIN_EVENT_NAMES = Object.keys(BUILTIN_EVENTS_MAP);
 
 class webpackPlugin {
-  constructor (opts) {
+  constructor(opts) {
     this.options = opts;
   }
-  
+
   /**
    * @desc execute according command type
    * @param commands {Object}
    * @param globalOptions {Object}
    * @returns {Promise<void>}
    */
-  static async handleCommand (commands, globalOptions) {
+  static async handleCommand(commands, globalOptions) {
     for (const command in commands) {
-      if (commands.hasOwnProperty(command) &&
-        COMMAND_LIST.includes(command)) {
-        let { items = [], options = {}} = commands[command];
+      if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
+        let { items = [], options = {} } = commands[command];
         options = Object.assign(options, globalOptions);
         for (const item of items) {
           await commander[command](item, options);
@@ -39,7 +38,7 @@ class webpackPlugin {
       }
     }
   }
-  
+
   /**
    * @description translate 'options' to other options with hooks and types of webpack
    * @param opts {Object}
@@ -63,22 +62,28 @@ class webpackPlugin {
    * }
    * ]
    */
-  static translateHooks (opts) {
-    const { events = {}, customHooks = [], options: globalOptions = {}} = opts;
+  static translateHooks(opts) {
+    const { events = {}, customHooks = [], options: globalOptions = {} } = opts;
     let result = [];
     if (customHooks.length > 0) {
       result = customHooks.map(hook => {
         const { registerName, hookName } = hook;
-        if (!registerName) hook.registerName = NAMESPACE_REGISTER_NAME + hookName;
+        if (!registerName) {
+          hook.registerName = NAMESPACE_REGISTER_NAME + hookName;
+        }
         return hook;
       });
     } else {
       for (const event in events) {
-        if (events.hasOwnProperty(event) &&
-          BUILTIN_EVENT_NAMES.includes(event)) {
+        if (
+          events.hasOwnProperty(event) &&
+          BUILTIN_EVENT_NAMES.includes(event)
+        ) {
           const commands = events[event];
           if (!commands) continue;
-          const { hookType, hookName, registerName } = BUILTIN_EVENTS_MAP[event];
+          const { hookType, hookName, registerName } = BUILTIN_EVENTS_MAP[
+            event
+          ];
           result.push({
             hookType,
             hookName,
@@ -91,51 +96,61 @@ class webpackPlugin {
     }
     return result;
   }
-  
+
   /**
    * check input hook whether match webpack hook type
    * @param hook {Object}
    * @returns {boolean}
    */
-  static checkCustomHook (hook) {
+  static checkCustomHook(hook) {
     return true;
   }
-  
+
   /**
    * @desc the type of tap hook callback
    * @param commands {Array}
    * @param options {Object}
    * @returns {Function}
    */
-  static tabCallback (commands, options) {
+  static tabCallback(commands, options) {
     return async () => {
       await webpackPlugin.handleCommand(commands, options);
     };
   }
-  
+
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
    * @param options {Object}
    * @returns {Function}
    */
-  static tapAsyncCallback (commands, options) {
+  static tapAsyncCallback(commands, options) {
     return async (compilation, callback) => {
       await webpackPlugin.handleCommand(commands, options);
       callback();
     };
   }
-  
-  apply (compiler) {
+
+  apply(compiler) {
     const options = webpackPlugin.translateHooks(this.options);
     const hookTypesMap = {
-      'tap': (commands, options) => webpackPlugin.tabCallback(commands, options),
-      'tapAsync': (commands, options) => webpackPlugin.tapAsyncCallback(commands, options)
+      tap: (commands, options) => webpackPlugin.tabCallback(commands, options),
+      tapAsync: (commands, options) =>
+        webpackPlugin.tapAsyncCallback(commands, options)
     };
     for (const hookItem of options) {
-      const { hookType, hookName, commands, registerName, globalOptions } = hookItem;
+      const {
+        hookType,
+        hookName,
+        commands,
+        registerName,
+        globalOptions
+      } = hookItem;
       if (!hookTypesMap[hookType]) continue;
-      compiler.hooks[hookName][hookType](registerName, hookTypesMap[hookType](commands, globalOptions));
+      compiler.hooks[hookName][hookType](
+        registerName,
+        hookTypesMap[hookType](commands, globalOptions)
+      );
     }
   }
 }
