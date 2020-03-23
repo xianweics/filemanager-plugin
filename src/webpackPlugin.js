@@ -1,4 +1,5 @@
 import * as commander from './commander';
+import { handlerError } from './utils';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
@@ -68,9 +69,7 @@ class webpackPlugin {
     if (customHooks.length > 0) {
       result = customHooks.map(hook => {
         const { registerName, hookName } = hook;
-        if (!registerName) {
-          hook.registerName = NAMESPACE_REGISTER_NAME + hookName;
-        }
+        if (!registerName) hook.registerName = NAMESPACE_REGISTER_NAME + hookName;
         return hook;
       });
     } else {
@@ -95,15 +94,6 @@ class webpackPlugin {
       }
     }
     return result;
-  }
-
-  /**
-   * check input hook whether match webpack hook type
-   * @param hook {Object}
-   * @returns {boolean}
-   */
-  static checkCustomHook(hook) {
-    return true;
   }
 
   /**
@@ -132,25 +122,30 @@ class webpackPlugin {
   }
 
   apply(compiler) {
-    const options = webpackPlugin.translateHooks(this.options);
-    const hookTypesMap = {
-      tap: (commands, options) => webpackPlugin.tabCallback(commands, options),
-      tapAsync: (commands, options) =>
-        webpackPlugin.tapAsyncCallback(commands, options)
-    };
-    for (const hookItem of options) {
-      const {
-        hookType,
-        hookName,
-        commands,
-        registerName,
-        globalOptions
-      } = hookItem;
-      if (!hookTypesMap[hookType]) continue;
-      compiler.hooks[hookName][hookType](
-        registerName,
-        hookTypesMap[hookType](commands, globalOptions)
-      );
+    try {
+      const options = webpackPlugin.translateHooks(this.options);
+      const hookTypesMap = {
+        tap: (commands, options) =>
+          webpackPlugin.tabCallback(commands, options),
+        tapAsync: (commands, options) =>
+          webpackPlugin.tapAsyncCallback(commands, options)
+      };
+      for (const hookItem of options) {
+        const {
+          hookType,
+          hookName,
+          commands,
+          registerName,
+          globalOptions
+        } = hookItem;
+        if (!hookTypesMap[hookType]) continue;
+        compiler.hooks[hookName][hookType](
+          registerName,
+          hookTypesMap[hookType](commands, globalOptions)
+        );
+      }
+    } catch (e) {
+      handlerError(`File manager error: ${e}`);
     }
   }
 }

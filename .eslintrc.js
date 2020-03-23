@@ -252,7 +252,7 @@ module.exports = {
     'no-multi-assign': 'off',
     'no-multiple-empty-lines': [
       'error', {
-        max: 3,
+        max: 2,
         maxEOF: 1,
         maxBOF: 1
       }],

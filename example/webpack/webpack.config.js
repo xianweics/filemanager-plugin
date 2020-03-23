@@ -115,9 +115,21 @@ const config = {
           }
         }
       ],
+      pluginLibraries: [
+        {
+          name: 'html-webpack-plugin',
+          pluginOption: {
+            filename: 'index.html',
+            template: './src/index.html'
+          },
+          // other hooks
+        }
+      ],
       options: {
         parallel: os.cpus().length * 2,
-        logs: true
+        log: 'all', // error || success
+        cache: false,
+        progress: false
       }
     })
   ],
