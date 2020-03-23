@@ -28,8 +28,7 @@
     "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls",
     "doc": "node_modules/.bin/jsdoc -c ./conf.json",
     "prettier-eslint": "prettier-eslint src/**/*.js  --write",
-    "eslint:fix": "eslint --fix --ext .js src",
-    "format": "npm run prettier-eslint && npm run eslint:fix",
+    "format": "npm run prettier-eslint",
     "commit:check": "npm run format && npm run test"
   },
   "pre-commit": [
