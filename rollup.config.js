@@ -19,7 +19,8 @@ export default {
     eslint({
       include: ['src/**'],
       formatter: friendlyFormatter,
-      throwOnError: true
+      throwOnError: true,
+      fix: true
     }),
     resolve({
       mainFields: ['jsnext', 'module', 'main']

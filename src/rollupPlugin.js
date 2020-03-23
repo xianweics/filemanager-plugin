@@ -7,7 +7,6 @@ function rollupPlugin(opts) {
     async generateBundle() {
       console.info('generateBundle... wait');
       await sleepAsync(1);
-      console.info('generateBundle');
     },
     async buildStart() {
       console.info('build start... wait');

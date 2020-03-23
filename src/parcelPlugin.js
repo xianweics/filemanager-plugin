@@ -1,7 +1,6 @@
 class parcelPlugin {
-  constructor (opts) {
+  constructor(opts) {
     console.info(opts);
   }
-  
 }
 export default parcelPlugin;

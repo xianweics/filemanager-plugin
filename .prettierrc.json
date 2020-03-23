@@ -1,8 +1,6 @@
 {
-    "singleQuote": true,
-    "semi": true,
-    "prettier.printWidth": 180,
-    "editor.formatOnSave": true,
-    "tabWidth": 2,
-    "bracketSpacing": true
-  }
+  "prettier.printWidth": 180,
+  "editor.formatOnSave": true,
+  "tabWidth": 2,
+  "bracketSpacing": true
+}

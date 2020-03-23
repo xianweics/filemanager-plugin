@@ -32,11 +32,4 @@ describe('test zip', () => {
     await zip({ source: mockData.sourceDirectory, destination: mockData.destDirectory });
     expect(fs.pathExistsSync(mockData.destDirectory)).to.be.true;
   });
-
-  it('compressing directory, source and directory is same', async () => {
-    await zip({ source: mockData.sourceDirectory, destination: mockData.sameDirectory });
-    expect(fs.pathExistsSync(mockData.destDirectory)).to.be.false;
-  });
-  
-
 });

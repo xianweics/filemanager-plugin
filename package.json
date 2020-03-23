@@ -26,8 +26,15 @@
     "test:watch": "node_modules/.bin/mocha --config .mocharc.json --watch",
     "test:coverage": "node_modules/.bin/nyc npm test",
     "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls",
-    "doc": "node_modules/.bin/jsdoc -c ./conf.json"
+    "doc": "node_modules/.bin/jsdoc -c ./conf.json",
+    "prettier-eslint": "prettier-eslint src/**/*.js  --write",
+    "eslint:fix": "eslint --fix --ext .js src",
+    "format": "npm run prettier-eslint && npm run eslint:fix",
+    "commit:check": "npm run format && npm run test"
   },
+  "pre-commit": [
+    "commit:check"
+  ],
   "dependencies": {
     "colors": "^1.4.0",
     "compressing": "^1.5.0",
@@ -46,11 +53,15 @@
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.9",
+    "eslint": "^6.6.0",
     "eslint-friendly-formatter": "^4.0.1",
     "glob": "^7.1.6",
     "jsdoc": "^3.6.3",
     "mocha": "^7.1.0",
     "nyc": "^15.0.0",
+    "pre-commit": "^1.2.2",
+    "prettier-eslint": "^9.0.1",
+    "prettier-eslint-cli": "^5.0.0",
     "rollup": "^1.31.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-eslint": "^7.0.0",
