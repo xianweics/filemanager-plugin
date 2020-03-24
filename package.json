@@ -27,8 +27,7 @@
     "test:coverage": "node_modules/.bin/nyc npm test",
     "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls",
     "doc": "node_modules/.bin/jsdoc -c ./conf.json",
-    "prettier-eslint": "prettier-eslint src/**/*.js  --write",
-    "format": "npm run prettier-eslint",
+    "format": "prettier-eslint src/**/*.js  --write",
     "commit:check": "npm run format && npm run test"
   },
   "pre-commit": [
@@ -52,7 +51,7 @@
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.9",
-    "eslint": "^6.6.0",
+    "eslint": "~6.6.0",
     "eslint-friendly-formatter": "^4.0.1",
     "glob": "^7.1.6",
     "jsdoc": "^3.6.3",
