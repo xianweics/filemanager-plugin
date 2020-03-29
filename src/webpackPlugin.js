@@ -1,5 +1,7 @@
 import * as commander from './commander';
 import { handlerError } from './utils';
+// eslint-disable-next-line no-unused-vars
+import glob from 'glob';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
@@ -34,7 +36,11 @@ class webpackPlugin {
         let { items = [], options = {} } = commands[command];
         options = Object.assign(options, globalOptions);
         for (const item of items) {
-          await commander[command](item, options);
+          // get the files we need
+          const files = glob.sync(item.path);
+          for (const file of files) {
+            await commander[command](file, options);
+          }
         }
       }
     }
