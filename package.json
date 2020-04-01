@@ -31,7 +31,7 @@
     "commit:check": "npm run format && npm run test"
   },
   "pre-commit": [
-    "commit:check"
+    "test"
   ],
   "dependencies": {
     "colors": "^1.4.0",
