@@ -248,7 +248,7 @@ module.exports = {
 
 # Development Setup
 ```text
-# install deps
+# install dependencies
 npm install
 
 # build lib files
