@@ -101,24 +101,43 @@ const config = {
           hookName: 'compile',
           hookType: 'tap', // reference to webpack. tap | tapAsync | tapPromise
           commands: {
-            copy: {
-              items: [
-                // { source: './copy/a', destination: './dist/copy/a' },
-                { source: './copy/b.html', destination: './dist/copy/' }
-              ]
-            },
-            rename: {
-              items: [
-                // { path: './rename', oldName: 'test.html', newName: 'test1.html' }
-              ]
-            },
+            // copy: {
+            //   items: [
+            //     { source: './copy/a', destination: './dist/copy/a' },
+            //     { source: './copy/b.html', destination: './dist/copy/' }
+            //   ]
+            // },
+            // rename: {
+            //   items: [
+            //     { path: './rename', oldName: 'test.html', newName: 'test1.html' }
+            //   ]
+            // },
             // del: {
             //   items: [
             //     {
-            //       path: './del/**/*.html'
+            //       source: './del/**/*.html'
             //     }
             //   ]
             // }
+            // move: {
+            //   items: [
+            //     {
+            //       source: './move/', destination: './dist/'
+            //     }
+            //   ]
+            // },
+            zip: {
+              items: [
+                { source: './zip/b*/', destination: './dist/zip/a.tar', type: 'tar', options: {} },
+                // { source: './zip/b', destination: './dist/zip/b.zip', options: {} },
+                // { source: './zip/c', destination: './dist/zip/c.tgz', type: 'tgz', options: {} },
+                // { source: './zip/b.html', destination: './dist/zip/b.gz', type: 'gzip', options: {} }
+              ],
+              options: {
+                buildStart: () => {},
+                buildEnd: () => {}
+              }
+            },
           }
         }
       ],

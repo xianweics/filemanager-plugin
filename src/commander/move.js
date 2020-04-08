@@ -1,6 +1,7 @@
 import { handlerError, handlerInfo } from '../utils';
-
+import { basename, join } from 'path';
 const fs = require('fs-extra');
+const glob = require('glob');
 
 /**
  * @desc move files or directories
@@ -9,9 +10,18 @@ const fs = require('fs-extra');
  * @returns {Promise<void>}
  */
 const move = async ({ source, destination }) => {
+  const sources = glob.sync(source);
   try {
-    fs.moveSync(source, destination);
-    handlerInfo(`success: move '${source}' to '${destination}'`);
+    if (sources.length) {
+      sources.forEach(source => {
+        const dest = join(destination, basename(source));
+        fs.moveSync(source, dest);
+        handlerInfo(`success: move '${source}' to '${dest}'`);
+      });
+    } else {
+      fs.moveSync(source, destination);
+      handlerInfo(`success: move '${source}' to '${destination}'`);
+    }
   } catch (e) {
     handlerError(`move error: ${e}`);
   }
