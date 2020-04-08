@@ -112,13 +112,13 @@ const config = {
             //     { path: './rename', oldName: 'test.html', newName: 'test1.html' }
             //   ]
             // },
-            del: {
-              items: [
-                {
-                  source: './del/a/index.html'
-                }
-              ]
-            }
+            // del: {
+            //   items: [
+            //     {
+            //       source: './del/a/index.html'
+            //     }
+            //   ]
+            // }
             // move: {
             //   items: [
             //     {
@@ -128,7 +128,7 @@ const config = {
             // },
             // zip: {
             //   items: [
-            //     { source: './zip/b*/', destination: './dist/zip/a.tar', type: 'tar', options: {} },
+            //     { source: './zip/**/*.html', destination: './dist/zip/a.tar', type: 'tar', options: {} },
             //     // { source: './zip/b', destination: './dist/zip/b.zip', options: {} },
             //     // { source: './zip/c', destination: './dist/zip/c.tgz', type: 'tgz', options: {} },
             //     // { source: './zip/b.html', destination: './dist/zip/b.gz', type: 'gzip', options: {} }
@@ -138,6 +138,18 @@ const config = {
             //     buildEnd: () => {}
             //   }
             // },
+            unzip: {
+              items: [
+                { source: './unzip/**/*.zip', destination: './dist/unzip/a', type: 'zip', options: {} },
+                // { source: './unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {}},
+                // { source: './unzip/c.zip', destination: './dist/unzip/c', options: {}},
+                // { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {}}
+              ],
+              options: {
+                buildStart: () => {},
+                buildEnd: () => {}
+              }
+            },
           }
         }
       ],
