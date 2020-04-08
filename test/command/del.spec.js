@@ -12,12 +12,12 @@ describe('test delete', () => {
     const mockFileUrl = path.join(__dirname, '../mockFiles/');
     mockData = {
       source: mockFileUrl + 'index.html',
-      destination: mockFileUrl + 'deleteFile.html'
+      destination: mockFileUrl + 'deleteFile'
     };
     copy({ source: mockData.source, destination: mockData.destination }, {});
   });
   it('file is delete', async () => {
-    del(mockData.destination);
+    del({ source: mockData.destination });
     expect(fs.pathExistsSync(mockData.destination)).to.be.false;
   });
 });

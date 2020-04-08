@@ -9,6 +9,7 @@ const glob = require('glob');
  */
 const del = ({ source }) => {
   const files = glob.sync(source);
+  console.log(source, files);
   try {
     files.forEach(file => {
       fs.removeSync(file);
