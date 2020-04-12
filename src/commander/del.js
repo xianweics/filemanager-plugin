@@ -3,20 +3,16 @@ import { handlerError, handlerInfo } from '../utils';
 const fs = require('fs-extra');
 const glob = require('glob');
 
-/**
- * @desc delete the file/folders and handle other condition, like capture exception, extension methods
- * @param source {String}
- */
-const del = ({ source }) => {
-  const files = glob.sync(source);
-  console.log(source, files);
+const del = file => {
   try {
+    const files = glob.sync(file);
     files.forEach(file => {
       fs.removeSync(file);
       handlerInfo(`success: delete '${file}'`);
     });
   } catch (e) {
     handlerError(`delete error: ${e}`);
+    return e;
   }
 };
 

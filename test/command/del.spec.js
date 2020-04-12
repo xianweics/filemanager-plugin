@@ -1,23 +1,27 @@
 const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
-import path from 'path';
-import del from '../../src/commander/del';
-import copy from '../../src/commander/copy';
 
+import path from 'path';
+import { del } from '../../src/commander';
 
 describe('test delete', () => {
-  let mockData;
-  beforeEach(() => {
-    const mockFileUrl = path.join(__dirname, '../mockFiles/');
-    mockData = {
-      source: mockFileUrl + 'index.html',
-      destination: mockFileUrl + 'deleteFile'
-    };
-    copy({ source: mockData.source, destination: mockData.destination }, {});
+  const rootPath = 'testCache';
+  
+  afterEach(() => {
+    fs.removeSync(rootPath);
   });
-  it('file is delete', async () => {
-    del({ source: mockData.destination });
-    expect(fs.pathExistsSync(mockData.destination)).to.be.false;
+  
+  it('delete an existing file, it will be deleted successfully', async () => {
+    const mockPath = path.join('testCache', 'del', 'index.html');
+    fs.ensureFileSync(mockPath);
+    expect(fs.pathExistsSync(mockPath)).equals(true);
+    await del(mockPath);
+    expect(fs.pathExistsSync(mockPath)).equals(false);
+  });
+  
+  it('delete an invalid file, it will throw an error', async () => {
+    const error = await del(null);
+    expect(error).to.be.an.instanceOf(Error);
   });
 });

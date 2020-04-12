@@ -5,20 +5,30 @@ import path from 'path';
 import unzip from '../../src/commander/unzip';
 
 describe('test unzip', () => {
-  let mockData;
-  beforeEach(() => {
-    const mockFileUrl = path.join(__dirname, '../mockFiles/unzip/');
-    mockData = {
-      source: mockFileUrl + 'index.html.zip',
-      destination: mockFileUrl + 'index.html'
-    };
+  const rootPath = 'testCache';
+  
+  after(() => {
+    fs.removeSync(rootPath);
   });
-  // remove temp file
-  afterEach(() => {
-    fs.removeSync(mockData.destination);
+  
+  it('unzip a valid file, it will be unzipped successfully', async () => {
+    const mockSource = path.join(rootPath, 'unzip', 'index.html');
+    fs.ensureFileSync(mockSource);
+    const mockDestination = path.join(rootPath, 'unzip', 'index.html.gzip');
+    expect(fs.pathExistsSync(mockSource)).equals(true);
+    await unzip({
+      source: mockSource,
+      destination: mockDestination,
+      type: 'gzip'
+    });
+    expect(fs.pathExistsSync(mockDestination)).equals(true);
   });
-  it('file is unzip', async () => {
-    await unzip({ source: mockData.source, destination: mockData.destination });
-    expect(fs.pathExistsSync(mockData.destination)).to.be.true;
+  
+  it('unzip an invalid file, it will throw an error', async () => {
+    const error = await unzip({
+      source: '',
+      destination: ''
+    });
+    expect(error).to.be.an.instanceOf(Error);
   });
 });

@@ -2,29 +2,33 @@ const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
 import path from 'path';
-import move from '../../src/commander/move';
-import copy from '../../src/commander/copy';
-
-
+import { move } from '../../src/commander';
 
 describe('test move', () => {
-  let mockData;
-  beforeEach(() => {
-    const mockFileUrl = path.join(__dirname, '../mockFiles/');
-    mockData = {
-      source: mockFileUrl + 'index.html',
-      destination: mockFileUrl + 'copyFile.html',
-      moveTarget: mockFileUrl + 'moveFile.html'
-    };
-    copy({ source: mockData.source, destination: mockData.destination }, {});
-
+  const rootPath = 'testCache';
+  
+  after(() => {
+    fs.removeSync(rootPath);
   });
-  // remove temp file
-  afterEach(() => {
-    fs.removeSync(mockData.moveTarget);
+  
+  it('move a valid file, it will be moved successfully', async () => {
+    const mockSource = path.join(rootPath, 'move', 'index.html');
+    fs.ensureFileSync(mockSource);
+    const mockDestination = path.join(rootPath, 'move', 'index1.html');
+    expect(fs.pathExistsSync(mockSource)).equals(true);
+    
+    await move({
+      source: mockSource,
+      destination: mockDestination
+    });
+    expect(fs.pathExistsSync(mockDestination)).equals(true);
   });
-  it('file is move', async () => {
-    await move({source: mockData.destination, destination: mockData.moveTarget});
-    expect(fs.pathExistsSync(mockData.moveTarget)).to.be.true;
+  
+  it('move an invalid file, it will throw an error', async () => {
+    const error = await move({
+      source: null,
+      destination: null
+    });
+    expect(error).to.be.an.instanceOf(Error);
   });
 });

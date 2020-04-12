@@ -2,23 +2,34 @@ const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
 import path from 'path';
-import copy from '../../src/commander/copy';
+import { copy } from '../../src/commander';
+
 
 describe('test copy', () => {
-  let mockData;
-  beforeEach(() => {
-    const mockFileUrl = path.join(__dirname, '../mockFiles/');
-    mockData = {
-      source: mockFileUrl + 'index.html',
-      destination: mockFileUrl + 'copy.html'
-    };
-  });
-  // remove temp file
+  const rootPath = 'testCache';
+  
   afterEach(() => {
-    fs.removeSync(mockData.destination);
+    fs.removeSync(rootPath);
   });
-  it('file is exist', async () => {
-    await copy({ source: mockData.source, destination: mockData.destination }, {});
-    expect(fs.pathExistsSync(mockData.destination)).to.be.true;
+  
+  it('copy an existing file, it will be copied successfully', async () => {
+    const mockSource = path.join(rootPath, 'copy', 'index.html');
+    fs.ensureFileSync(mockSource);
+    expect(fs.pathExistsSync(mockSource)).equals(true);
+    
+    const mockDestination = path.join('testCache', 'copy', 'index1.html');
+    await copy({
+      source: mockSource,
+      destination: mockDestination
+    });
+    expect(fs.pathExistsSync(mockDestination)).equals(true);
+  });
+  
+  it('copy an invalid file, it will throw an error', async () => {
+    const error = await copy({
+      source: null,
+      destination: null
+    });
+    expect(error).to.be.an.instanceOf(Error);
   });
 });

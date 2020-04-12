@@ -5,30 +5,34 @@ import path from 'path';
 import rename from '../../src/commander/rename';
 
 describe('test rename', () => {
-  let mockData;
-  beforeEach(() => {
-    const mockFileUrl = path.join(__dirname, '../mockFiles/rename/');
-    mockData = {
-      path: mockFileUrl,
-      oldName: 'index.html',
-      newName: 'rename.html',
-      copyName: 'copy.html'
-    };
-    fs.copySync(
-      mockData.path + mockData.oldName,
-      mockData.path + mockData.copyName
-    );
+  const rootPath = 'testCache';
+  
+  after(() => {
+    fs.removeSync(rootPath);
   });
-  // remove temp file
-  afterEach(() => {
-    fs.removeSync(mockData.path + mockData.newName);
-  });
-  it('file is rename', async () => {
+  
+  it('rename a valid file, it will be renamed successfully', async () => {
+    const mockOldName = 'index.html';
+    const mockNewName = 'index1.html';
+    const mockSource = path.join(rootPath, 'rename', mockOldName);
+    fs.ensureFileSync(mockSource);
+    const mockPath = path.join(rootPath, 'rename');
+    const mockDestination = path.join(rootPath, 'rename', mockNewName);
+    expect(fs.pathExistsSync(mockSource)).equals(true);
     await rename({
-      path: mockData.path,
-      oldName: mockData.copyName,
-      newName: mockData.newName
+      path: mockPath,
+      oldName: mockOldName,
+      newName: mockNewName,
     });
-    expect(fs.pathExistsSync(mockData.path + mockData.newName)).to.be.true;
+    expect(fs.pathExistsSync(mockDestination)).equals(true);
+  });
+  
+  it('rename an invalid file, it will throw an error', async () => {
+    const error = await rename({
+      path: null,
+      oldName: null,
+      newName: null,
+    });
+    expect(error).to.be.an.instanceOf(Error);
   });
 });
