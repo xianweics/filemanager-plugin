@@ -4,7 +4,6 @@ const fs = require('fs-extra');
 import path from 'path';
 import { copy } from '../../src/commander';
 
-
 describe('test copy', () => {
   const rootPath = 'testCache';
   

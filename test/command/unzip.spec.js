@@ -12,9 +12,9 @@ describe('test unzip', () => {
   });
   
   it('unzip a valid file, it will be unzipped successfully', async () => {
-    const mockSource = path.join(rootPath, 'unzip', 'index.html');
+    const mockSource = path.join(rootPath, 'unzip', 'index.html.gzip');
     fs.ensureFileSync(mockSource);
-    const mockDestination = path.join(rootPath, 'unzip', 'index.html.gzip');
+    const mockDestination = path.join(rootPath, 'unzip', 'index.html');
     expect(fs.pathExistsSync(mockSource)).equals(true);
     await unzip({
       source: mockSource,
