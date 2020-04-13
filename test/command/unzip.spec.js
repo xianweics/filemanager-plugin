@@ -31,4 +31,13 @@ describe('test unzip', () => {
     });
     expect(error).to.be.an.instanceOf(Error);
   });
+  
+  it('unzip an empty file, it will throw an error', async () => {
+    const mockSource = path.join(rootPath, 'unzip', 'index1.html.gzip');
+    const error = await unzip({
+      source: mockSource,
+      destination: ''
+    });
+    expect(error).to.be.an.instanceOf(Error);
+  });
 });

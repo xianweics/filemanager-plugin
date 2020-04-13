@@ -130,14 +130,9 @@ const config = {
             // },
             zip: {
               items: [
-                {
-                  source: './zip/b/**/*',
-                  destination: './dist/zip/b.tar',
-                  type: 'tar'
-                },
                 { source: './zip/a', destination: './dist/zip/a.zip' },
                 { source: './zip/c/index.html', destination: './dist/zip/c.index.html.tgz', type: 'tgz' },
-                // { source: './zip/b.html', destination: './dist/zip/b.gz', type: 'gzip', options: {} }
+                { source: './zip/b/index.html', destination: './dist/zip/b.html.gz', type: 'gzip', options: {} }
               ]
             },
             //   options: {

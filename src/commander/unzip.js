@@ -9,11 +9,16 @@ const glob = require('glob');
  * @param destination {string}
  * @param type {string}
  * @param option {Object}
- * @returns {Promise<void>}
+ * @returns {Promise<Error>}
  */
 const unzip = async ({ source, destination, type = 'zip', option = {} }) => {
   try {
     const sources = glob.sync(source);
+    console.info(source, 11);
+    if (sources.length === 0) {
+      handlerError(`unzip error: '${source}' is not exist`);
+      return new Error();
+    }
     for (const source of sources) {
       await compressing[type]
         .uncompress(source, destination, option)
