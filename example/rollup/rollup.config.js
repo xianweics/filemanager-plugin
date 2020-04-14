@@ -16,73 +16,57 @@ export default {
   },
   plugins: [
     rollupFilemanager({
-      // events: {
-      //   start: {
-      //
-      //   },
-      //   end: {
-      //     // zip: {
-      //     //   items: [
-      //     //     { source: './src/zip/a', destination: './dist/zip/a.tar', type: 'tar', options: {}},
-      //     //     { source: './src/zip/b', destination: './dist/zip/b.zip', options: {}},
-      //     //     { source: './src/zip/c', destination: './dist/zip/c.tgz', type: 'tgz', options: {}},
-      //     //     { source: './src/zip/b.html', destination: './dist/zip/b.gz', type: 'gzip', options: {}}
-      //     //   ],
-      //     //   options: {
-      //     //     buildStart: () => {},
-      //     //     buildEnd: () => {}
-      //     //   }
-      //     // },
-      //     copy: {
-      //       items: [
-      //         { source: './src/copy/a', destination: './dist/copy/a' },
-      //         { source: './src/copy/b.html', destination: './dist/copy/b.html' }
-      //       ],
-      //       options: {
-      //         buildStart: () => {},
-      //         buildEnd: () => {}
-      //       }
-      //     },
-      //     rename: {
-      //       items: [
-      //         { path: './src', oldName: 'demo.js', newName: 'demo1.js' }
-      //       ]
-      //     },
-      //     unzip: {
-      //       items: [
-      //         { source: './src/unzip/a.tar', destination: './dist/unzip/a', type: 'tar', options: {} },
-      //         { source: './src/unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {} },
-      //         { source: './src/unzip/c.zip', destination: './dist/unzip/c', options: {} },
-      //         { source: './src/unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {} }
-      //       ],
-      //       options: {
-      //         buildStart: () => {},
-      //         buildEnd: () => {}
-      //       }
-      //     },
-      //     move: {
-      //       items: [
-      //         { source: './src/move/a', destination: './dist/move/a' },
-      //         // { source: './src/move', destination: './dist/move' },
-      //       ],
-      //       options: {
-      //         buildStart: () => {},
-      //         buildEnd: () => {}
-      //       }
-      //     }
-      //   }
-      // },
+      events: {
+        start: {
+          del: {
+            items: ['./dist'],
+            options: {}
+          }
+        },
+        end: {
+        //   zip: {
+        //     items: [
+        //       { source: './src/zip/a', destination: './dist/zip/a.tar', type: 'tar', options: {}},
+        //       { source: './src/zip/b', destination: './dist/zip/b.zip', options: {}},
+        //       { source: './src/zip/c', destination: './dist/zip/c.tgz', type: 'tgz', options: {}},
+        //       { source: './src/zip/b.html', destination: './dist/zip/b.gz', type: 'gzip', options: {}}
+        //     ],
+        //     options: {}
+        //   },
+          copy: {
+            items: [
+              { source: './src/copy/a', destination: './dist/copy/a' },
+              { source: './src/copy/b.html', destination: './dist/copy/b.html' }
+            ],
+            options: {}
+          },
+          rename: {
+            items: [
+              { path: './src', oldName: 'demo.js', newName: 'demo1.js' }
+            ]
+          },
+          // unzip: {
+          //   items: [
+          //     { source: './src/unzip/a.tar', destination: './dist/unzip/a', type: 'tar', options: {} },
+          //     { source: './src/unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {} },
+          //     { source: './src/unzip/c.zip', destination: './dist/unzip/c', options: {} },
+          //     { source: './src/unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {} }
+          //   ],
+          //   options: {}
+          // },
+        //   move: {
+        //     items: [
+        //       { source: './src/move/a', destination: './dist/move/a' },
+        //       { source: './src/move', destination: './dist/move' },
+        //     ],
+        //     options: {}
+        //   }
+        }
+      },
       customHooks: [
         {
-          hookName: 'generateBundle', // rollup hooks. buildStart | buildEnd | transform | load .....
+          hookName: 'generateBundle', // rollup hooks: buildEnd | transform | load .....
           commands: {
-            del: {
-              items: ['./dist'],
-              options: {
-                buildStart: () => {},
-                buildEnd: () => {}
-              }
-            },
             zip: {
               items: [
                 { source: './src/zip/a', destination: './dist/zip/a.tar', type: 'tar', options: {} },
@@ -90,10 +74,7 @@ export default {
                 { source: './src/zip/c', destination: './dist/zip/c.tgz', type: 'tgz', options: {} },
                 { source: './src/zip/b.html', destination: './dist/zip/b.gz', type: 'gzip', options: {} }
               ],
-              options: {
-                buildStart: () => {},
-                buildEnd: () => {}
-              }
+              options: {}
             },
           }
         },
