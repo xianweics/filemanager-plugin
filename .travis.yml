@@ -21,7 +21,6 @@ git:
   depth: 1
 
 script:
-  - npm test
   - npm run build
 
 before_script:
