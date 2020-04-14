@@ -2,7 +2,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
 const { rollup } = require('rollup');
-const { RollupFilemanager } = require('../../lib/index.js');
+import { RollupFilemanager } from '../../src/index';
 
 async function buildBundle(type, mockPathStart, mockPathEnd) {
   const bundle = await rollup({
