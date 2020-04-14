@@ -25,11 +25,11 @@ async function buildBundle(type, mockPathStart, mockPathEnd) {
   return bundle;
 }
 
-describe('test rollupPlugin', () => {
+describe('test rollup file-manager plugin', () => {
   const testPath = 'test/rollupPlugin/fixtures';
   fs.ensureFileSync(`${testPath}/index.js`);
 
-  it('test rollupPlugin del', async () => {
+  it('test rollupPlugin: delete an existing file, it will be deleted successfully', async () => {
     const mockPath = `${testPath}/del.js`;
     const mockPath1 = `${testPath}/del1.js`;
     fs.ensureFileSync(mockPath);
@@ -42,7 +42,7 @@ describe('test rollupPlugin', () => {
     expect(fs.pathExistsSync(mockPath1)).equals(false);
   });
 
-  it('test rollupPlugin copy', async () => {
+  it('test rollupPlugin: copy an existing file, it will be copied successfully', async () => {
     const mockPath = { source: `${testPath}/copy.js`, destination: `${testPath}/copy/copy.js` };
     const mockPath1 = { source: `${testPath}/copy1.js`, destination: `${testPath}/copy/copy1.js` };
     fs.ensureFileSync(mockPath.source);
@@ -55,7 +55,7 @@ describe('test rollupPlugin', () => {
     expect(fs.pathExistsSync(mockPath1.destination)).equals(true);
   });
 
-  it('test rollupPlugin rename', async () => {
+  it('test rollupPlugin: rename an existing file, it will be renamed successfully', async () => {
     fs.ensureFileSync(`${testPath}/a.js`);
     fs.ensureFileSync(`${testPath}/b.js`);
     const mockPath =  { path: `${testPath}`, oldName: 'a.js', newName: 'a1.js' };
@@ -68,7 +68,7 @@ describe('test rollupPlugin', () => {
     expect(fs.pathExistsSync(`${testPath}/${mockPath.newName}`)).equals(true);
   });
 
-  it('test rollupPlugin move', async () => {
+  it('test rollupPlugin: move an existing file, it will be moved successfully', async () => {
     fs.ensureFileSync(`${testPath}/m.js`);
     fs.ensureFileSync(`${testPath}/v.js`);
     const mockPath =  { source: `${testPath}/m.js`, destination: `${testPath}/move/m.js` };
@@ -81,7 +81,7 @@ describe('test rollupPlugin', () => {
     expect(fs.pathExistsSync(mockPath.destination)).equals(true);
   });
 
-  it('test rollupPlugin unzip', async () => {
+  it('test rollupPlugin: unzip an existing file, it will be unzipped successfully', async () => {
     fs.ensureFileSync(`${testPath}/u.js.zip`);
     fs.ensureFileSync(`${testPath}/n.js.gzip`);
     const mockPath =  { source: `${testPath}/u.js.zip`, destination: `${testPath}/unzip/u.js` };
@@ -94,7 +94,7 @@ describe('test rollupPlugin', () => {
     expect(fs.pathExistsSync(mockPath.destination)).equals(true);
   });
 
-  it('test rollupPlugin zip', async () => {
+  it('test rollupPlugin: zip an existing file, it will be zipped successfully', async () => {
     fs.ensureFileSync(`${testPath}/z.js`);
     fs.ensureFileSync(`${testPath}/i.js`);
     const mockPath =  { source: `${testPath}/z.js`, destination: `${testPath}/zip/z.js.zip` };
@@ -107,31 +107,7 @@ describe('test rollupPlugin', () => {
     expect(fs.pathExistsSync(mockPath.destination)).equals(true);
   });
 
-  it('test rollupPlugin customHooks ', async () => {
-    const mockPath = `${testPath}/c.js`;
-    fs.ensureFileSync(mockPath);
-    expect(fs.pathExistsSync(mockPath)).equals(true);
-    const bundle = await rollup({
-      input: 'test/rollupPlugin/fixtures/index.js',
-      plugins: [rollupFilemanager({
-        events: { format: 'cjs' },
-        customHooks: [
-          {
-            hookName: 'buildEnd',
-            commands: {
-              del: {
-                items: [mockPath]
-              }
-            }
-          }
-        ]
-      })]
-    });
-    await bundle.generate({ format: 'cjs' });
-    expect(fs.pathExistsSync(mockPath)).equals(false);
-  });
-
-  it('test rollupPlugin customHooks ', async () => {
+  it('test rollupPlugin: test custom hooks ', async () => {
     const mockPath = `${testPath}/c.js`;
     fs.ensureFileSync(mockPath);
     expect(fs.pathExistsSync(mockPath)).equals(true);
@@ -155,7 +131,7 @@ describe('test rollupPlugin', () => {
     expect(fs.pathExistsSync(mockPath)).equals(false);
   });
 
-  it('test rollupPlugin: custom hook is prior than event hook', async () => {
+  it('test rollupPlugin: custom hooks is prior than event hooks', async () => {
     const mockPathStart = `${testPath}/start.js`;
     const mockPathEnd = `${testPath}/end.js`;
     const mockPathCust1 = `${testPath}/cust1.js`;
