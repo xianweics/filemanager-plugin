@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve } = require('path');
-const FileManagerPlugin = require('../../lib').webpackFilemanager;
+const FileManagerPlugin = require('../../lib').WebpackFilemanager;
 const Webpack = require('webpack');
 const os = require('os');
 

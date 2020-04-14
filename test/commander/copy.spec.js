@@ -2,7 +2,10 @@ const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
 import path from 'path';
-import { copy } from '../../src/commander';
+
+import commander from '../../src/commander';
+
+const copy = commander.copy;
 
 describe('test copy', () => {
   const rootPath = 'testCache';
@@ -25,10 +28,10 @@ describe('test copy', () => {
   });
   
   it('copy an invalid file, it will throw an error', async () => {
-    const error = await copy({
+    const result = await copy({
       source: null,
       destination: null
     });
-    expect(error).to.be.an.instanceOf(Error);
+    expect(result).to.be.an.instanceOf(Error);
   });
 });

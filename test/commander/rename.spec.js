@@ -28,11 +28,11 @@ describe('test rename', () => {
   });
   
   it('rename an invalid file, it will throw an error', async () => {
-    const error = await rename({
+    const result = await rename({
       path: null,
       oldName: null,
       newName: null,
     });
-    expect(error).to.be.an.instanceOf(Error);
+    expect(result).to.be.an.instanceOf(Error);
   });
 });

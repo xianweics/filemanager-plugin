@@ -1,4 +1,4 @@
-import webpackFilemanager from './webpackPlugin';
-import rollupFilemanager from './rollupPlugin';
+import WebpackFilemanager from './webpackPlugin';
+import RollupFilemanager from './rollupPlugin';
 
-export { webpackFilemanager, rollupFilemanager };
+export { WebpackFilemanager, RollupFilemanager };

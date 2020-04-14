@@ -13,7 +13,8 @@ module.exports = {
     it: true,
     expect: true,
     alert: true,
-    __dirname: true
+    __dirname: true,
+    window: true
   },
   rules: {
     'for-direction': 'error',

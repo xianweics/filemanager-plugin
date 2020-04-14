@@ -3,7 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 
-const rollupFilemanager = require('../../lib').rollupFilemanager;
+const rollupFilemanager = require('../../lib').RollupFilemanager;
 
 export default {
   input: './src/index.js',

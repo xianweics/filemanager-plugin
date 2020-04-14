@@ -3,7 +3,7 @@ const expect = chai.expect;
 const fs = require('fs-extra');
 
 import path from 'path';
-import { del } from '../../src/commander';
+import del from '../../src/commander/del';
 
 describe('test delete', () => {
   const rootPath = 'testCache';
@@ -21,7 +21,7 @@ describe('test delete', () => {
   });
   
   it('delete an invalid file, it will throw an error', async () => {
-    const error = await del(null);
-    expect(error).to.be.an.instanceOf(Error);
+    const result = await del(null);
+    expect(result).to.be.an.instanceOf(Error);
   });
 });

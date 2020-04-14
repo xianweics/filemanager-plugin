@@ -25,19 +25,10 @@ describe('test unzip', () => {
   });
   
   it('unzip an invalid file, it will throw an error', async () => {
-    const error = await unzip({
+    const result = await unzip({
       source: '',
       destination: ''
     });
-    expect(error).to.be.an.instanceOf(Error);
-  });
-  
-  it('unzip an empty file, it will throw an error', async () => {
-    const mockSource = path.join(rootPath, 'unzip', 'index1.html.gzip');
-    const error = await unzip({
-      source: mockSource,
-      destination: ''
-    });
-    expect(error).to.be.an.instanceOf(Error);
+    expect(result).to.be.an.instanceOf(Error);
   });
 });

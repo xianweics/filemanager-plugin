@@ -12,7 +12,7 @@ const glob = require('glob');
  * @param destination {string}
  * @param type {string}
  * @param option {Object}
- * @returns {Promise<Error>}
+ * @returns {Promise<void>}
  */
 const zip = async ({ source, destination, type = 'zip' }) => {
   try {
@@ -20,17 +20,15 @@ const zip = async ({ source, destination, type = 'zip' }) => {
     const sources = glob.sync(source);
     if (sources.length === 0) {
       handlerError(`zip error: '${source}' is not exist`);
-      return new Error();
     }
     if (type === 'gzip') {
       // gzip
-      if ((sources.length > 1 || fs.statSync(sources[0]).isDirectory())) {
+      if (sources.length > 1 || fs.statSync(sources[0]).isDirectory()) {
         handlerError(`zip error: Gzip only support compressing a single file`);
       }
-      await Compressing.gzip.compressFile(source, destination)
-        .catch((e) => {
-          handlerError(`zip error: ${e}`);
-        });
+      await Compressing.gzip.compressFile(source, destination).catch(e => {
+        handlerError(`zip error: ${e}`);
+      });
       handlerInfo(`success: zip '${source}' to '${destination}'`);
     } else {
       // tar, zip, tgz

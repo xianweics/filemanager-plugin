@@ -1,4 +1,4 @@
-import * as commander from './commander';
+import commander from './commander';
 import { handlerError } from './utils';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
@@ -70,6 +70,7 @@ class webpackPlugin {
       result = customHooks.map(hook => {
         const { registerName, hookName } = hook;
         if (!registerName) hook.registerName = NAMESPACE_REGISTER_NAME + hookName;
+        hook.globalOptions = globalOptions;
         return hook;
       });
     } else {
@@ -122,14 +123,14 @@ class webpackPlugin {
   }
 
   apply(compiler) {
+    const hookTypesMap = {
+      tap: (commands, options) =>
+        webpackPlugin.tabCallback(commands, options),
+      tapAsync: (commands, options) =>
+        webpackPlugin.tapAsyncCallback(commands, options)
+    };
     try {
       const options = webpackPlugin.translateHooks(this.options);
-      const hookTypesMap = {
-        tap: (commands, options) =>
-          webpackPlugin.tabCallback(commands, options),
-        tapAsync: (commands, options) =>
-          webpackPlugin.tapAsyncCallback(commands, options)
-      };
       for (const hookItem of options) {
         const {
           hookType,
@@ -146,8 +147,8 @@ class webpackPlugin {
       }
     } catch (e) {
       handlerError(`File manager error: ${e}`);
+      return e;
     }
   }
 }
-
 export default webpackPlugin;

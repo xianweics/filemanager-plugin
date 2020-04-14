@@ -2,7 +2,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
 import path from 'path';
-import { move } from '../../src/commander';
+import move from '../../src/commander/move';
 
 describe('test move', () => {
   const rootPath = 'testCache';
@@ -25,10 +25,10 @@ describe('test move', () => {
   });
   
   it('move an invalid file, it will throw an error', async () => {
-    const error = await move({
+    const result = await move({
       source: null,
       destination: null
     });
-    expect(error).to.be.an.instanceOf(Error);
+    expect(result).to.be.an.instanceOf(Error);
   });
 });

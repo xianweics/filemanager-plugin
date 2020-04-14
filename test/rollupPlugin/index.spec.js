@@ -2,12 +2,12 @@ const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
 const { rollup } = require('rollup');
-const { rollupFilemanager } = require('../../lib/index.js');
+const { RollupFilemanager } = require('../../lib/index.js');
 
 async function buildBundle(type, mockPathStart, mockPathEnd) {
   const bundle = await rollup({
     input: 'test/rollupPlugin/fixtures/index.js',
-    plugins: [rollupFilemanager({
+    plugins: [RollupFilemanager({
       events: {
         start: {
           [type]: {
@@ -113,7 +113,7 @@ describe('test rollup file-manager plugin', () => {
     expect(fs.pathExistsSync(mockPath)).equals(true);
     const bundle = await rollup({
       input: 'test/rollupPlugin/fixtures/index.js',
-      plugins: [rollupFilemanager({
+      plugins: [RollupFilemanager({
         events: {},
         customHooks: [
           {
@@ -146,7 +146,7 @@ describe('test rollup file-manager plugin', () => {
     expect(fs.pathExistsSync(mockPathCust2)).equals(true);
     const bundle = await rollup({
       input: 'test/rollupPlugin/fixtures/index.js',
-      plugins: [rollupFilemanager({
+      plugins: [RollupFilemanager({
         events: {
           start: {
             del: {

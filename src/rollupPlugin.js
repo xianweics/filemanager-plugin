@@ -1,4 +1,4 @@
-import * as commander from './commander';
+import commander from './commander';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const EVENT_NAMES_MAP = {
