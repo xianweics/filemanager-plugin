@@ -12,33 +12,36 @@ const EVENT_NAMES_MAP = {
 const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
 
 /**
- * @description extract BASE_HOOKS's events and custom hooks
+ * @description Extract hook from 'events' and 'customHooks'
  * @param opts {Object}
  * @returns {Array}
  * @example
  * [
  *    {
- *      buildStart: {},
- *      generateBundle: {}
- *    },
- *    [{...}, {....}]?
+ *      hookName: 'buildstart',
+ *      commands: {
+ *        del: {....}
+ *      }
+ *    }
  * ]
  */
-function extractEvents(opts) {
+function extractHooks(opts) {
   const { events, customHooks = [] } = opts;
-  const result = {};
-  const custHooks = [];
-  if (customHooks.length > 0) {
-    for (const hook of customHooks) {
-      custHooks.push(hook);
-    }
-  }
+  const hooks = [];
   for (const event in events) {
     if (events.hasOwnProperty(event) && EVENT_NAMES.includes(event)) {
-      result[EVENT_NAMES_MAP[event].hook] = events[event];
+      hooks.push({
+        hookName: EVENT_NAMES_MAP[event].hook,
+        commands: events[event]
+      });
     }
   }
-  return [result, custHooks];
+  if (customHooks.length > 0) {
+    for (const hook of customHooks) {
+      hooks.push(hook);
+    }
+  }
+  return hooks;
 }
 
 /**
@@ -47,45 +50,44 @@ function extractEvents(opts) {
  * @returns {void}
  */
 async function commanderDone(commands) {
-  for (const command in commands) {
-    if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
-      const { items, options } = commands[command];
-      for (const item of items) {
-        await commander[command](item, options);
+  if (commands && Object.keys(commands).length > 0) {
+    for (const command in commands) {
+      if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
+        const { items, options } = commands[command];
+        for (const item of items) {
+          await commander[command](item, options);
+        }
       }
     }
   }
 }
 
 /**
- * @description Handle user-defined hooks and encapsulate them as asynchronous functions
- * @param customHooks {Array}
+ * @description Create each hook method
+ * @param hooks {Array}
  * @returns {Object<Promise>}
  */
-function extractCustomHooks(customHooks) {
-  const custHooks = {};
-  if (customHooks.length < 1) return custHooks;
-  for (const hook of customHooks) {
+function createHooks(hooks) {
+  const hookObj = {};
+  if (hooks.length < 1) return hookObj;
+  for (const hook of hooks) {
     const { hookName, commands } = hook;
-    custHooks[hookName] = async function () {
+    hookObj[hookName] = async function () {
       await commanderDone(commands);
     };
   }
-  return custHooks;
+  return hookObj;
 }
 
 function rollupPlugin(opts) {
-  const [res, custHooks] = extractEvents(opts);
+  const hooks = extractHooks(opts);
   return {
     name: 'file-manager',
-    async buildStart() {
-      await commanderDone(res[EVENT_NAMES_MAP.start.hook]);
-    },
-    async generateBundle() {
-      await commanderDone(res[EVENT_NAMES_MAP.end.hook]);
-    },
-    ...extractCustomHooks(custHooks)
+    ...createHooks(hooks)
   };
 }
 
+rollupPlugin.extractHooks = extractHooks;
+rollupPlugin.commanderDone = commanderDone;
+rollupPlugin.createHooks = createHooks;
 export default rollupPlugin;

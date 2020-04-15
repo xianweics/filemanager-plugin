@@ -24,15 +24,15 @@ export default {
           }
         },
         end: {
-        //   zip: {
-        //     items: [
-        //       { source: './src/zip/a', destination: './dist/zip/a.tar', type: 'tar', options: {}},
-        //       { source: './src/zip/b', destination: './dist/zip/b.zip', options: {}},
-        //       { source: './src/zip/c', destination: './dist/zip/c.tgz', type: 'tgz', options: {}},
-        //       { source: './src/zip/b.html', destination: './dist/zip/b.gz', type: 'gzip', options: {}}
-        //     ],
-        //     options: {}
-        //   },
+          zip: {
+            items: [
+              { source: './src/zip/a', destination: './dist/zip/a.tar', type: 'tar', options: {} },
+              { source: './src/zip/b', destination: './dist/zip/b.zip', options: {} },
+              { source: './src/zip/c', destination: './dist/zip/c.tgz', type: 'tgz', options: {} },
+              { source: './src/zip/b.html', destination: './dist/zip/b.gz', type: 'gzip', options: {} }
+            ],
+            options: {}
+          },
           copy: {
             items: [
               { source: './src/copy/a', destination: './dist/copy/a' },
@@ -45,22 +45,22 @@ export default {
               { path: './src', oldName: 'demo.js', newName: 'demo1.js' }
             ]
           },
-          // unzip: {
-          //   items: [
-          //     { source: './src/unzip/a.tar', destination: './dist/unzip/a', type: 'tar', options: {} },
-          //     { source: './src/unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {} },
-          //     { source: './src/unzip/c.zip', destination: './dist/unzip/c', options: {} },
-          //     { source: './src/unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {} }
-          //   ],
-          //   options: {}
-          // },
-        //   move: {
-        //     items: [
-        //       { source: './src/move/a', destination: './dist/move/a' },
-        //       { source: './src/move', destination: './dist/move' },
-        //     ],
-        //     options: {}
-        //   }
+          unzip: {
+            items: [
+              { source: './src/unzip/a.tar', destination: './dist/unzip/a', type: 'tar', options: {} },
+              { source: './src/unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {} },
+              { source: './src/unzip/c.zip', destination: './dist/unzip/c', options: {} },
+              { source: './src/unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {} }
+            ],
+            options: {}
+          },
+          move: {
+            items: [
+              { source: './src/move/a', destination: './dist/move/a' },
+              // { source: './src/move', destination: './dist/move' },
+            ],
+            options: {}
+          }
         }
       },
       customHooks: [
@@ -83,7 +83,7 @@ export default {
           commands: {
             rename: {
               items: [
-                // { path: './src/rename', oldName: 'a', newName: 'b' }
+                { path: './src/rename', oldName: 'a', newName: 'b' }
               ]
             },
           }
