@@ -7,19 +7,19 @@ import commander from '../../src/commander';
 
 const copy = commander.copy;
 
-describe('test copy', () => {
+describe('Test copy', () => {
   const rootPath = 'testCache';
   
   afterEach(() => {
     fs.removeSync(rootPath);
   });
   
-  it('copy an existing file, it will be copied successfully', async () => {
+  it('Copy an existing file, it will be copied successfully', async () => {
     const mockSource = path.join(rootPath, 'copy', 'index.html');
     fs.ensureFileSync(mockSource);
     expect(fs.pathExistsSync(mockSource)).equals(true);
-    
     const mockDestination = path.join('testCache', 'copy', 'index1.html');
+    expect(fs.pathExistsSync(mockDestination)).equals(false);
     await copy({
       source: mockSource,
       destination: mockDestination
@@ -27,7 +27,7 @@ describe('test copy', () => {
     expect(fs.pathExistsSync(mockDestination)).equals(true);
   });
   
-  it('copy an invalid file, it will throw an error', async () => {
+  it('Copy an invalid file, it will throw an error', async () => {
     const result = await copy({
       source: null,
       destination: null

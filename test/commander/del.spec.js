@@ -5,14 +5,14 @@ const fs = require('fs-extra');
 import path from 'path';
 import del from '../../src/commander/del';
 
-describe('test delete', () => {
+describe('Test delete', () => {
   const rootPath = 'testCache';
   
   afterEach(() => {
     fs.removeSync(rootPath);
   });
   
-  it('delete an existing file, it will be deleted successfully', async () => {
+  it('Delete an existing file, it will be deleted successfully', async () => {
     const mockPath = path.join('testCache', 'del', 'index.html');
     fs.ensureFileSync(mockPath);
     expect(fs.pathExistsSync(mockPath)).equals(true);
@@ -20,7 +20,7 @@ describe('test delete', () => {
     expect(fs.pathExistsSync(mockPath)).equals(false);
   });
   
-  it('delete an invalid file, it will throw an error', async () => {
+  it('Delete an invalid file, it will throw an error', async () => {
     const result = await del(null);
     expect(result).to.be.an.instanceOf(Error);
   });

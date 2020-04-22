@@ -1,6 +1,6 @@
-const compressing = require('compressing');
 import { handlerError, handlerInfo } from '../utils';
 
+const compressing = require('compressing');
 const glob = require('glob');
 
 /**
@@ -16,13 +16,10 @@ const unzip = async ({ source, destination, type = 'zip', option = {} }) => {
     const sources = glob.sync(source);
     if (sources.length === 0) {
       handlerError(`unzip error: '${source}' is not exist`);
+      return;
     }
     for (const source of sources) {
-      await compressing[type]
-        .uncompress(source, destination, option)
-        .catch(e => {
-          handlerError(`unzip error: ${e}`);
-        });
+      await compressing[type].uncompress(source, destination, option);
       handlerInfo(`success: unzip '${source}' to ${destination}`);
     }
   } catch (e) {

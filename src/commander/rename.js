@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { handlerError, handlerInfo } from '../utils';
+import { handlerError, handlerInfo }  from '../utils';
 import { join } from 'path';
 
 const rename = ({ path, oldName, newName }) => {

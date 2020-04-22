@@ -11,7 +11,7 @@ export default {
     file: 'lib/index.js',
     format: 'cjs'
   },
-  external: ['fs', 'path', 'assert', 'events', 'util'],
+  external: ['fs', 'path', 'os', 'glob', 'util', 'colors', 'fs-extra', 'compressing'],
   watch: {
     include: 'src/**'
   },
