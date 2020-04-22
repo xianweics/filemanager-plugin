@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { handlerInfo, handlerError }  from '../utils';
+import { handlerInfo, handlerError } from '../utils';
 import path from 'path';
 
 const Compressing = require('compressing');
@@ -24,7 +24,9 @@ const zip = async ({ source, destination, type = 'zip' }) => {
     }
     if (type === 'gzip') {
       // gzip
-      const hasDirectory = sources.find(source => fs.statSync(source).isDirectory());
+      const hasDirectory = sources.find(source =>
+        fs.statSync(source).isDirectory()
+      );
       if (sources.length > 1 || hasDirectory) {
         handlerError(`zip error: Gzip only support compressing a single file`);
         return;

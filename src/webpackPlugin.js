@@ -124,8 +124,7 @@ class webpackPlugin {
 
   apply(compiler) {
     const hookTypesMap = {
-      tap: (commands, options) =>
-        webpackPlugin.tabCallback(commands, options),
+      tap: (commands, options) => webpackPlugin.tabCallback(commands, options),
       tapAsync: (commands, options) =>
         webpackPlugin.tapAsyncCallback(commands, options)
     };
