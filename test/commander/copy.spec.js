@@ -1,19 +1,13 @@
+import path from 'path';
+import copy from '../../src/commander/copy';
+import { template as mockTemplate, utils as mockUtils } from '../mock';
+
 const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
-import path from 'path';
+const { handlerInfo, handlerError } = mockUtils;
 
-import commander from '../../src/commander';
-
-const copy = commander.copy;
-
-describe('Test copy', () => {
-  const rootPath = 'testCache';
-  
-  afterEach(() => {
-    fs.removeSync(rootPath);
-  });
-  
+mockTemplate('Test copy', (rootPath) => {
   it('Copy an existing file, it will be copied successfully', async () => {
     const mockSource = path.join(rootPath, 'copy', 'index.html');
     fs.ensureFileSync(mockSource);
@@ -25,13 +19,14 @@ describe('Test copy', () => {
       destination: mockDestination
     });
     expect(fs.pathExistsSync(mockDestination)).equals(true);
+    expect(handlerInfo.called).equals(true);
   });
-  
   it('Copy an invalid file, it will throw an error', async () => {
-    const result = await copy({
-      source: null,
-      destination: null
+    const mockSource = path.join(rootPath, 'copy');
+    await copy({
+      source: mockSource,
+      destination: ''
     });
-    expect(result).to.be.an.instanceOf(Error);
+    expect(handlerError.called).equals(true);
   });
 });

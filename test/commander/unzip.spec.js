@@ -3,14 +3,11 @@ const expect = chai.expect;
 const fs = require('fs-extra');
 import path from 'path';
 import unzip from '../../src/commander/unzip';
+import { template as mockTemplate, utils as mockUtils } from '../mock';
 
-describe('Test unzip', () => {
-  const rootPath = 'testCache';
-  
-  after(() => {
-    fs.removeSync(rootPath);
-  });
-  
+const { handlerInfo } = mockUtils;
+
+mockTemplate('Test unzip', (rootPath) => {
   it('Unzip a valid file, it will be unzipped successfully', async () => {
     const mockSource = path.join(rootPath, 'unzip', 'index.html.gzip');
     fs.ensureFileSync(mockSource);
@@ -23,6 +20,7 @@ describe('Test unzip', () => {
       type: 'gzip'
     });
     expect(fs.pathExistsSync(mockDestination)).equals(true);
+    expect(handlerInfo.called).equals(true);
   });
   
   it('Unzip an invalid file, it will throw an error', async () => {

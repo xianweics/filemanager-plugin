@@ -2,6 +2,7 @@ const chai = require('chai');
 const expect = chai.expect;
 import { RollupFilemanager } from '../src/index';
 import commander from '../src/commander/index';
+
 const sinon = require('sinon');
 
 describe('Test rollup plugin file', () => {
@@ -25,7 +26,7 @@ describe('Test rollup plugin file', () => {
 
   describe(`Test 'extractHooks' method.`, () => {
     it(
-      `When configured 'events' and 'customHooks',it will return the configuration items for 'events' and 'cunstomhooks'`,
+      `When configured 'events' and 'customHooks',it will return the configuration items for 'cunstomhooks'`,
       async () => {
         const mockOptions = {
           events: {
@@ -50,14 +51,6 @@ describe('Test rollup plugin file', () => {
     
         const result = [
           {
-            hookName: 'buildStart',
-            commands: {
-              del: {
-                items: ['./dist']
-              }
-            }
-          },
-          {
             hookName: 'buildEnd',
             commands: {
               del: {
@@ -72,7 +65,6 @@ describe('Test rollup plugin file', () => {
   
     it(`No configuration 'events' and 'customHooks', it will return an empty array `, async () => {
       const mockOptions = {};
-  
       const result = [];
       const testResult = await RollupFilemanager.extractHooks(mockOptions);
       expect(testResult).eql(result);
@@ -111,13 +103,6 @@ describe('Test rollup plugin file', () => {
 
   it(`Test 'rollupPlugin' method. Function execution return value is an object composed of hooks and name`, async () => {
     const mockOptions = {
-      events: {
-        start: {
-          del: {
-            items: ['./dist1']
-          }
-        }
-      },
       customHooks: [
         {
           hookName: 'buildStart',
@@ -144,7 +129,6 @@ describe('Test rollup plugin file', () => {
       if (key === 'name') {
         expect(testResult[key]).equals('file-manager');
       } else {
-        console.log(key);
         expect(typeof testResult[key] === 'function').equals(true);
       }
     }

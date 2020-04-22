@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { handlerInfo, handlerError } from '../utils';
+import { handlerError, handlerInfo } from '../utils';
 import path from 'path';
 
 const Compressing = require('compressing');
@@ -44,7 +44,6 @@ const zip = async ({ source, destination, type = 'zip' }) => {
     }
   } catch (e) {
     handlerError(`zip error: ${e}`);
-    return e;
   }
 };
 

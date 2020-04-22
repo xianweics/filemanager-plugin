@@ -143,38 +143,39 @@ describe('Test webpack plugin file', () => {
       webpackFilemanager = new WebpackFilemanager(mockOptions);
       webpackFilemanager.apply(mockCompiler);
       
-      expect(mockCompiler.hooks.beforeRun.tapAsync.calledWithMatch('REGISTER_beforeRun')).equals(true);
+      expect(mockCompiler.hooks.beforeRun.tapAsync.calledWithMatch(
+        'REGISTER_beforeRun')).equals(true);
     });
     
     it(
       `It will throw an error, when called 'compiler.hooks[hookName][hookType]' with an invalid 'hookType'`,
       () => {
-        // const mockOptions = {
-        //   customHooks: [
-        //     {
-        //       hookType: 'otherTap',
-        //       hookName: 'beforeRun',
-        //       commands: {
-        //         del: {
-        //           items: ['./dist1']
-        //         }
-        //       }
-        //     },
-        //     {
-        //       hookType: 'tap',
-        //       hookName: 'beforeRun',
-        //       commands: {
-        //         del: {
-        //           items: ['./dist1']
-        //         }
-        //       }
-        //     }
-        //   ]
-        // };
-        // webpackFilemanager = new WebpackFilemanager(mockOptions);
-        // const result = webpackFilemanager.apply(mockCompiler);
-        //
-        // expect(result).instanceOf(Error);
+        const mockOptions = {
+          customHooks: [
+            {
+              hookType: 'otherTap',
+              hookName: 'beforeRun',
+              commands: {
+                del: {
+                  items: ['./dist1']
+                }
+              }
+            },
+            {
+              hookType: 'tap',
+              hookName: 'beforeRun',
+              commands: {
+                del: {
+                  items: ['./dist1']
+                }
+              }
+            }
+          ]
+        };
+        webpackFilemanager = new WebpackFilemanager(mockOptions);
+        const result = webpackFilemanager.apply(mockCompiler);
+        
+        expect(result).instanceOf(Error);
       });
   });
 });

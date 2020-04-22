@@ -28,17 +28,18 @@ const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
 function extractHooks(opts) {
   const { events, customHooks = [] } = opts;
   const hooks = [];
-  for (const event in events) {
-    if (events.hasOwnProperty(event) && EVENT_NAMES.includes(event)) {
-      hooks.push({
-        hookName: EVENT_NAMES_MAP[event].hook,
-        commands: events[event]
-      });
-    }
-  }
   if (customHooks.length > 0) {
     for (const hook of customHooks) {
       hooks.push(hook);
+    }
+  } else {
+    for (const event in events) {
+      if (events.hasOwnProperty(event) && EVENT_NAMES.includes(event)) {
+        hooks.push({
+          hookName: EVENT_NAMES_MAP[event].hook,
+          commands: events[event]
+        });
+      }
     }
   }
   return hooks;

@@ -1,5 +1,5 @@
 import commander from './commander';
-import utils from './utils';
+import { handlerError } from './utils';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
@@ -21,7 +21,7 @@ class webpackPlugin {
   constructor(opts) {
     this.options = opts;
   }
-
+  
   /**
    * @desc execute according command type
    * @param commands {Object}
@@ -39,7 +39,7 @@ class webpackPlugin {
       }
     }
   }
-
+  
   /**
    * @description translate 'options' to other options with hooks and types of webpack
    * @param opts {Object}
@@ -69,7 +69,10 @@ class webpackPlugin {
     if (customHooks.length > 0) {
       result = customHooks.map(hook => {
         const { registerName, hookName } = hook;
-        if (!registerName) hook.registerName = NAMESPACE_REGISTER_NAME + hookName;
+        if (!registerName) {
+          hook.registerName = NAMESPACE_REGISTER_NAME +
+            hookName;
+        }
         hook.globalOptions = globalOptions;
         return hook;
       });
@@ -96,7 +99,7 @@ class webpackPlugin {
     }
     return result;
   }
-
+  
   /**
    * @desc the type of tap hook callback
    * @param commands {Array}
@@ -108,7 +111,7 @@ class webpackPlugin {
       await webpackPlugin.handleCommand(commands, options);
     };
   }
-
+  
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -121,7 +124,7 @@ class webpackPlugin {
       callback();
     };
   }
-
+  
   apply(compiler) {
     const hookTypesMap = {
       tap: (commands, options) => webpackPlugin.tabCallback(commands, options),
@@ -145,9 +148,10 @@ class webpackPlugin {
         );
       }
     } catch (e) {
-      utils.handlerError(`File manager error: ${e}`);
+      handlerError(`File manager error: ${e}`);
       return e;
     }
   }
 }
+
 export default webpackPlugin;
