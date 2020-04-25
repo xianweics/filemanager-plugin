@@ -11,7 +11,8 @@
     "webpack",
     "rollup",
     "file manager",
-    "nodejs"
+    "nodejs",
+    "glob"
   ],
   "license": "MIT",
   "bugs": {

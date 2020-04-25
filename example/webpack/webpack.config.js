@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve } = require('path');
 const FileManagerPlugin = require('../../lib').WebpackFilemanager;
 const Webpack = require('webpack');
-const os = require('os');
 
 const config = {
   entry: './src/index.js',
@@ -124,15 +123,27 @@ const config = {
             // move: {
             //   items: [
             //     {
-            //       source: './move/', destination: './dist/'
+            //       source: './move/**/*.html', destination: './dist'
             //     }
             //   ]
             // },
             zip: {
               items: [
-                { source: './zip/a', destination: './dist/zip/a.zip' },
-                { source: './zip/c/index.html', destination: './dist/zip/c.index.html.tgz', type: 'tgz' },
-                { source: './zip/b/index.html', destination: './dist/zip/b.html.gz', type: 'gzip', options: {} }
+                {
+                  source: './zip/a',
+                  destination: './dist/zip/a.zip'
+                },
+                {
+                  source: './zip/c/index.html',
+                  destination: './dist/zip/c.index.html.tgz',
+                  type: 'tgz'
+                },
+                {
+                  source: './zip/b/index.html',
+                  destination: './dist/zip/b.html.gz',
+                  type: 'gzip',
+                  options: {}
+                }
               ]
             },
             //   options: {
@@ -152,30 +163,30 @@ const config = {
                 // { source: './unzip/c.zip', destination: './dist/unzip/c', options: {}},
                 // { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {}}
               ],
-              options: {
-                buildStart: () => {},
-                buildEnd: () => {}
-              }
+              // options: {
+              //   buildStart: () => {},
+              //   buildEnd: () => {}
+              // }
             }
           }
         }
-      ],
-      pluginLibraries: [
-        {
-          name: 'html-webpack-plugin',
-          pluginOption: {
-            filename: 'index.html',
-            template: './src/index.html'
-          }
-          // other hooks
-        }
-      ],
-      options: {
-        parallel: os.cpus().length * 2,
-        log: 'all', // error || success
-        cache: false,
-        progress: false
-      }
+      ]
+      // pluginLibraries: [
+      //   {
+      //     name: 'html-webpack-plugin',
+      //     pluginOption: {
+      //       filename: 'index.html',
+      //       template: './src/index.html'
+      //     }
+      // other hooks
+      // }
+      // ],
+      // options: {
+      // parallel: os.cpus().length * 2,
+      // log: 'all', // error || success
+      // cache: false,
+      // progress: false
+      // }
     })
   ],
   devServer: {

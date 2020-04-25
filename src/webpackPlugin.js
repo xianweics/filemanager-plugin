@@ -21,7 +21,7 @@ class webpackPlugin {
   constructor(opts) {
     this.options = opts;
   }
-  
+
   /**
    * @desc execute according command type
    * @param commands {Object}
