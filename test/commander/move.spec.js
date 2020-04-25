@@ -1,17 +1,18 @@
+import * as utils from '../../src/utils';
+import path from 'path';
+import move from '../../src/commander/move';
+import { template as mockTemplate } from '../mock';
+
+const sinon = require('sinon');
 const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
-import path from 'path';
-import move from '../../src/commander/move';
 
-describe('Test move', () => {
-  const rootPath = 'testCache';
-  
-  after(() => {
-    fs.removeSync(rootPath);
-  });
-  
-  it('Move a valid file, it will be moved successfully', async () => {
+mockTemplate('Test move', (rootPath) => {
+  it('Move a valid file, handlerInfo will be called', async () => {
+    const handlerInfo = sinon.stub(utils, 'handlerInfo');
+    expect(handlerInfo.called).equals(false);
+    
     const mockSource = path.join(rootPath, 'move', 'index.html');
     fs.ensureFileSync(mockSource);
     const mockDestination = path.join(rootPath, 'move', 'index1.html');
@@ -22,13 +23,19 @@ describe('Test move', () => {
       destination: mockDestination
     });
     expect(fs.pathExistsSync(mockDestination)).equals(true);
+    expect(handlerInfo.called).equals(true);
+    handlerInfo.restore();
   });
   
-  it('Move an invalid file, it will throw an error', async () => {
-    const result = await move({
+  it('Move an invalid file, handlerError will be called', async () => {
+    const handlerError = sinon.stub(utils, 'handlerError');
+    expect(handlerError.called).equals(false);
+    
+    await move({
       source: null,
       destination: null
     });
-    expect(result).to.be.an.instanceOf(Error);
+    expect(handlerError.called).equals(true);
+    handlerError.restore();
   });
 });

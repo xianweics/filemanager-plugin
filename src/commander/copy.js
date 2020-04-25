@@ -3,7 +3,7 @@ import { handlerError, handlerInfo } from '../utils';
 const glob = require('glob');
 const fs = require('fs-extra');
 
-const copy = async ({ source, destination }) => {
+const copy = ({ source, destination }) => {
   try {
     const sources = glob.sync(source) || [];
     sources.forEach(source => {

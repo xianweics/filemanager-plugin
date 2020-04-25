@@ -3,6 +3,10 @@
   "slow": 75,
   "timeout": 2000,
   "ui": "bdd",
-  "spec": ["test/**/*.spec.js"],
-  "require": ["@babel/register"]
+  "spec": [
+    "test/**/*.spec.js"
+  ],
+  "require": [
+    "@babel/register"
+  ]
 }

@@ -11,20 +11,26 @@ const glob = require('glob');
  * @param option {Object}
  * @returns {Promise<void>}
  */
+
 const unzip = async ({ source, destination, type = 'zip', option = {} }) => {
   try {
-    const sources = glob.sync(source);
-    if (sources.length === 0) {
-      handlerError(`unzip error: '${source}' is not exist`);
-      return;
-    }
+    const sources = glob.sync(source) || [];
     for (const source of sources) {
-      await compressing[type].uncompress(source, destination, option);
-      handlerInfo(`success: unzip '${source}' to ${destination}`);
+      await new Promise((resolve, reject) => {
+        compressing[type]
+          .uncompress(source, destination, option)
+          .then(() => {
+            handlerInfo(`success: unzip '${source}' to '${destination}'`);
+            resolve();
+          })
+          .catch(e => {
+            handlerError(`unzip error: ${e}`);
+            reject(e);
+          });
+      });
     }
   } catch (e) {
     handlerError(`unzip error: ${e}`);
-    return e;
   }
 };
 

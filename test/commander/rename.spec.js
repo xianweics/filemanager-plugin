@@ -1,17 +1,16 @@
+import * as utils from '../../src/utils';
+import path from 'path';
+import rename from '../../src/commander/rename';
+import { template as mockTemplate } from '../mock';
+
 const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs-extra');
-import path from 'path';
-import rename from '../../src/commander/rename';
+const sinon = require('sinon');
 
-describe('Test rename', () => {
-  const rootPath = 'testCache';
-  
-  after(() => {
-    fs.removeSync(rootPath);
-  });
-  
-  it('Rename a valid file, it will be renamed successfully', async () => {
+mockTemplate('Test rename', (rootPath) => {
+  it('Rename a valid file, handlerInfo will be called', async () => {
+    const handlerInfo = sinon.stub(utils, 'handlerInfo');
     const mockOldName = 'index.html';
     const mockNewName = 'index1.html';
     const mockSource = path.join(rootPath, 'rename', mockOldName);
@@ -26,14 +25,19 @@ describe('Test rename', () => {
       newName: mockNewName,
     });
     expect(fs.pathExistsSync(mockDestination)).equals(true);
+    handlerInfo.restore();
   });
   
   it('Rename an invalid file, it will throw an error', async () => {
-    const result = await rename({
+    const handlerError = sinon.stub(utils, 'handlerError');
+    expect(handlerError.called).equals(false);
+    
+    await rename({
       path: null,
       oldName: null,
       newName: null,
     });
-    expect(result).to.be.an.instanceOf(Error);
+    expect(handlerError.called).equals(true);
+    handlerError.restore();
   });
 });

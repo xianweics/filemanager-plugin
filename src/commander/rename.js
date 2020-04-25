@@ -10,7 +10,6 @@ const rename = ({ path, oldName, newName }) => {
     handlerInfo(`success: rename '${oldName}' to '${newName}'`);
   } catch (e) {
     handlerError(`rename error: ${e}`);
-    return e;
   }
 };
 

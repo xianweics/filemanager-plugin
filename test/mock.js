@@ -1,9 +1,6 @@
-import * as srcUtils from '../src/utils';
-
 const fs = require('fs-extra');
-const sinon = require('sinon');
 
-const template = (name, callback) => {
+const template = (name, desc) => {
   const rootPath = 'testCache';
   describe(name, () => {
     after(() => {
@@ -13,19 +10,10 @@ const template = (name, callback) => {
     before(() => {
       fs.removeSync(rootPath);
     });
-    callback(rootPath);
+    desc(rootPath);
   });
 };
 
-const handlerError = sinon.stub(srcUtils, 'handlerError').callsFake();
-const handlerInfo = sinon.stub(srcUtils, 'handlerInfo').callsFake();
-
-const utils = {
-  handlerError,
-  handlerInfo
-};
-
 export {
-  utils,
   template
 };
