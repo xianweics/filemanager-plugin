@@ -258,7 +258,7 @@ npm run build
 cd example
 npm run start
 
-# build example to see final result
+# build example to see result
 cd example
 npm run build
 

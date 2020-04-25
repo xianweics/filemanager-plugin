@@ -1,7 +1,7 @@
 {
   "name": "filemanager-plugin",
   "version": "2.0.0",
-  "description": "This is file manager plugin.",
+  "description": "This is file manager plugin, support for rollup and webpack",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -11,8 +11,7 @@
     "webpack",
     "rollup",
     "file manager",
-    "nodejs",
-    "mocha"
+    "nodejs"
   ],
   "license": "MIT",
   "bugs": {
@@ -27,11 +26,11 @@
     "test:coverage": "node_modules/.bin/nyc npm test",
     "test:coveralls": "npm run test:coverage && nyc report --reporter=text-lcov | coveralls",
     "doc": "node_modules/.bin/jsdoc -c ./conf.json",
-    "format": "prettier-eslint src/**/*.js  --write",
-    "commit:check": "npm run format && npm run test"
+    "format": "prettier-eslint \"src/**/*.js\" --write"
   },
   "pre-commit": [
-    "commit:check"
+    "format",
+    "test"
   ],
   "dependencies": {
     "colors": "^1.4.0",
