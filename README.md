@@ -168,7 +168,7 @@ module.exports = {
 }
 ```
 
-- `source {String}`: Moved source path. [glob pattern](https://github.com/isaacs/node-glob).
+- `source {String}`: Moved source path. It supports [glob pattern](https://github.com/isaacs/node-glob).
 - `destination {String}`: Moved destination path.
 
 #### `rename` example
@@ -191,7 +191,6 @@ module.exports = {
 
 - `source {String}`: Renamed source path.
 - `destination {String}`: Renamed destination path.
-
 
 # APIs
 
@@ -225,22 +224,28 @@ module.exports = {
             ]   
           }
         }
-      },
-      // customHooks: [
-      //   {
-      //     hookType: 'tapAsync',
-      //     hookName: 'beforeRun',
-      //     commands: {
-      //       del: {
-      //         items: ['./dist']
-      //       }
-      //     }
-      //   }
-      // ]
+      }
+    })
+  ]
+};
+
+// rollup
+const rollupFilemanager = require('filemanager-plugin').RollupFilemanager;
+module.exports = {
+  plugins: [
+    rollupFilemanager({
+      events: {} // It's the same as webpack configuration
     })
   ]
 }
 ```
+
+## customHooks
+
+> Supports for custom lifecycle for webpack or rollup
+
+- `hookName`
+- `commands`
 
 ## Commands
 
@@ -262,7 +267,7 @@ In this example below, in the end event, the zip command will run first, and the
 ```javascript
 const FileManagerPlugin = require('filemanager-plugin').WebpackFilemanager;
 
-// 1.X.X
+// webpack 1.X.X
 module.exports = {
   plugins: [
     new FileManagerPlugin({
@@ -291,7 +296,7 @@ module.exports = {
   ]
 };
 
-// 2.X.X
+// webpack 2.X.X
 module.exports = {
   plugins: [
     new FileManagerPlugin({
