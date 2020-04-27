@@ -15,29 +15,155 @@ This filemanager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move
 
 # Usage
 
-## Webpack
+## events
 
-### webpack.config.js
+> Control the running order during building.
+
+- `start {Object}`: Register actions to [`beforeRun`](https://webpack.js.org/api/compiler-hooks/#beforeRun) hook to compiler, actions which you set will be run before running the compiler.
+- `end {Object}`: Register actions to [`done`](https://webpack.js.org/api/compiler-hooks/#done) hook to compiler, actions will be executed when the compilation has completed.
+
+In the example below, the start event with `del` command will run first, 
+and then the end event with `zip` after.
 
 ```javascript
+// webpack
 const FileManagerPlugin = require('filemanager-plugin').WebpackFilemanager;
-
 module.exports = {
   plugins: [
     new FileManagerPlugin({
       events: {
-        start: {},
-        end: {
-          zip: {
-            items: [
-              { source: './src/demo', destination: './dest/demo.zip', type: 'zip'}
-            ]
-          },
+        start: {
           del: {
             items: ['./dist']
           }
+        },
+        end: {
+          zip: {
+            items: [
+              {source: './src/demo0.zip', destination: './dest/demo0', type: 'zip'}
+            ]   
+          }
         }
       }
+    })
+  ]
+};
+
+// rollup
+const rollupFilemanager = require('filemanager-plugin').RollupFilemanager;
+module.exports = {
+  plugins: [
+    rollupFilemanager({
+      events: {} // It's the same as webpack configuration
+    })
+  ]
+}
+```
+
+## customHooks
+
+> Supports for custom lifecycle for webpack or rollup to control the running order.
+> In addition, **when `customHooks` is set, `events` will be ignored.**
+
+- `hookName {String}`: Register hook of webpack or rollup. Commands will run when each hook is called. [webpack hooks](https://webpack.js.org/api/compiler-hooks/). [rollup hooks](https://github.com/rollup/rollup/blob/master/docs/05-plugin-development.md).
+- `commands {Array}`: Setting actions. Commands will run, when each hook which you registered is triggered.
+- `hookType {String}`: Depending on the hook type, It only supports **webpack**.
+
+```javascript
+// webpack
+const FileManagerPlugin = require('filemanager-plugin').WebpackFilemanager;
+module.exports = {
+  plugins: [
+    new FileManagerPlugin({
+      events: {
+        start: {
+          zip: {
+            items: [
+              {source: './src/demo0.zip', destination: './dest/demo0', type: 'zip'}
+            ]   
+          }
+        }
+      }, // events will be ignore.
+      customHooks: [
+        {
+          hookName: 'compile',
+          hookType: 'tap',
+          commands: {
+            del: {
+              items: ['./dist']
+              // All file under './dist' will be deleted, when compile hook is called
+            }
+          }
+        }
+      ]
+    })
+  ]
+};
+
+// rollup
+const RollupFilemanager = require('filemanager-plugin').RollupFilemanager;
+module.exports = {
+  plugins: [
+    new RollupFilemanager({
+      customHooks: [
+        {
+          hookName: 'generateBundle',
+          commands: {
+            del: {
+              items: ['./dist']
+              // All file under './dist' will be deleted, when generateBundle hook is called
+            }
+          }
+        }
+      ]
+    })
+  ]
+};
+```
+
+## Commands
+
+|  Name   | Type  |  Description |
+|  :---   | :---  |      ---     |
+| `zip`    | `{Array}` | Zip files or directories by using `tar`, `tgz`, `gzip` or `zip`. However, `gzip` only supports compress single file. You need to use `tgz` to zip a directory. |
+| `unzip`  | `{Array}` | Unzip files or directories. The usage is Same as `zip`. |
+| `del`    | `{Array}` | Delete multiple files or directories. |
+| `copy`   | `{Array}` | Copy multiple files or directories. |
+| `move`   | `{Array}` | Move multiple files or directories. |
+| `rename` | `{Array}` | Rename multiple files or directories. |
+
+These commands would be called when each hook which has been registered is called.
+Also, each action will be executed in order base on `Array` order.
+In this example below, in the end event, the `del` command will run first, and `zip` after:
+
+```javascript
+// webpack
+const FileManagerPlugin = require('filemanager-plugin').WebpackFilemanager;
+module.exports = {
+  plugins: [
+    new FileManagerPlugin({
+      events: {
+        start: {
+          del: {
+            items: ['./dist']
+          },
+          zip: {
+            items: [
+              {source: './src/demo0.zip', destination: './dest/demo0', type: 'zip'}
+            ]   
+          }
+        }
+      }
+    })
+  ]
+};
+
+// rollup
+const rollupFilemanager = require('filemanager-plugin').RollupFilemanager;
+module.exports = {
+  plugins: [
+    rollupFilemanager({
+      events: {} // It's the same as webpack configuration
     })
   ]
 }
@@ -53,7 +179,7 @@ module.exports = {
         end: {
           zip: {
             items: [
-               { source: './src/demo1', destination: './dest/demo1.zip', type: 'zip', option: { }},
+               { source: './src/demo1', destination: './dest/demo1.zip', type: 'zip'},
                { source: './src/demo2', destination: './dest/demo2.tar', type: 'tar'},
                { source: './src/demo3', destination: './dest/demo3.tgz', type: 'tgz'},
                { source: './src/demo4.html', destination: './dest/demo4.html.gz', type: 'gzip'},
@@ -70,7 +196,6 @@ module.exports = {
 - `source {String}`: Compressed source path which can be a file or directory. It supports [glob pattern](https://github.com/isaacs/node-glob). 
 - `destination {String}`: Compressed destination path.
 - `type {String}`: Compressed type. Default is `zip`.
-- `option {String}`: The same as [opts](https://github.com/node-modules/compressing#compressfile)
 
 #### `unzip` example
 
@@ -100,7 +225,6 @@ module.exports = {
 - `source {String}`: Uncompressed source path. It supports [glob pattern](https://github.com/isaacs/node-glob). 
 - `destination {String}`: Uncompressed destination path.
 - `type {String}`: Uncompressed type. Default is `zip`.
-- `option {String}`: The same as [opts](https://github.com/node-modules/compressing#compressfile)
 
 #### `del` example
 
@@ -192,76 +316,6 @@ module.exports = {
 - `source {String}`: Renamed source path.
 - `destination {String}`: Renamed destination path.
 
-# APIs
-
-## events
-
-- `start`: Adds a hook right before running the compiler.
-Refer to webpack [beforeRun](https://webpack.js.org/api/compiler-hooks/#beforeRun) hook.
-- `end`: Executed when the compilation has completed.
-Refer to webpack [done](https://webpack.js.org/api/compiler-hooks/#done) hook.
-
-The `start` and `end` events will register to compiler hooks in the
-right way. In the example below, the start event with `unzip` command will run first, 
-and then the end event with `zip` after.
-
-```javascript
-// webpack
-const FileManagerPlugin = require('filemanager-plugin').WebpackFilemanager;
-module.exports = {
-  plugins: [
-    new FileManagerPlugin({
-      events: {
-        start: {
-          del: {
-            items: ['./dist']
-          }
-        },
-        end: {
-          zip: {
-            items: [
-              {source: './src/demo0.zip', destination: './dest/demo0', type: 'zip'}
-            ]   
-          }
-        }
-      }
-    })
-  ]
-};
-
-// rollup
-const rollupFilemanager = require('filemanager-plugin').RollupFilemanager;
-module.exports = {
-  plugins: [
-    rollupFilemanager({
-      events: {} // It's the same as webpack configuration
-    })
-  ]
-}
-```
-
-## customHooks
-
-> Supports for custom lifecycle for webpack or rollup
-
-- `hookName`
-- `commands`
-
-## Commands
-
-|  Name   | Type  |  Description |
-|  :---   | :---  |      ---     |
-| `zip`    | `{Array}` | Zip files or directories by using `tar`, `tgz`, `gzip` or `zip`. However, `gzip` only supports compress single file. You need to use `tgz` to zip a directory. |
-| `unzip`  | `{Array}` | Unzip files or directories. The usage is Same as `zip`. |
-| `del`    | `{Array}` | Delete multiple files or directories. |
-| `copy`   | `{Array}` | Copy multiple files or directories. |
-| `move`   | `{Array}` | Move multiple files or directories. |
-| `rename` | `{Array}` | Rename multiple files or directories. |
-
-These commands would be called when each hook which has been registered is called. 
-Also, each operate will be executed in order base on `Array` order.
-In this example below, in the end event, the zip command will run first, and then the delete after:
-
 # Upgrade
 
 ```javascript
@@ -278,7 +332,7 @@ module.exports = {
       },
       end: {
         zip: [
-          { source: './src/demo', destination: './dest/demo.zip', type: 'zip', option: { }}
+          { source: './src/demo', destination: './dest/demo.zip', type: 'zip'}
         ],
         rename: [
           { source: './rename/b', destination: './rename/a' }
@@ -309,7 +363,7 @@ module.exports = {
         end: {
           zip: {
             items: [
-              { source: './src/demo', destination: './dest/demo.zip', type: 'zip', option: { }}
+              { source: './src/demo', destination: './dest/demo.zip', type: 'zip'}
             ]
           },
           rename: {
@@ -324,7 +378,7 @@ module.exports = {
           },
           unzip: {
             items: [
-              { source: './src/demo.zip', destination: './dest/demo', type: 'zip', option: { }}
+              { source: './src/demo.zip', destination: './dest/demo', type: 'zip'}
             ]
           },
           move: {
