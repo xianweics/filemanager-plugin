@@ -33,9 +33,9 @@ class webpackPlugin {
     for (const command in commands) {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         let { items = [], options = {} } = commands[command];
-        Object.assign(options, globalOptions);
+        Object.assign(globalOptions, options);
         for (const item of items) {
-          await commander[command](item, options);
+          await commander[command](item, globalOptions);
         }
       }
     }

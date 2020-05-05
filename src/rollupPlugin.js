@@ -26,10 +26,11 @@ const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
  * ]
  */
 function extractHooks(opts) {
-  const { events, customHooks = [] } = opts;
+  const { events, customHooks = [], options: globalOptions = {} } = opts;
   const hooks = [];
   if (customHooks.length > 0) {
     for (const hook of customHooks) {
+      hook.globalOptions = globalOptions;
       hooks.push(hook);
     }
   } else {
@@ -37,7 +38,8 @@ function extractHooks(opts) {
       if (events.hasOwnProperty(event) && EVENT_NAMES.includes(event)) {
         hooks.push({
           hookName: EVENT_NAMES_MAP[event].hook,
-          commands: events[event]
+          commands: events[event],
+          globalOptions
         });
       }
     }
@@ -48,15 +50,17 @@ function extractHooks(opts) {
 /**
  * @description execute according command type
  * @param commands {Object}
+ * @param globalOptions
  * @returns {void}
  */
-async function commanderDone(commands) {
+async function commanderDone(commands, globalOptions) {
   if (commands && Object.keys(commands).length > 0) {
     for (const command in commands) {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         const { items, options } = commands[command];
+        Object.assign(globalOptions, options);
         for (const item of items) {
-          await commander[command](item, options);
+          await commander[command](item, globalOptions);
         }
       }
     }
@@ -72,9 +76,9 @@ function createHooks(hooks) {
   const hookObj = {};
   if (hooks.length < 1) return hookObj;
   for (const hook of hooks) {
-    const { hookName, commands } = hook;
+    const { hookName, commands, globalOptions } = hook;
     hookObj[hookName] = async function () {
-      await commanderDone(commands);
+      await commanderDone(commands, globalOptions);
     };
   }
   return hookObj;

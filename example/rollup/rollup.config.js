@@ -83,12 +83,18 @@ export default {
           commands: {
             rename: {
               items: [
-                { path: './src/rename', oldName: 'a', newName: 'b' }
+                // { path: './src/rename', oldName: 'a', newName: 'b' }
               ]
             },
           }
         },
-      ]
+      ],
+      options: {
+        // parallel: os.cpus().length * 2,
+        log: 'error', // error || all
+        // cache: false,
+        // progress: false
+      }
     }),
     resolve({
       mainFields: ['jsnext', 'module', 'main']

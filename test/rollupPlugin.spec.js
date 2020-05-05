@@ -17,7 +17,7 @@ describe('Test rollup plugin file', () => {
       };
       
       const del = sinon.stub(commander, 'del');
-      await RollupFilemanager.commanderDone(mockCommands);
+      await RollupFilemanager.commanderDone(mockCommands, {});
       
       expect(del.withArgs('./dist').called).equals(true);
       del.restore();
@@ -56,7 +56,8 @@ describe('Test rollup plugin file', () => {
               del: {
                 items: ['./dist1']
               }
-            }
+            },
+            globalOptions: {}
           }
         ];
         const testResult = await RollupFilemanager.extractHooks(mockOptions);
