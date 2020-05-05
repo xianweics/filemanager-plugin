@@ -14,9 +14,11 @@ const glob = require('glob');
  */
 
 const unzip = async (
-  { source, destination, type = 'zip' }, globalOptions = {}) => {
+  { source, destination, type = 'zip' },
+  globalOptions = {}
+) => {
   const { log: logType } = globalOptions;
-  
+
   try {
     const sources = glob.sync(source) || [];
     for (const source of sources) {
@@ -24,7 +26,8 @@ const unzip = async (
         compressing[type]
           .uncompress(source, destination)
           .then(() => {
-            logger.setType(logType)
+            logger
+              .setType(logType)
               .info(`success: unzip '${source}' to '${destination}'`);
             resolve();
           })

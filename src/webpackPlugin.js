@@ -22,7 +22,7 @@ class webpackPlugin {
   constructor(opts) {
     this.options = opts;
   }
-  
+
   /**
    * @desc execute according command type
    * @param commands {Object}
@@ -40,7 +40,7 @@ class webpackPlugin {
       }
     }
   }
-  
+
   /**
    * @description translate 'options' to other options with hooks and types of webpack
    * @param opts {Object}
@@ -99,7 +99,7 @@ class webpackPlugin {
     }
     return result;
   }
-  
+
   /**
    * @desc the type of tap hook callback
    * @param commands {Array}
@@ -109,7 +109,7 @@ class webpackPlugin {
   static tabCallback(commands, options) {
     return () => webpackPlugin.handleCommand(commands, options);
   }
-  
+
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -122,7 +122,7 @@ class webpackPlugin {
       callback();
     };
   }
-  
+
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -134,7 +134,7 @@ class webpackPlugin {
       await webpackPlugin.handleCommand(commands, options);
     };
   }
-  
+
   apply(compiler) {
     const hookTypesMap = {
       tap: (commands, options) => webpackPlugin.tabCallback(commands, options),

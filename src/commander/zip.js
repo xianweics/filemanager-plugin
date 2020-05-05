@@ -15,9 +15,11 @@ const glob = require('glob');
  * @returns {Promise<void>}
  */
 const zip = async (
-  { source, destination, type = 'zip' }, globalOptions = {}) => {
+  { source, destination, type = 'zip' },
+  globalOptions = {}
+) => {
   const { log: logType } = globalOptions;
-  
+
   try {
     const sources = glob.sync(source) || [];
     if (sources.length === 0) {
@@ -38,7 +40,8 @@ const zip = async (
         Compressing.gzip
           .compressFile(source, destination)
           .then(() => {
-            logger.setType(logType)
+            logger
+              .setType(logType)
               .info(`success: zip '${source}' to '${destination}'`);
             resolve();
           })
@@ -57,7 +60,8 @@ const zip = async (
         targetStream
           .pipe(fs.createWriteStream(destination))
           .on('finish', () => {
-            logger.setType(logType)
+            logger
+              .setType(logType)
               .info(`success: zip '${source}' to '${destination}'`);
             resolve();
           })

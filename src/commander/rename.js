@@ -8,7 +8,9 @@ const rename = ({ path, oldName, newName }, options = {}) => {
     const oldPath = join(path, oldName);
     const newPath = join(path, newName);
     fs.renameSync(oldPath, newPath);
-    logger.setType(logType).info(`success: rename '${oldName}' to '${newName}'`);
+    logger
+      .setType(logType)
+      .info(`success: rename '${oldName}' to '${newName}'`);
   } catch (e) {
     logger.error(`rename error: ${e}`);
   }

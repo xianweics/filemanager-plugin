@@ -8,7 +8,9 @@ const copy = ({ source, destination }, options = {}) => {
     const sources = glob.sync(source) || [];
     sources.forEach(source => {
       fs.copySync(source, destination);
-      logger.setType(logType).info(`success: copy '${source}' to '${destination}'`);
+      logger
+        .setType(logType)
+        .info(`success: copy '${source}' to '${destination}'`);
     });
   } catch (e) {
     logger.error(`copy error: ${e}`);
