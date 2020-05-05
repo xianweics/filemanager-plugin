@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve } = require('path');
 const FileManagerPlugin = require('../../lib').WebpackFilemanager;
 const Webpack = require('webpack');
+// const os = require('os');
 
 const config = {
   entry: './src/index.js',
@@ -97,7 +98,7 @@ const config = {
       // },
       customHooks: [
         {
-          hookType: 'tapAsync',
+          hookType: 'tapPromise',
           hookName: 'beforeRun',
           commands: {
             del: {
@@ -162,7 +163,7 @@ const config = {
                 // { source: './unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {}},
                 // { source: './unzip/c.zip', destination: './dist/unzip/c', options: {}},
                 // { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {}}
-              ],
+              ]
               // options: {
               //   buildStart: () => {},
               //   buildEnd: () => {}
@@ -170,7 +171,7 @@ const config = {
             }
           }
         }
-      ]
+      ],
       // pluginLibraries: [
       //   {
       //     name: 'html-webpack-plugin',
@@ -181,12 +182,12 @@ const config = {
       // other hooks
       // }
       // ],
-      // options: {
-      // parallel: os.cpus().length * 2,
-      // log: 'all', // error || success
-      // cache: false,
-      // progress: false
-      // }
+      options: {
+        // parallel: os.cpus().length * 2,
+        log: 'error', // error || all
+        // cache: false,
+        // progress: false
+      }
     })
   ],
   devServer: {

@@ -10,10 +10,14 @@ const glob = require('glob');
  * @param source {string}
  * @param destination {string}
  * @param type {string}
+ * @param globalOptions
  * @param option {Object}
  * @returns {Promise<void>}
  */
-const zip = async ({ source, destination, type = 'zip' }) => {
+const zip = async (
+  { source, destination, type = 'zip' }, globalOptions = {}) => {
+  const { log: logType } = globalOptions;
+  
   try {
     const sources = glob.sync(source) || [];
     if (sources.length === 0) {
@@ -34,7 +38,8 @@ const zip = async ({ source, destination, type = 'zip' }) => {
         Compressing.gzip
           .compressFile(source, destination)
           .then(() => {
-            logger.info(`success: zip '${source}' to '${destination}'`);
+            logger.setType(logType)
+              .info(`success: zip '${source}' to '${destination}'`);
             resolve();
           })
           .catch(e => {
@@ -52,7 +57,8 @@ const zip = async ({ source, destination, type = 'zip' }) => {
         targetStream
           .pipe(fs.createWriteStream(destination))
           .on('finish', () => {
-            logger.info(`success: zip '${source}' to '${destination}'`);
+            logger.setType(logType)
+              .info(`success: zip '${source}' to '${destination}'`);
             resolve();
           })
           .on('error', e => {

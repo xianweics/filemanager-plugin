@@ -1,6 +1,6 @@
 {
   "name": "filemanager-plugin",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "This is file manager plugin, support for rollup and webpack",
   "main": "lib/index.js",
   "repository": {

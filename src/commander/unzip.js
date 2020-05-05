@@ -9,18 +9,23 @@ const glob = require('glob');
  * @param destination {string}
  * @param type {string}
  * @param option {Object}
+ * @param globalOptions {Object}
  * @returns {Promise<void>}
  */
 
-const unzip = async ({ source, destination, type = 'zip', option = {} }) => {
+const unzip = async (
+  { source, destination, type = 'zip' }, globalOptions = {}) => {
+  const { log: logType } = globalOptions;
+  
   try {
     const sources = glob.sync(source) || [];
     for (const source of sources) {
       await new Promise((resolve, reject) => {
         compressing[type]
-          .uncompress(source, destination, option)
+          .uncompress(source, destination)
           .then(() => {
-            logger.info(`success: unzip '${source}' to '${destination}'`);
+            logger.setType(logType)
+              .info(`success: unzip '${source}' to '${destination}'`);
             resolve();
           })
           .catch(e => {

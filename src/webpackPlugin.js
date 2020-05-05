@@ -3,6 +3,7 @@ import { logger } from './utils';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
+
 const BUILTIN_EVENTS_MAP = {
   start: {
     hookType: 'tapAsync',
@@ -21,7 +22,7 @@ class webpackPlugin {
   constructor(opts) {
     this.options = opts;
   }
-
+  
   /**
    * @desc execute according command type
    * @param commands {Object}
@@ -32,14 +33,14 @@ class webpackPlugin {
     for (const command in commands) {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         let { items = [], options = {} } = commands[command];
-        options = Object.assign(options, globalOptions);
+        Object.assign(options, globalOptions);
         for (const item of items) {
           await commander[command](item, options);
         }
       }
     }
   }
-
+  
   /**
    * @description translate 'options' to other options with hooks and types of webpack
    * @param opts {Object}
@@ -98,7 +99,7 @@ class webpackPlugin {
     }
     return result;
   }
-
+  
   /**
    * @desc the type of tap hook callback
    * @param commands {Array}
@@ -106,11 +107,9 @@ class webpackPlugin {
    * @returns {Function}
    */
   static tabCallback(commands, options) {
-    return async () => {
-      await webpackPlugin.handleCommand(commands, options);
-    };
+    return () => webpackPlugin.handleCommand(commands, options);
   }
-
+  
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -123,10 +122,24 @@ class webpackPlugin {
       callback();
     };
   }
-
+  
+  /**
+   * the type of tapAsync hook callback
+   * @param commands {Array}
+   * @param options {Object}
+   * @returns {Function}
+   */
+  static tapPromiseCallback(commands, options) {
+    return async () => {
+      await webpackPlugin.handleCommand(commands, options);
+    };
+  }
+  
   apply(compiler) {
     const hookTypesMap = {
       tap: (commands, options) => webpackPlugin.tabCallback(commands, options),
+      tapPromise: (commands, options) =>
+        webpackPlugin.tapPromiseCallback(commands, options),
       tapAsync: (commands, options) =>
         webpackPlugin.tapAsyncCallback(commands, options)
     };
