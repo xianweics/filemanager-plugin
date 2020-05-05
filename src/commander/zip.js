@@ -1,4 +1,4 @@
-import { handlerError, handlerInfo } from '../utils';
+import { logger } from '../utils';
 
 const Compressing = require('compressing');
 const fs = require('fs-extra');
@@ -17,7 +17,7 @@ const zip = async ({ source, destination, type = 'zip' }) => {
   try {
     const sources = glob.sync(source) || [];
     if (sources.length === 0) {
-      handlerError(`zip error: '${source}' is not exist`);
+      logger.error(`zip error: '${source}' is not exist`);
       return;
     }
     fs.ensureDirSync(path.dirname(destination));
@@ -27,18 +27,18 @@ const zip = async ({ source, destination, type = 'zip' }) => {
         fs.statSync(source).isDirectory()
       );
       if (sources.length > 1 || hasDirectory) {
-        handlerError(`zip error: Gzip only support compressing a single file`);
+        logger.error(`zip error: Gzip only support compressing a single file`);
         return;
       }
       await new Promise((resolve, reject) => {
         Compressing.gzip
           .compressFile(source, destination)
           .then(() => {
-            handlerInfo(`success: zip '${source}' to '${destination}'`);
+            logger.info(`success: zip '${source}' to '${destination}'`);
             resolve();
           })
           .catch(e => {
-            handlerError(`zip error: ${e}`);
+            logger.error(`zip error: ${e}`);
             reject(e);
           });
       });
@@ -52,17 +52,17 @@ const zip = async ({ source, destination, type = 'zip' }) => {
         targetStream
           .pipe(fs.createWriteStream(destination))
           .on('finish', () => {
-            handlerInfo(`success: zip '${source}' to '${destination}'`);
+            logger.info(`success: zip '${source}' to '${destination}'`);
             resolve();
           })
           .on('error', e => {
-            handlerError(`zip error: ${e}`);
+            logger.error(`zip error: ${e}`);
             reject(e);
           });
       });
     }
   } catch (e) {
-    handlerError(`zip error: ${e}`);
+    logger.error(`zip error: ${e}`);
   }
 };
 

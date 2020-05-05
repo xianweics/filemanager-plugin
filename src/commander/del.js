@@ -1,4 +1,4 @@
-import { handlerError, handlerInfo } from '../utils';
+import { logger } from '../utils';
 
 const fs = require('fs-extra');
 const glob = require('glob');
@@ -8,10 +8,10 @@ const del = file => {
     const files = glob.sync(file) || [];
     files.forEach(file => {
       fs.removeSync(file);
-      handlerInfo(`success: delete '${file}'`);
+      logger.info(`success: delete '${file}'`);
     });
   } catch (e) {
-    handlerError(`delete error: ${e}`);
+    logger.error(`delete error: ${e}`);
   }
 };
 

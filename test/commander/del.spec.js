@@ -9,7 +9,7 @@ import { template as mockTemplate } from '../mock';
 
 mockTemplate('Test delete', (rootPath) => {
   it('Delete an existing file, handlerInfo will be called', async () => {
-    const handlerInfo = sinon.stub(utils, 'handlerInfo');
+    const handlerInfo = sinon.stub(utils.logger, 'info');
     expect(handlerInfo.called).equals(false);
     
     const mockPath = path.join(rootPath, 'del', 'index.html');
@@ -22,7 +22,7 @@ mockTemplate('Test delete', (rootPath) => {
   });
   
   it('Delete an invalid file, handlerError will be called', async () => {
-    const handlerError = sinon.stub(utils, 'handlerError');
+    const handlerError = sinon.stub(utils.logger, 'error');
     expect(handlerError.called).equals(false);
     
     await del(null);

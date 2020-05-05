@@ -10,7 +10,7 @@ const fs = require('fs-extra');
 
 mockTemplate('Test move', (rootPath) => {
   it('Move a valid file, handlerInfo will be called', async () => {
-    const handlerInfo = sinon.stub(utils, 'handlerInfo');
+    const handlerInfo = sinon.stub(utils.logger, 'info');
     expect(handlerInfo.called).equals(false);
     
     const mockSource = path.join(rootPath, 'move', 'index.html');
@@ -28,7 +28,7 @@ mockTemplate('Test move', (rootPath) => {
   });
   
   it('Move an invalid file, handlerError will be called', async () => {
-    const handlerError = sinon.stub(utils, 'handlerError');
+    const handlerError = sinon.stub(utils.logger, 'error');
     expect(handlerError.called).equals(false);
     
     await move({

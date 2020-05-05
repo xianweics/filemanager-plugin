@@ -1,5 +1,5 @@
 import commander from './commander';
-import { handlerError } from './utils';
+import { logger } from './utils';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
@@ -147,8 +147,7 @@ class webpackPlugin {
         );
       }
     } catch (e) {
-      handlerError(`File manager error: ${e}`);
-      return e;
+      logger.error(`File manager error: ${e}`);
     }
   }
 }

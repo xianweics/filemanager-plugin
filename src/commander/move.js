@@ -1,4 +1,4 @@
-import { handlerError, handlerInfo } from '../utils';
+import { logger } from '../utils';
 
 const fs = require('fs-extra');
 const glob = require('glob');
@@ -8,10 +8,10 @@ const move = ({ source, destination }) => {
     const sources = glob.sync(source) || [];
     sources.forEach(source => {
       fs.moveSync(source, path.join(destination, path.basename(source)));
-      handlerInfo(`move: move '${source}' to '${destination}'`);
+      logger.info(`move: move '${source}' to '${destination}'`);
     });
   } catch (e) {
-    handlerError(`move error: ${e}`);
+    logger.error(`move error: ${e}`);
   }
 };
 

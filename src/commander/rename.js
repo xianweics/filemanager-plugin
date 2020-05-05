@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { handlerError, handlerInfo } from '../utils';
+import { logger } from '../utils';
 import { join } from 'path';
 
 const rename = ({ path, oldName, newName }) => {
@@ -7,9 +7,9 @@ const rename = ({ path, oldName, newName }) => {
     const oldPath = join(path, oldName);
     const newPath = join(path, newName);
     fs.renameSync(oldPath, newPath);
-    handlerInfo(`success: rename '${oldName}' to '${newName}'`);
+    logger.info(`success: rename '${oldName}' to '${newName}'`);
   } catch (e) {
-    handlerError(`rename error: ${e}`);
+    logger.error(`rename error: ${e}`);
   }
 };
 

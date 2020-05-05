@@ -1,8 +1,8 @@
 import { WebpackFilemanager } from '../src/index';
 import commander from '../src/commander';
+import * as utils from '../src/utils';
 
 const sinon = require('sinon');
-
 const expect = require('chai').expect;
 
 describe('Test webpack plugin file', () => {
@@ -150,6 +150,8 @@ describe('Test webpack plugin file', () => {
     it(
       `It will throw an error, when called 'compiler.hooks[hookName][hookType]' with an invalid 'hookType'`,
       () => {
+        const handlerError = sinon.stub(utils.logger, 'error');
+        expect(handlerError.called).equals(false);
         const mockOptions = {
           customHooks: [
             {
@@ -173,9 +175,10 @@ describe('Test webpack plugin file', () => {
           ]
         };
         webpackFilemanager = new WebpackFilemanager(mockOptions);
-        const result = webpackFilemanager.apply(mockCompiler);
-        
-        expect(result).instanceOf(Error);
+        webpackFilemanager.apply(mockCompiler);
+  
+        expect(handlerError.called).equals(true);
+        handlerError.restore();
       });
   });
 });

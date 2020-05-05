@@ -1,17 +1,16 @@
-import { handlerError, handlerInfo } from '../utils';
+import { logger } from '../utils';
 
 const glob = require('glob');
 const fs = require('fs-extra');
-
 const copy = ({ source, destination }) => {
   try {
     const sources = glob.sync(source) || [];
     sources.forEach(source => {
       fs.copySync(source, destination);
-      handlerInfo(`success: copy '${source}' to '${destination}'`);
+      logger.info(`success: copy '${source}' to '${destination}'`);
     });
   } catch (e) {
-    handlerError(`copy error: ${e}`);
+    logger.error(`copy error: ${e}`);
   }
 };
 

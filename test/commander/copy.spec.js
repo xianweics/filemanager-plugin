@@ -10,9 +10,8 @@ const fs = require('fs-extra');
 
 mockTemplate('Test copy', (rootPath) => {
   it('Copy an existing file, handlerInfo will be called', async () => {
-    const handlerInfo = sinon.stub(utils, 'handlerInfo');
+    const handlerInfo = sinon.stub(utils.logger, 'info');
     expect(handlerInfo.called).equals(false);
-    
     const mockSource = path.join(rootPath, 'copy', 'index.html');
     fs.ensureFileSync(mockSource);
     expect(fs.pathExistsSync(mockSource)).equals(true);
@@ -27,7 +26,7 @@ mockTemplate('Test copy', (rootPath) => {
     handlerInfo.restore();
   });
   it('Copy an invalid file, handlerError will be called', async () => {
-    const handlerError = sinon.stub(utils, 'handlerError');
+    const handlerError = sinon.stub(utils.logger, 'error');
     expect(handlerError.called).equals(false);
     
     const mockSource = path.join(rootPath, 'copy');

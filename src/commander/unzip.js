@@ -1,4 +1,4 @@
-import { handlerError, handlerInfo } from '../utils';
+import { logger } from '../utils';
 
 const compressing = require('compressing');
 const glob = require('glob');
@@ -20,17 +20,17 @@ const unzip = async ({ source, destination, type = 'zip', option = {} }) => {
         compressing[type]
           .uncompress(source, destination, option)
           .then(() => {
-            handlerInfo(`success: unzip '${source}' to '${destination}'`);
+            logger.info(`success: unzip '${source}' to '${destination}'`);
             resolve();
           })
           .catch(e => {
-            handlerError(`unzip error: ${e}`);
+            logger.error(`unzip error: ${e}`);
             reject(e);
           });
       });
     }
   } catch (e) {
-    handlerError(`unzip error: ${e}`);
+    logger.error(`unzip error: ${e}`);
   }
 };
 

@@ -10,7 +10,7 @@ const sinon = require('sinon');
 
 mockTemplate('Test rename', (rootPath) => {
   it('Rename a valid file, handlerInfo will be called', async () => {
-    const handlerInfo = sinon.stub(utils, 'handlerInfo');
+    const handlerInfo = sinon.stub(utils.logger, 'info');
     const mockOldName = 'index.html';
     const mockNewName = 'index1.html';
     const mockSource = path.join(rootPath, 'rename', mockOldName);
@@ -29,7 +29,7 @@ mockTemplate('Test rename', (rootPath) => {
   });
   
   it('Rename an invalid file, it will throw an error', async () => {
-    const handlerError = sinon.stub(utils, 'handlerError');
+    const handlerError = sinon.stub(utils.logger, 'error');
     expect(handlerError.called).equals(false);
     
     await rename({

@@ -47,7 +47,7 @@ mockTemplate('Test unzip', () => {
   // });
   
   it('Unzip an invalid file, handlerError will be called', async () => {
-    const handlerError = sinon.stub(utils, 'handlerError');
+    const handlerError = sinon.stub(utils.logger, 'error');
     expect(handlerError.called).equals(false);
     
     await unzip({
