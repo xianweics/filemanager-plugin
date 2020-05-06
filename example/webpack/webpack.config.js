@@ -110,12 +110,12 @@ const config = {
           hookName: 'compile',
           hookType: 'tap', // reference to webpack. tap | tapAsync | tapPromise
           commands: {
-            // copy: {
-            //   items: [
-            //     { source: './copy/a', destination: './dist/copy/a' },
-            //     { source: './copy/b.html', destination: './dist/copy/' }
-            //   ]
-            // },
+            copy: {
+              items: [
+                // { source: './copy/a', destination: './dist/copy/a' },
+                { source: './copy/**/*.html', destination: './dist/copy/' }
+              ]
+            },
             // rename: {
             //   items: [
             //     { path: './rename', oldName: 'test.html', newName: 'test1.html' }
