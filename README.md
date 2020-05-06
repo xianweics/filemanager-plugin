@@ -394,6 +394,7 @@ module.exports = {
 
 ## Todo
 
-1. Update option configuration for ReadMe doc.
+1. Update option configuration in ReadMe doc.
+2. Update copy feature in ReadMe doc. Support for `Array` input
 
 
