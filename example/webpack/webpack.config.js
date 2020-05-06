@@ -98,7 +98,7 @@ const config = {
       // },
       customHooks: [
         {
-          hookType: 'tapPromise',
+          hookType: 'tapAsync',
           hookName: 'beforeRun',
           commands: {
             del: {
@@ -107,13 +107,13 @@ const config = {
           }
         },
         {
-          hookName: 'compile',
-          hookType: 'tap', // reference to webpack. tap | tapAsync | tapPromise
+          hookName: 'afterEmit',
+          hookType: 'tapAsync', // reference to webpack. tap | tapAsync | tapPromise
           commands: {
             copy: {
               items: [
                 // { source: './copy/a', destination: './dist/copy/a' },
-                { source: './copy/**/*.html', destination: './dist/copy/' }
+                { source: ['./copy/**/*.html', './copy/c'], destination: './dist/copy/' }
               ]
             },
             // rename: {
@@ -184,7 +184,7 @@ const config = {
       // ],
       options: {
         // parallel: os.cpus().length * 2,
-        log: 'error', // error || all
+        // log: 'error', // error || all
         // cache: false,
         // progress: false
       }
