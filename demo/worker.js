@@ -1,16 +1,10 @@
-const cluster = require('cluster');
-
-function fibo(n) {
-  return n === 0 ? 0 : n > 1 ? fibo(n - 1) + fibo(n - 2) : 1;
-}
+const jobs = {
+  'job1': (job) => require('./job1')(job),
+  'job2': (job) => require('./job2')(job)
+};
 
 process.on('message', async (msg) => {
-  const st = Date.now();
-  const result = fibo(msg);
-  await new Promise(resolve => {
-    setTimeout(resolve, 1000);
-  });
-  console.log(
-    `[worker ${cluster.worker.id}] finish work and using ${Date.now() - st} ms, result: ${result}`);
+  const [job, type] = msg;
+  const result = await jobs[type](job);
   process.send(result);
 });

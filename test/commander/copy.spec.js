@@ -17,11 +17,10 @@ mockTemplate('Test copy', (rootPath) => {
     expect(fs.pathExistsSync(mockSource)).equals(true);
     const mockDestination = path.join('testCache', 'copy', 'index1.html');
     expect(fs.pathExistsSync(mockDestination)).equals(false);
-    
     await copy({
       source: mockSource,
       destination: mockDestination
-    });
+    }, {});
     expect(fs.pathExistsSync(mockDestination)).equals(true);
     expect(handlerInfo.called).equals(true);
     handlerInfo.restore();
@@ -33,7 +32,7 @@ mockTemplate('Test copy', (rootPath) => {
     await copy({
       source: null,
       destination: null
-    });
+    }, {});
     expect(handlerError.called).equals(true);
     handlerError.restore();
   });

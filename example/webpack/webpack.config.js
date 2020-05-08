@@ -112,8 +112,8 @@ const config = {
           commands: {
             copy: {
               items: [
-                // { source: './copy/a', destination: './dist/copy/a' },
-                { source: ['./copy/**/*.html', './copy/c'], destination: './dist/copy/' }
+                { source: './copy/a', destination: './dist/copy/a' },
+                // { source: ['./copy/**/*.html', './copy/c'], destination: './dist/copy/' }
               ]
             },
             // rename: {
@@ -183,7 +183,7 @@ const config = {
       // }
       // ],
       options: {
-        // parallel: os.cpus().length * 2,
+        parallel: 4,
         // log: 'error', // error || all
         // cache: false,
         // progress: false

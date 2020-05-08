@@ -58,9 +58,9 @@ async function commanderDone(commands, globalOptions) {
     for (const command in commands) {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         const { items, options } = commands[command];
-        Object.assign(globalOptions, options);
+        const opts = Object.assign({}, globalOptions, options);
         for (const item of items) {
-          await commander[command](item, globalOptions);
+          await commander[command](item, opts);
         }
       }
     }
