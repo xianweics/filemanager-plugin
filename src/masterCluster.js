@@ -45,7 +45,7 @@ function masterCluster({ jobs, type, cpu }, options) {
                 cluster.workers[id].disconnect();
               }
             });
-            resolve();
+            resolve(countCompleted);
           }
         });
       });
