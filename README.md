@@ -396,5 +396,6 @@ module.exports = {
 
 1. Update option configuration in ReadMe doc.
 2. Update copy feature in ReadMe doc. Support for `Array` input
+3. Update cluster feature in Readme doc.
 
 

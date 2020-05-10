@@ -6,12 +6,21 @@ import { eslint } from 'rollup-plugin-eslint';
 import friendlyFormatter from 'eslint-friendly-formatter';
 
 export default {
-  input: 'src/index.js',
+  input: ['src/index.js', 'src/workerCluster.js'],
   output: {
-    file: 'lib/index.js',
-    format: 'cjs'
+    dir: 'lib',
+    format: 'cjs',
+    entryFileNames: '[name].js',
   },
-  external: ['fs', 'path', 'os', 'glob', 'util', 'colors', 'fs-extra', 'compressing'],
+  external: [
+    'fs',
+    'path',
+    'os',
+    'glob',
+    'util',
+    'colors',
+    'fs-extra',
+    'compressing'],
   watch: {
     include: 'src/**'
   },

@@ -15,7 +15,7 @@ describe('Test webpack plugin file', () => {
         }
       };
       const mockGlobalOptions = {
-        parallel: 1
+        parallel: 0
       };
       
       const del = sinon.stub(commander, 'del');

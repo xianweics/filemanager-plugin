@@ -1,42 +1,51 @@
 const os = require('os');
 const cluster = require('cluster');
+const { join } = require('path');
+import { logger } from './utils';
 
-function master({ jobs, type, cpu }) {
-  let maxCpu = getMaxCup(cpu, jobs.length);
+function masterCluster({ jobs, type, cpu }, options) {
   return new Promise((resolve, reject) => {
     cluster.setupMaster({
-      exec: 'worker.js',
+      exec: join(__dirname, 'workerCluster.js'),
       silent: false
     });
     if (cluster.isMaster) {
       const workerID = [];
-      const result = [];
+      let countCompleted = 0;
       let forkCount = 0;
+      let maxCpu = getMaxCup(cpu, jobs.length);
+      
       while (forkCount < maxCpu) {
         const wk = cluster.fork();
         workerID.push(wk.id);
-        wk.send([jobs[forkCount++], type]);
+        wk.send({
+          job: jobs[forkCount++],
+          type,
+          options
+        });
       }
       cluster.on('error', (e) => {
-        console.log(`[master] error:  ${e}`);
+        logger.error(`[master] error:  ${e}`);
         reject(e);
       });
       workerID.forEach((id) => {
-        cluster.workers[id].on('message', function (msg) {
-          console.log(`[master] receive message from [worker ${id}]: ${msg}`);
-          result.push(msg);
+        cluster.workers[id].on('message', function () {
+          countCompleted++;
           const jobsLength = jobs.length;
           if (forkCount < jobsLength) {
-            this.send([jobs[forkCount], type]);
-            forkCount++;
+            this.send({
+              job: jobs[forkCount++],
+              type,
+              options
+            });
           }
-          if (result.length === jobsLength) {
+          if (countCompleted === jobsLength) {
             workerID.forEach((id) => {
               if (!cluster.workers[id].isDead()) {
                 cluster.workers[id].disconnect();
               }
             });
-            resolve(result);
+            resolve();
           }
         });
       });
@@ -52,4 +61,4 @@ function getMaxCup(cpu, jobsLength) {
   return Math.min(maxCpu, jobsLength);
 }
 
-module.exports = master;
+export default masterCluster;

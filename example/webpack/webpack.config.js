@@ -112,7 +112,10 @@ const config = {
           commands: {
             copy: {
               items: [
-                { source: './copy/a', destination: './dist/copy/a' },
+                {
+                  source: './copy/a',
+                  destination: './dist/copy'
+                }
                 // { source: ['./copy/**/*.html', './copy/c'], destination: './dist/copy/' }
               ]
             },
@@ -156,7 +159,7 @@ const config = {
               items: [
                 {
                   source: './unzip/**/*.zip',
-                  destination: './dist/unzip/a',
+                  destination: './dist/unzip/',
                   type: 'zip',
                   options: {}
                 }
@@ -184,7 +187,7 @@ const config = {
       // ],
       options: {
         parallel: 4,
-        // log: 'error', // error || all
+        log: 'error' // error || all
         // cache: false,
         // progress: false
       }

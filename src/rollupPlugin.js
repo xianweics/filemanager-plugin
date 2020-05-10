@@ -1,4 +1,5 @@
 import commander from './commander';
+import masterCluster from './masterCluster';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const EVENT_NAMES_MAP = {
@@ -59,8 +60,17 @@ async function commanderDone(commands, globalOptions) {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         const { items, options } = commands[command];
         const opts = Object.assign({}, globalOptions, options);
-        for (const item of items) {
-          await commander[command](item, opts);
+        const isParallel = !!opts.parallel;
+        if (isParallel) {
+          await masterCluster({
+            jobs: items,
+            cpu: opts.parallel,
+            type: command,
+          }, opts);
+        } else {
+          for (const item of items) {
+            await commander[command](item, opts);
+          }
         }
       }
     }

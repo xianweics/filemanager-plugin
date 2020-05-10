@@ -1,4 +1,5 @@
 import commander from './commander';
+import masterCluster from './masterCluster';
 import { logger } from './utils';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
@@ -22,7 +23,7 @@ class webpackPlugin {
   constructor(opts) {
     this.options = opts;
   }
-
+  
   /**
    * @desc execute according command type
    * @param commands {Object}
@@ -34,13 +35,22 @@ class webpackPlugin {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         let { items = [], options = {} } = commands[command];
         const opts = Object.assign({}, globalOptions, options);
-        for (const item of items) {
-          await commander[command](item, opts);
+        const isParallel = !!opts.parallel;
+        if (isParallel) {
+          await masterCluster({
+            jobs: items,
+            cpu: opts.parallel,
+            type: command,
+          }, opts);
+        } else {
+          for (const item of items) {
+            await commander[command](item, opts);
+          }
         }
       }
     }
   }
-
+  
   /**
    * @description translate 'options' to other options with hooks and types of webpack
    * @param opts {Object}
@@ -99,7 +109,7 @@ class webpackPlugin {
     }
     return result;
   }
-
+  
   /**
    * @desc the type of tap hook callback
    * @param commands {Array}
@@ -109,7 +119,7 @@ class webpackPlugin {
   static tabCallback(commands, options) {
     return () => webpackPlugin.handleCommand(commands, options);
   }
-
+  
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -122,7 +132,7 @@ class webpackPlugin {
       callback();
     };
   }
-
+  
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -134,7 +144,7 @@ class webpackPlugin {
       await webpackPlugin.handleCommand(commands, options);
     };
   }
-
+  
   apply(compiler) {
     const hookTypesMap = {
       tap: (commands, options) => webpackPlugin.tabCallback(commands, options),
