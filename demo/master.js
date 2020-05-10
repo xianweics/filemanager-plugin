@@ -1,17 +1,17 @@
-const cpus = require('os').cpus();
+const os = require('os');
 const cluster = require('cluster');
 
-function excuFibo({ jobs, type }) {
+function master({ jobs, type, cpu }) {
+  let maxCpu = getMaxCup(cpu, jobs.length);
   return new Promise((resolve, reject) => {
-    const result = [];
-    let forkCount = 0;
-    const maxCpu = Math.min(cpus.length, jobs.length);
-    const workerID = [];
     cluster.setupMaster({
       exec: 'worker.js',
       silent: false
     });
     if (cluster.isMaster) {
+      const workerID = [];
+      const result = [];
+      let forkCount = 0;
       while (forkCount < maxCpu) {
         const wk = cluster.fork();
         workerID.push(wk.id);
@@ -21,7 +21,7 @@ function excuFibo({ jobs, type }) {
         console.log(`[master] error:  ${e}`);
         reject(e);
       });
-      Object.keys(cluster.workers).forEach((id) => {
+      workerID.forEach((id) => {
         cluster.workers[id].on('message', function (msg) {
           console.log(`[master] receive message from [worker ${id}]: ${msg}`);
           result.push(msg);
@@ -44,4 +44,12 @@ function excuFibo({ jobs, type }) {
   });
 }
 
-module.exports = excuFibo;
+function getMaxCup(cpu, jobsLength) {
+  let maxCpu = (os.cpus()).length - 1;
+  if (cpu && !isNaN(cpu) && cpu > 0) {
+    maxCpu = Math.min(Number(cpu), maxCpu);
+  }
+  return Math.min(maxCpu, jobsLength);
+}
+
+module.exports = master;
