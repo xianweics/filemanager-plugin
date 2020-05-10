@@ -14,7 +14,7 @@ function masterCluster({ jobs, type, cpu }, options) {
       let countCompleted = 0;
       let forkCount = 0;
       let maxCpu = getMaxCup(cpu, jobs.length);
-      
+
       while (forkCount < maxCpu) {
         const wk = cluster.fork();
         workerID.push(wk.id);
@@ -24,11 +24,11 @@ function masterCluster({ jobs, type, cpu }, options) {
           options
         });
       }
-      cluster.on('error', (e) => {
+      cluster.on('error', e => {
         logger.error(`[master] error:  ${e}`);
         reject(e);
       });
-      workerID.forEach((id) => {
+      workerID.forEach(id => {
         cluster.workers[id].on('message', function () {
           countCompleted++;
           const jobsLength = jobs.length;
@@ -40,7 +40,7 @@ function masterCluster({ jobs, type, cpu }, options) {
             });
           }
           if (countCompleted === jobsLength) {
-            workerID.forEach((id) => {
+            workerID.forEach(id => {
               if (!cluster.workers[id].isDead()) {
                 cluster.workers[id].disconnect();
               }
@@ -54,7 +54,7 @@ function masterCluster({ jobs, type, cpu }, options) {
 }
 
 function getMaxCup(cpu, jobsLength) {
-  let maxCpu = (os.cpus()).length - 1;
+  let maxCpu = os.cpus().length - 1;
   if (cpu && !isNaN(cpu) && cpu > 0) {
     maxCpu = Math.min(Number(cpu), maxCpu);
   }

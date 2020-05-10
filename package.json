@@ -14,6 +14,9 @@
     "nodejs",
     "glob"
   ],
+  "engines": {
+    "node": ">= 8.0.0"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/xianweics/filemanager-plugin/issues"
