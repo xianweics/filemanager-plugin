@@ -1,9 +1,10 @@
 import commander from './commander';
 import masterCluster from './masterCluster';
-import { logger } from './utils';
+import { logger, progress } from './utils';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
+const PROGRESS_TASK_NAME = 'file manager';
 
 const BUILTIN_EVENTS_MAP = {
   start: {
@@ -21,24 +22,29 @@ const BUILTIN_EVENT_NAMES = Object.keys(BUILTIN_EVENTS_MAP);
 
 class webpackPlugin {
   constructor(opts) {
-    this.options = opts;
+    this.options = {};
+    if (Object.prototype.toString.call(opts) === '[object Object]') {
+      this.options = opts;
+    }
+    this.hookTypesMap = {
+      tap: commands => this.tabCallback(commands),
+      tapPromise: commands => this.tapPromiseCallback(commands),
+      tapAsync: commands => this.tapAsyncCallback(commands)
+    };
   }
-  
+
   /**
    * @desc execute according command type
    * @param commands {Object}
-   * @param globalOptions {Object}
    * @returns {Promise<void>}
    */
-  static async handleCommand(commands, globalOptions) {
+  async handleCommand(commands) {
+    const { options: globalOptions = {} } = this.options;
     for (const command in commands) {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         let { items = [], options = {} } = commands[command];
         const opts = Object.assign({}, globalOptions, options);
-        const { parallel } = opts;
-        // if (progress) {
-        //
-        // }
+        const { progress, parallel } = globalOptions;
         if (parallel) {
           const completedNum = await masterCluster(
             {
@@ -48,28 +54,43 @@ class webpackPlugin {
             },
             opts
           );
-          console.info('completedNum:' + completedNum);
+          progress && this.progress.setSpeed(completedNum);
         } else {
           for (const item of items) {
             await commander[command](item, opts);
+            progress && this.progress.setSpeed(1);
           }
         }
       }
     }
   }
-  
+
   /**
-   * @desc count tasks number
+   * @desc count total tasks
    * @returns {Number}
-   * @param tasks
+   * @param options
    */
-  static countTotalTasks(tasks) {
-    return tasks.length;
+  countTotalTasks(options) {
+    let result = 0;
+    for (const hookItem of options) {
+      const { hookType, commands } = hookItem;
+      if (!this.hookTypesMap[hookType]) continue;
+      for (const command in commands) {
+        if (
+          commands.hasOwnProperty(command) &&
+          COMMAND_LIST.includes(command)
+        ) {
+          let { items = [] } = commands[command];
+          result += items.length;
+        }
+      }
+    }
+
+    return result;
   }
-  
+
   /**
    * @description translate 'options' to other options with hooks and types of webpack
-   * @param opts {Object}
    * @returns {Array}
    * @example
    * [
@@ -90,8 +111,8 @@ class webpackPlugin {
    * }
    * ]
    */
-  static translateHooks(opts) {
-    const { events = {}, customHooks = [], options: globalOptions = {} } = opts;
+  translateHooks() {
+    const { events = {}, customHooks = [] } = this.options;
     let result = [];
     if (customHooks.length > 0) {
       result = customHooks.map(hook => {
@@ -99,7 +120,6 @@ class webpackPlugin {
         if (!registerName) {
           hook.registerName = NAMESPACE_REGISTER_NAME + hookName;
         }
-        hook.globalOptions = globalOptions;
         return hook;
       });
     } else {
@@ -117,76 +137,68 @@ class webpackPlugin {
             hookType,
             hookName,
             registerName,
-            commands,
-            globalOptions
+            commands
           });
         }
       }
     }
     return result;
   }
-  
+
   /**
    * @desc the type of tap hook callback
    * @param commands {Array}
-   * @param options {Object}
    * @returns {Function}
    */
-  static tabCallback(commands, options) {
-    return () => webpackPlugin.handleCommand(commands, options);
+  tabCallback(commands) {
+    return () => this.handleCommand(commands);
   }
-  
+
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
-   * @param options {Object}
    * @returns {Function}
    */
-  static tapAsyncCallback(commands, options) {
+  tapAsyncCallback(commands) {
     return async (compilation, callback) => {
-      await webpackPlugin.handleCommand(commands, options);
+      await this.handleCommand(commands);
       callback();
     };
   }
-  
+
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
-   * @param options {Object}
    * @returns {Function}
    */
-  static tapPromiseCallback(commands, options) {
+  tapPromiseCallback(commands) {
     return async () => {
-      await webpackPlugin.handleCommand(commands, options);
+      await this.handleCommand(commands);
     };
   }
-  
+
   apply(compiler) {
-    const hookTypesMap = {
-      tap: (commands, options) => webpackPlugin.tabCallback(commands, options),
-      tapPromise: (commands, options) =>
-        webpackPlugin.tapPromiseCallback(commands, options),
-      tapAsync: (commands, options) =>
-        webpackPlugin.tapAsyncCallback(commands, options)
-    };
-    try {
-      const options = webpackPlugin.translateHooks(this.options);
-      for (const hookItem of options) {
-        const {
-          hookType,
-          hookName,
-          commands,
-          registerName,
-          globalOptions
-        } = hookItem;
-        if (!hookTypesMap[hookType]) continue;
+    const { options: globalOptions = {} } = this.options;
+    const options = this.translateHooks();
+    const totalTasks = this.countTotalTasks(options);
+    if (globalOptions.progress) {
+      this.progress = progress({
+        taskName: PROGRESS_TASK_NAME,
+        start: 0,
+        total: totalTasks
+      });
+    }
+    for (const hookItem of options) {
+      const { hookType, hookName, commands, registerName } = hookItem;
+      if (!this.hookTypesMap[hookType]) continue;
+      try {
         compiler.hooks[hookName][hookType](
           registerName,
-          hookTypesMap[hookType](commands, globalOptions)
+          this.hookTypesMap[hookType](commands)
         );
+      } catch (e) {
+        logger.error(`File manager error: ${e}`);
       }
-    } catch (e) {
-      logger.error(`File manager error: ${e}`);
     }
   }
 }

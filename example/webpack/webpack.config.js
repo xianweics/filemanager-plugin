@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve } = require('path');
 const FileManagerPlugin = require('../../lib').WebpackFilemanager;
 const Webpack = require('webpack');
-// const os = require('os');
 
 const config = {
   entry: './src/index.js',
@@ -187,7 +186,7 @@ const config = {
       // ],
       options: {
         parallel: 4,
-        // log: 'error' // error || all
+        log: 'error', // error || all
         // cache: false,
         progress: true
       }

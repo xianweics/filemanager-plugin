@@ -14,12 +14,10 @@ describe('Test webpack plugin file', () => {
           items: ['./dist']
         }
       };
-      const mockGlobalOptions = {
-        parallel: 0
-      };
       
       const del = sinon.stub(commander, 'del');
-      await WebpackFilemanager.handleCommand(mockCommands, mockGlobalOptions);
+      const webpackFilemanager = new WebpackFilemanager(mockCommands);
+      await webpackFilemanager.handleCommand(mockCommands);
       
       expect(del.withArgs('./dist').called).equals(true);
       del.restore();
@@ -45,11 +43,12 @@ describe('Test webpack plugin file', () => {
             hookType: 'tapAsync',
             hookName: 'beforeRun',
             registerName: 'REGISTER_beforeRun',
-            commands: { del: { ...mockOptions.events.start.del } },
-            globalOptions: {}
+            commands: { del: { ...mockOptions.events.start.del } }
           }
         ];
-        const realResult = WebpackFilemanager.translateHooks(mockOptions);
+  
+        const webpackFilemanager = new WebpackFilemanager(mockOptions);
+        const realResult = webpackFilemanager.translateHooks();
         
         expect(realResult).eql(expectResult);
       });
@@ -92,9 +91,6 @@ describe('Test webpack plugin file', () => {
               del: {
                 items: ['./dist1']
               }
-            },
-            globalOptions: {
-              parallel: 1
             }
           },
           {
@@ -105,13 +101,11 @@ describe('Test webpack plugin file', () => {
               del: {
                 items: ['./dist2']
               }
-            },
-            globalOptions: {
-              parallel: 1
             }
           }
         ];
-        const realResult = WebpackFilemanager.translateHooks(mockOptions);
+        const webpackFilemanager = new WebpackFilemanager(mockOptions);
+        const realResult = webpackFilemanager.translateHooks();
         
         expect(realResult).eql(expectResult);
       });

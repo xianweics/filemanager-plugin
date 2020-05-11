@@ -20,6 +20,8 @@ export default {
     'util',
     'colors',
     'fs-extra',
+    'cluster',
+    'cli-progress',
     'compressing'],
   watch: {
     include: 'src/**'
