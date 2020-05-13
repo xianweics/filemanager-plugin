@@ -1,10 +1,9 @@
 import commander from './commander';
 import masterCluster from './masterCluster';
-import { logger, progress } from './utils';
+import { logger } from './utils';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
-const PROGRESS_TASK_NAME = 'file manager';
 
 const BUILTIN_EVENTS_MAP = {
   start: {
@@ -44,9 +43,9 @@ class webpackPlugin {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         let { items = [], options = {} } = commands[command];
         const opts = Object.assign({}, globalOptions, options);
-        const { progress, parallel } = globalOptions;
+        const { parallel } = globalOptions;
         if (parallel) {
-          const completedNum = await masterCluster(
+          await masterCluster(
             {
               jobs: items,
               cpu: parallel,
@@ -54,39 +53,13 @@ class webpackPlugin {
             },
             opts
           );
-          progress && this.progress.setSpeed(completedNum);
         } else {
           for (const item of items) {
             await commander[command](item, opts);
-            progress && this.progress.setSpeed(1);
           }
         }
       }
     }
-  }
-
-  /**
-   * @desc count total tasks
-   * @returns {Number}
-   * @param options
-   */
-  countTotalTasks(options) {
-    let result = 0;
-    for (const hookItem of options) {
-      const { hookType, commands } = hookItem;
-      if (!this.hookTypesMap[hookType]) continue;
-      for (const command in commands) {
-        if (
-          commands.hasOwnProperty(command) &&
-          COMMAND_LIST.includes(command)
-        ) {
-          let { items = [] } = commands[command];
-          result += items.length;
-        }
-      }
-    }
-
-    return result;
   }
 
   /**
@@ -178,16 +151,7 @@ class webpackPlugin {
   }
 
   apply(compiler) {
-    const { options: globalOptions = {} } = this.options;
     const options = this.translateHooks();
-    const totalTasks = this.countTotalTasks(options);
-    if (globalOptions.progress) {
-      this.progress = progress({
-        taskName: PROGRESS_TASK_NAME,
-        start: 0,
-        total: totalTasks
-      });
-    }
     for (const hookItem of options) {
       const { hookType, hookName, commands, registerName } = hookItem;
       if (!this.hookTypesMap[hookType]) continue;
