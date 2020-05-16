@@ -31,7 +31,7 @@ class webpackPlugin {
       tapAsync: commands => this.tapAsyncCallback(commands)
     };
   }
-  
+
   /**
    * @desc execute according command type
    * @param commands {Object}
@@ -62,7 +62,7 @@ class webpackPlugin {
       }
     }
   }
-  
+
   /**
    * @description translate 'options' to other options with hooks and types of webpack
    * @returns {Array}
@@ -118,7 +118,7 @@ class webpackPlugin {
     }
     return result;
   }
-  
+
   /**
    * @desc the type of tap hook callback
    * @param commands {Array}
@@ -127,7 +127,7 @@ class webpackPlugin {
   tabCallback(commands) {
     return () => this.handleCommand(commands);
   }
-  
+
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -139,7 +139,7 @@ class webpackPlugin {
       callback();
     };
   }
-  
+
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -150,7 +150,7 @@ class webpackPlugin {
       await this.handleCommand(commands);
     };
   }
-  
+
   apply(compiler) {
     const options = this.translateHooks();
     for (const hookItem of options) {

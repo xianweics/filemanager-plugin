@@ -60,7 +60,7 @@ async function commanderDone(commands, globalOptions) {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         const { items, options } = commands[command];
         if (items.length === 0) continue;
-        
+
         const opts = Object.assign({}, globalOptions, options);
         const { parallel } = globalOptions;
         if (parallel) {

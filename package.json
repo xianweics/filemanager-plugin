@@ -1,6 +1,6 @@
 {
   "name": "filemanager-plugin",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Filemanager-plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or directories before and after webpack/rollup builds. Also, you can customize the lifecycle of webpack or rollup during building.",
   "main": "lib/index.js",
   "repository": {
@@ -15,7 +15,8 @@
     "glob"
   ],
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 8.0.0",
+    "webpack": ">= 4.0.0"
   },
   "license": "MIT",
   "bugs": {
@@ -27,8 +28,9 @@
     "install:root": "npm i",
     "install:demo-webpack": "cd ./example/webpack && npm i",
     "install:demo-rollup": "cd ./example/rollup && npm i",
-    "build": "node_modules/.bin/rollup --config rollup.config.js",
-    "start": "npm run build -- --w",
+    "clean": "rimraf lib",
+    "build": "npm run clean && node_modules/.bin/rollup --config rollup.config.js",
+    "start": "npm run clean && npm run build -- --w",
     "test": "cross-env NODE_ENV=test node_modules/.bin/mocha --config .mocharc.json",
     "test:watch": "npm test -- -w",
     "test:coverage": "node_modules/.bin/nyc npm test",
@@ -43,7 +45,8 @@
   "dependencies": {
     "colors": "^1.4.0",
     "compressing": "^1.5.0",
-    "fs-extra": "^8.1.0"
+    "fs-extra": "^8.1.0",
+    "glob": "^7.1.6"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
@@ -68,6 +71,7 @@
     "pre-commit": "^1.2.2",
     "prettier-eslint": "^9.0.1",
     "prettier-eslint-cli": "^5.0.0",
+    "rimraf": "^3.0.2",
     "rollup": "^1.31.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-eslint": "^7.0.0",
