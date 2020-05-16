@@ -186,9 +186,8 @@ const config = {
       // ],
       options: {
         parallel: 4,
-        log: 'error', // error || all
-        // cache: false,
-        progress: true
+        // log: 'error', // error || all
+        // cache: false
       }
     })
   ],

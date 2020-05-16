@@ -121,7 +121,7 @@ module.exports = {
 };
 ```
 
-## Commands
+### Commands
 
 |  Name   | Type  |  Description |
 |  :---   | :---  |      ---     |
@@ -259,7 +259,7 @@ module.exports = {
         copy: {
           items: [
             { source: './src/demo1', destination: './dest/demo'},
-            { source: './src/demo/*.html', destination: './dest/demo'}
+            { source: ['./src/demo/*.html'], destination: './dest/demo'}
             // All html files under './src/demo' will be copied to './dest/demo'
           ]
         }
@@ -269,7 +269,7 @@ module.exports = {
 }
 ```
 
-- `source {String}`: Copied source path. It supports [glob pattern](https://github.com/isaacs/node-glob). 
+- `source {String | Array}`: Copied source path. It supports [glob pattern](https://github.com/isaacs/node-glob). 
 - `destination {String}`: Copied destination path.
 
 #### `move` example
@@ -315,6 +315,38 @@ module.exports = {
 
 - `source {String}`: Renamed source path.
 - `destination {String}`: Renamed destination path.
+
+## options
+
+> Global configuration for file manger operation
+
+- `parallel {Number}`: Use multi-process parallel running to improve the task speed. 
+Max number of concurrent runs: `os.cpus().length - 1`. Default is closing.
+- `log {String}`: Show which information you need during building. Default is `all`.
+
+```javascript
+const FileManagerPlugin = require('filemanager-plugin').WebpackFilemanager;
+
+module.exports = {
+  plugins: [
+    new FileManagerPlugin({
+      events: {
+        start: {
+          del: {
+            items: ['./dist']
+          }
+        }
+      },
+      options: {
+        parallel: 3,
+        log: 'all'
+      }
+    })
+  ]
+};
+// start with three process to run task.
+// success: delete './dist'
+```
 
 # Upgrade
 
@@ -391,12 +423,3 @@ module.exports = {
     })]
 }
 ```
-
-## Todo
-
-1. Update option configuration in ReadMe doc.
-2. Update copy feature in ReadMe doc. Support for `Array` input
-3. Update cluster feature in Readme doc.
-4. Update progress feature in ReadME doc.
-5. Add unit test.
-
