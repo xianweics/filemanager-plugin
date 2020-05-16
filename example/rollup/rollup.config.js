@@ -86,12 +86,19 @@ export default {
                 // { path: './src/rename', oldName: 'a', newName: 'b' }
               ]
             },
+            copy: {
+              items: [
+                { source: './src/copy/a', destination: './dist/copy/a' },
+                { source: './src/copy/b.html', destination: './dist/copy/b.html' }
+              ],
+              options: {}
+            },
           }
         },
       ],
       options: {
-        // parallel: os.cpus().length * 2,
-        log: 'error', // error || all
+        parallel: 4,
+        // log: 'error', // error || all
         // cache: false,
         // progress: false
       }

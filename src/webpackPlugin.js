@@ -31,7 +31,7 @@ class webpackPlugin {
       tapAsync: commands => this.tapAsyncCallback(commands)
     };
   }
-
+  
   /**
    * @desc execute according command type
    * @param commands {Object}
@@ -41,7 +41,8 @@ class webpackPlugin {
     const { options: globalOptions = {} } = this.options;
     for (const command in commands) {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
-        let { items = [], options = {} } = commands[command];
+        const { items = [], options = {} } = commands[command];
+        if (items.length === 0) continue;
         const opts = Object.assign({}, globalOptions, options);
         const { parallel } = globalOptions;
         if (parallel) {
@@ -61,7 +62,7 @@ class webpackPlugin {
       }
     }
   }
-
+  
   /**
    * @description translate 'options' to other options with hooks and types of webpack
    * @returns {Array}
@@ -117,7 +118,7 @@ class webpackPlugin {
     }
     return result;
   }
-
+  
   /**
    * @desc the type of tap hook callback
    * @param commands {Array}
@@ -126,7 +127,7 @@ class webpackPlugin {
   tabCallback(commands) {
     return () => this.handleCommand(commands);
   }
-
+  
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -138,7 +139,7 @@ class webpackPlugin {
       callback();
     };
   }
-
+  
   /**
    * the type of tapAsync hook callback
    * @param commands {Array}
@@ -149,7 +150,7 @@ class webpackPlugin {
       await this.handleCommand(commands);
     };
   }
-
+  
   apply(compiler) {
     const options = this.translateHooks();
     for (const hookItem of options) {

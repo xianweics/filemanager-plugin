@@ -59,13 +59,15 @@ async function commanderDone(commands, globalOptions) {
     for (const command in commands) {
       if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
         const { items, options } = commands[command];
+        if (items.length === 0) continue;
+        
         const opts = Object.assign({}, globalOptions, options);
-        const isParallel = !!opts.parallel;
-        if (isParallel) {
+        const { parallel } = globalOptions;
+        if (parallel) {
           await masterCluster(
             {
               jobs: items,
-              cpu: opts.parallel,
+              cpu: parallel,
               type: command
             },
             opts

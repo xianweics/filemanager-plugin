@@ -114,8 +114,11 @@ const config = {
                 {
                   source: './copy/a',
                   destination: './dist/copy'
+                },
+                {
+                  source: ['./copy/**/*.html', './copy/c'],
+                  destination: './dist/copy/'
                 }
-                // { source: ['./copy/**/*.html', './copy/c'], destination: './dist/copy/' }
               ]
             },
             // rename: {
@@ -185,7 +188,7 @@ const config = {
       // }
       // ],
       options: {
-        parallel: 4,
+        parallel: 4
         // log: 'error', // error || all
         // cache: false
       }
