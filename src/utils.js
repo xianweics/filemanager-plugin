@@ -21,4 +21,3 @@ export const logger = {
     process.exitCode = 1;
   }
 };
-
