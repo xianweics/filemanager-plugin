@@ -28,7 +28,7 @@
     "install:root": "npm i",
     "install:demo-webpack": "cd ./example/webpack && npm i",
     "install:demo-rollup": "cd ./example/rollup && npm i",
-    "clean": "rimraf lib",
+    "clean": "node_modules/.bin/rimraf lib",
     "build": "npm run clean && node_modules/.bin/rollup --config rollup.config.js",
     "start": "npm run clean && npm run build -- --w",
     "test": "cross-env NODE_ENV=test node_modules/.bin/mocha --config .mocharc.json",
