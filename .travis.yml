@@ -24,7 +24,7 @@ script:
   - npm run build
 
 before_script:
-  - npm install mocha rollup @babel/register @babel/core -g
+  - npm install mocha rollup @babel/register @babel/core rimraf -g
 
 after_success:
   - npm run test:coveralls
