@@ -354,7 +354,7 @@ module.exports = {
 ```javascript
 const FileManagerPlugin = require('filemanager-plugin').WebpackFilemanager;
 
-// webpack 1.X.X
+// filemanager-plugin 1.X.X
 module.exports = {
   plugins: [
     new FileManagerPlugin({
@@ -383,7 +383,7 @@ module.exports = {
   ]
 };
 
-// webpack 2.X.X
+// filemanager-plugin 2.X.X
 module.exports = {
   plugins: [
     new FileManagerPlugin({
