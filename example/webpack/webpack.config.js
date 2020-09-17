@@ -148,7 +148,6 @@ const config = {
                   source: './zip/b/index.html',
                   destination: './dist/zip/b.html.gz',
                   type: 'gzip',
-                  options: {}
                 }
               ]
             },
@@ -162,8 +161,7 @@ const config = {
                 {
                   source: './unzip/**/*.zip',
                   destination: './dist/unzip/',
-                  type: 'zip',
-                  options: {}
+                  type: 'zip'
                 }
                 // { source: './unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {}},
                 // { source: './unzip/c.zip', destination: './dist/unzip/c', options: {}},
@@ -190,7 +188,6 @@ const config = {
       options: {
         parallel: 4
         // log: 'error', // error || all
-        // cache: false
       }
     })
   ],

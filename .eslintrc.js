@@ -307,10 +307,10 @@ module.exports = {
     'sort-vars': 'off',
     'space-before-blocks': ['error', 'always'],
     'space-before-function-paren': ['error', {
-      "anonymous": "always",
-      "named": "never",
-      "asyncArrow": "always"
-  }],
+      'anonymous': 'always',
+      'named': 'never',
+      'asyncArrow': 'always'
+    }],
     'space-in-parens': ['error', 'never'],
     'space-infix-ops': 'error',
     'space-unary-ops': [

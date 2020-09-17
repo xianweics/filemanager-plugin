@@ -4,11 +4,11 @@ import masterCluster from './masterCluster';
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const EVENT_NAMES_MAP = {
   start: {
-    hook: 'buildStart'
+    hook: 'buildStart',
   },
   end: {
-    hook: 'generateBundle'
-  }
+    hook: 'generateBundle',
+  },
 };
 const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
 
@@ -40,7 +40,7 @@ function extractHooks(opts) {
         hooks.push({
           hookName: EVENT_NAMES_MAP[event].hook,
           commands: events[event],
-          globalOptions
+          globalOptions,
         });
       }
     }
@@ -68,7 +68,7 @@ async function commanderDone(commands, globalOptions) {
             {
               jobs: items,
               cpu: parallel,
-              type: command
+              type: command,
             },
             opts
           );
@@ -103,7 +103,7 @@ function rollupPlugin(opts) {
   const hooks = extractHooks(opts);
   return {
     name: 'file-manager',
-    ...createHooks(hooks)
+    ...createHooks(hooks),
   };
 }
 

@@ -9,13 +9,13 @@ const BUILTIN_EVENTS_MAP = {
   start: {
     hookType: 'tapAsync',
     hookName: 'beforeRun',
-    registerName: NAMESPACE_REGISTER_NAME + 'beforeRun'
+    registerName: NAMESPACE_REGISTER_NAME + 'beforeRun',
   },
   end: {
     hookType: 'tapAsync',
     hookName: 'afterEmit',
-    registerName: NAMESPACE_REGISTER_NAME + 'afterEmit'
-  }
+    registerName: NAMESPACE_REGISTER_NAME + 'afterEmit',
+  },
 };
 const BUILTIN_EVENT_NAMES = Object.keys(BUILTIN_EVENTS_MAP);
 
@@ -26,9 +26,9 @@ class webpackPlugin {
       this.options = opts;
     }
     this.hookTypesMap = {
-      tap: commands => this.tabCallback(commands),
-      tapPromise: commands => this.tapPromiseCallback(commands),
-      tapAsync: commands => this.tapAsyncCallback(commands)
+      tap: (commands) => this.tabCallback(commands),
+      tapPromise: (commands) => this.tapPromiseCallback(commands),
+      tapAsync: (commands) => this.tapAsyncCallback(commands),
     };
   }
 
@@ -50,7 +50,7 @@ class webpackPlugin {
             {
               jobs: items,
               cpu: parallel,
-              type: command
+              type: command,
             },
             opts
           );
@@ -89,7 +89,7 @@ class webpackPlugin {
     const { events = {}, customHooks = [] } = this.options;
     let result = [];
     if (customHooks.length > 0) {
-      result = customHooks.map(hook => {
+      result = customHooks.map((hook) => {
         const { registerName, hookName } = hook;
         if (!registerName) {
           hook.registerName = NAMESPACE_REGISTER_NAME + hookName;
@@ -111,7 +111,7 @@ class webpackPlugin {
             hookType,
             hookName,
             registerName,
-            commands
+            commands,
           });
         }
       }

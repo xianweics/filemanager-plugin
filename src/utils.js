@@ -19,5 +19,5 @@ export const logger = {
     if (isTest) return;
     log(colors.red(msg));
     process.exitCode = 1;
-  }
+  },
 };

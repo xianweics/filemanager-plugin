@@ -8,7 +8,7 @@ const move = ({ source, destination }, options = {}) => {
 
   try {
     const sources = glob.sync(source) || [];
-    sources.forEach(source => {
+    sources.forEach((source) => {
       fs.moveSync(source, path.join(destination, path.basename(source)));
       logger
         .setType(logType)

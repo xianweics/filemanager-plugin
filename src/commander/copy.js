@@ -8,9 +8,9 @@ const copy = ({ source, destination }, options = {}) => {
   const { log: logType } = options;
   try {
     const wrapSources = Array.isArray(source) ? source : [source];
-    const sources = wrapSources.map(source => glob.sync(source) || []);
-    sources.forEach(subsources => {
-      subsources.forEach(source => {
+    const sources = wrapSources.map((source) => glob.sync(source) || []);
+    sources.forEach((subsources) => {
+      subsources.forEach((source) => {
         fs.copySync(source, join(destination, basename(source)));
         logger
           .setType(logType)

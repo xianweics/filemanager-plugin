@@ -29,7 +29,7 @@ const zip = async (
     fs.ensureDirSync(path.dirname(destination));
     if (type === 'gzip') {
       // gzip
-      const hasDirectory = sources.find(source =>
+      const hasDirectory = sources.find((source) =>
         fs.statSync(source).isDirectory()
       );
       if (sources.length > 1 || hasDirectory) {
@@ -45,7 +45,7 @@ const zip = async (
               .info(`success: zip '${source}' to '${destination}'`);
             resolve();
           })
-          .catch(e => {
+          .catch((e) => {
             logger.error(`zip error: ${e}`);
             reject(e);
           });
@@ -65,7 +65,7 @@ const zip = async (
               .info(`success: zip '${source}' to '${destination}'`);
             resolve();
           })
-          .on('error', e => {
+          .on('error', (e) => {
             logger.error(`zip error: ${e}`);
             reject(e);
           });

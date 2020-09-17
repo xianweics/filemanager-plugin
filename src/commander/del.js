@@ -7,7 +7,7 @@ const del = (file, options = {}) => {
   const { log: logType } = options;
   try {
     const files = glob.sync(file) || [];
-    files.forEach(file => {
+    files.forEach((file) => {
       fs.removeSync(file);
       logger.setType(logType).info(`success: delete '${file}'`);
     });

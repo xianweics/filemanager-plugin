@@ -11,6 +11,6 @@ const commander = {
   del,
   zip,
   unzip,
-  rename
+  rename,
 };
 export default commander;

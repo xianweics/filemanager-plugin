@@ -7,7 +7,7 @@ function masterCluster({ jobs, type, cpu }, options) {
   return new Promise((resolve, reject) => {
     cluster.setupMaster({
       exec: join(__dirname, 'workerCluster.js'),
-      silent: false
+      silent: false,
     });
     if (cluster.isMaster) {
       const workerID = [];
@@ -21,14 +21,14 @@ function masterCluster({ jobs, type, cpu }, options) {
         wk.send({
           job: jobs[forkCount++],
           type,
-          options
+          options,
         });
       }
-      cluster.on('error', e => {
+      cluster.on('error', (e) => {
         logger.error(`[master] error:  ${e}`);
         reject(e);
       });
-      workerID.forEach(id => {
+      workerID.forEach((id) => {
         cluster.workers[id].on('message', function () {
           countCompleted++;
           const jobsLength = jobs.length;
@@ -36,11 +36,11 @@ function masterCluster({ jobs, type, cpu }, options) {
             this.send({
               job: jobs[forkCount++],
               type,
-              options
+              options,
             });
           }
           if (countCompleted === jobsLength) {
-            workerID.forEach(id => {
+            workerID.forEach((id) => {
               if (!cluster.workers[id].isDead()) {
                 cluster.workers[id].disconnect();
               }

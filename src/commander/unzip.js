@@ -31,7 +31,7 @@ const unzip = async (
               .info(`success: unzip '${source}' to '${destination}'`);
             resolve();
           })
-          .catch(e => {
+          .catch((e) => {
             logger.error(`unzip error: ${e}`);
             reject(e);
           });
