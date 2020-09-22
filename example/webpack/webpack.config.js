@@ -101,7 +101,7 @@ const config = {
           hookName: 'beforeRun',
           commands: {
             del: {
-              items: ['./dist']
+              // items: ['./dist']
             }
           }
         },
@@ -112,11 +112,7 @@ const config = {
             copy: {
               items: [
                 {
-                  source: './copy/a',
-                  destination: './dist/copy'
-                },
-                {
-                  source: ['./copy/**/*.html', './copy/c'],
+                  source: ['./copy/c', './copy/a'],
                   destination: './dist/copy/'
                 }
               ]
@@ -133,45 +129,45 @@ const config = {
             //     }
             //   ]
             // },
-            zip: {
-              items: [
-                {
-                  source: './zip/a',
-                  destination: './dist/zip/a.zip'
-                },
-                {
-                  source: './zip/c/index.html',
-                  destination: './dist/zip/c.index.html.tgz',
-                  type: 'tgz'
-                },
-                {
-                  source: './zip/b/index.html',
-                  destination: './dist/zip/b.html.gz',
-                  type: 'gzip',
-                }
-              ]
-            },
+            // zip: {
+            //   items: [
+            //     {
+            //       source: './zip/a',
+            //       destination: './dist/zip/a.zip'
+            //     },
+            //     {
+            //       source: './zip/c/index.html',
+            //       destination: './dist/zip/c.index.html.tgz',
+            //       type: 'tgz'
+            //     },
+            //     {
+            //       source: './zip/b/index.html',
+            //       destination: './dist/zip/b.html.gz',
+            //       type: 'gzip',
+            //     }
+            //   ]
+            // },
             //   options: {
             //     buildStart: () => {},
             //     buildEnd: () => {}
             //   }
             // },
-            unzip: {
-              items: [
-                {
-                  source: './unzip/**/*.zip',
-                  destination: './dist/unzip/',
-                  type: 'zip'
-                }
-                // { source: './unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {}},
-                // { source: './unzip/c.zip', destination: './dist/unzip/c', options: {}},
-                // { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {}}
-              ]
-              // options: {
-              //   buildStart: () => {},
-              //   buildEnd: () => {}
-              // }
-            }
+            // unzip: {
+            //   items: [
+            //     {
+            //       source: './unzip/**/*.zip',
+            //       destination: './dist/unzip/',
+            //       type: 'zip'
+            //     }
+            //     // { source: './unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {}},
+            //     // { source: './unzip/c.zip', destination: './dist/unzip/c', options: {}},
+            //     // { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {}}
+            //   ]
+            //   // options: {
+            //   //   buildStart: () => {},
+            //   //   buildEnd: () => {}
+            //   // }
+            // }
           }
         }
       ],

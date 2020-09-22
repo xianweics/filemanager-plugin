@@ -1,6 +1,6 @@
 {
   "name": "filemanager-plugin",
-  "version": "2.3.5",
+  "version": "2.4.0",
   "description": "Filemanager-plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or directories before and after webpack/rollup builds. Also, you can customize the lifecycle of webpack or rollup during building.",
   "main": "lib/index.js",
   "repository": {
@@ -47,7 +47,8 @@
     "colors": "^1.4.0",
     "compressing": "^1.5.0",
     "fs-extra": "^8.1.0",
-    "glob": "^7.1.6"
+    "glob": "^7.1.6",
+    "stream-equal": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
