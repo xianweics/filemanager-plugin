@@ -122,52 +122,47 @@ const config = {
             //     { path: './rename', oldName: 'test.html', newName: 'test1.html' }
             //   ]
             // },
-            // move: {
-            //   items: [
-            //     {
-            //       source: './move/**/*.html', destination: './dist'
-            //     }
-            //   ]
-            // },
-            // zip: {
-            //   items: [
-            //     {
-            //       source: './zip/a',
-            //       destination: './dist/zip/a.zip'
-            //     },
-            //     {
-            //       source: './zip/c/index.html',
-            //       destination: './dist/zip/c.index.html.tgz',
-            //       type: 'tgz'
-            //     },
-            //     {
-            //       source: './zip/b/index.html',
-            //       destination: './dist/zip/b.html.gz',
-            //       type: 'gzip',
-            //     }
-            //   ]
-            // },
-            //   options: {
-            //     buildStart: () => {},
-            //     buildEnd: () => {}
-            //   }
-            // },
-            // unzip: {
-            //   items: [
-            //     {
-            //       source: './unzip/**/*.zip',
-            //       destination: './dist/unzip/',
-            //       type: 'zip'
-            //     }
-            //     // { source: './unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {}},
-            //     // { source: './unzip/c.zip', destination: './dist/unzip/c', options: {}},
-            //     // { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {}}
-            //   ]
-            //   // options: {
-            //   //   buildStart: () => {},
-            //   //   buildEnd: () => {}
-            //   // }
-            // }
+            move: {
+              items: [
+                {
+                  source: './move/**/*.html',
+                  destination: './dist'
+                }
+              ],
+              options: {
+                cache: false
+              }
+            },
+            zip: {
+              items: [
+                {
+                  source: './zip/a',
+                  destination: './dist/zip/a.zip'
+                },
+                {
+                  source: './zip/c/index.html',
+                  destination: './dist/zip/c.index.html.tgz',
+                  type: 'tgz'
+                },
+                {
+                  source: './zip/b/index.html',
+                  destination: './dist/zip/b.html.gz',
+                  type: 'gzip'
+                }
+              ]
+            },
+            unzip: {
+              items: [
+                {
+                  source: './unzip/**/*.zip',
+                  destination: './dist/unzip/',
+                  type: 'zip'
+                }
+                // { source: './unzip/b.tgz', destination: './dist/unzip/b', type: 'tgz', options: {}},
+                // { source: './unzip/c.zip', destination: './dist/unzip/c', options: {}},
+                // { source: './unzip/d.gz', destination: './dist/unzip/d.html', type: 'gzip', options: {}}
+              ]
+            }
           }
         }
       ],
@@ -182,7 +177,8 @@ const config = {
       // }
       // ],
       options: {
-        parallel: 4
+        parallel: 4,
+        cache: true
         // log: 'error', // error || all
       }
     })
@@ -190,7 +186,7 @@ const config = {
   devServer: {
     port: 9000,
     host: 'localhost',
-    open: true,
+    open: false,
     hot: true,
     inline: true,
     progress: true

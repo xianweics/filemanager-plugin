@@ -1,32 +1,11 @@
 const chai = require('chai');
 const expect = chai.expect;
-import { RollupFilemanager } from '../src/index';
-import commander from '../src/commander/index';
-
-const sinon = require('sinon');
+import fileManager, { createHooks, extractHooks } from '../src/rollupPlugin';
 
 describe('Test rollup plugin file', () => {
-  it(
-    `Test commanderDone method. 'commander.del' method should be called.`,
-    async () => {
-      const mockCommands = {
-        del: {
-          items: ['./dist'],
-          options: {}
-        }
-      };
-      
-      const del = sinon.stub(commander, 'del');
-      await RollupFilemanager.commanderDone(mockCommands, {});
-      
-      expect(del.withArgs('./dist').called).equals(true);
-      del.restore();
-    }
-  );
-  
   describe(`Test 'extractHooks' method.`, () => {
     it(
-      `When configured 'events' and 'customHooks',it will return the configuration items for 'cunstomhooks'`,
+      `When configured 'events' and 'customHooks',it will return the configuration items for 'customhooks'`,
       async () => {
         const mockOptions = {
           events: {
@@ -60,7 +39,7 @@ describe('Test rollup plugin file', () => {
             globalOptions: {}
           }
         ];
-        const testResult = await RollupFilemanager.extractHooks(mockOptions);
+        const testResult = await extractHooks(mockOptions);
         expect(testResult).eql(result);
       });
     
@@ -69,7 +48,7 @@ describe('Test rollup plugin file', () => {
       async () => {
         const mockOptions = {};
         const result = [];
-        const testResult = await RollupFilemanager.extractHooks(mockOptions);
+        const testResult = await extractHooks(mockOptions);
         expect(testResult).eql(result);
       });
   });
@@ -88,7 +67,7 @@ describe('Test rollup plugin file', () => {
             }
           }
         ];
-        const testResult = await RollupFilemanager.createHooks(mockCustomHooks);
+        const testResult = await createHooks(mockCustomHooks);
         const resKeys = Object.keys(testResult);
         expect(resKeys.length).equals(1);
         for (let key of resKeys) {
@@ -100,7 +79,7 @@ describe('Test rollup plugin file', () => {
     it(`No 'hooks',it will return an empty object`, async () => {
       const mockHooks = [];
       const result = {};
-      const testResult = await RollupFilemanager.createHooks(mockHooks);
+      const testResult = await createHooks(mockHooks);
       expect(testResult).eql(result);
     });
   });
@@ -128,7 +107,7 @@ describe('Test rollup plugin file', () => {
           }
         ]
       };
-      const testResult = await RollupFilemanager(mockOptions);
+      const testResult = await fileManager(mockOptions);
       const resKeys = Object.keys(testResult);
       expect(resKeys.length).equals(3);
       for (let key of resKeys) {

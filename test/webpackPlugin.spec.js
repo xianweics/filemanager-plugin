@@ -1,4 +1,4 @@
-import { WebpackFilemanager } from '../src/index';
+import FileManager from '../src/webpackPlugin';
 import commander from '../src/commander';
 import * as utils from '../src/utils';
 
@@ -16,7 +16,7 @@ describe('Test webpack plugin file', () => {
       };
       
       const del = sinon.stub(commander, 'del');
-      const webpackFilemanager = new WebpackFilemanager(mockCommands);
+      const webpackFilemanager = new FileManager(mockCommands);
       await webpackFilemanager.handleCommand(mockCommands);
       
       expect(del.withArgs('./dist').called).equals(true);
@@ -46,9 +46,9 @@ describe('Test webpack plugin file', () => {
             commands: { del: { ...mockOptions.events.start.del } }
           }
         ];
-  
-        const webpackFilemanager = new WebpackFilemanager(mockOptions);
-        const realResult = webpackFilemanager.translateHooks();
+        
+        const fileManager = new FileManager(mockOptions);
+        const realResult = fileManager.translateHooks();
         
         expect(realResult).eql(expectResult);
       });
@@ -104,15 +104,15 @@ describe('Test webpack plugin file', () => {
             }
           }
         ];
-        const webpackFilemanager = new WebpackFilemanager(mockOptions);
-        const realResult = webpackFilemanager.translateHooks();
+        const fileManager = new FileManager(mockOptions);
+        const realResult = fileManager.translateHooks();
         
         expect(realResult).eql(expectResult);
       });
   });
   
   describe('Test apply method', () => {
-    let webpackFilemanager = null;
+    let fileManager = null;
     let mockCompiler = null;
     beforeEach(() => {
       mockCompiler = {
@@ -134,8 +134,8 @@ describe('Test webpack plugin file', () => {
           }
         }
       };
-      webpackFilemanager = new WebpackFilemanager(mockOptions);
-      webpackFilemanager.apply(mockCompiler);
+      fileManager = new FileManager(mockOptions);
+      fileManager.apply(mockCompiler);
       
       expect(mockCompiler.hooks.beforeRun.tapAsync.calledWithMatch(
         'REGISTER_beforeRun')).equals(true);
@@ -168,9 +168,9 @@ describe('Test webpack plugin file', () => {
             }
           ]
         };
-        webpackFilemanager = new WebpackFilemanager(mockOptions);
-        webpackFilemanager.apply(mockCompiler);
-  
+        fileManager = new FileManager(mockOptions);
+        fileManager.apply(mockCompiler);
+        
         expect(handlerError.called).equals(true);
         handlerError.restore();
       });

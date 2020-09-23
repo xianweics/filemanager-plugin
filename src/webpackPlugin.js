@@ -1,21 +1,18 @@
-import commander from './commander';
-import masterCluster from './masterCluster';
 import { logger } from './utils';
+import { handleCommand } from './handler';
 
-const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const NAMESPACE_REGISTER_NAME = 'REGISTER_';
-
 const BUILTIN_EVENTS_MAP = {
   start: {
     hookType: 'tapAsync',
     hookName: 'beforeRun',
-    registerName: NAMESPACE_REGISTER_NAME + 'beforeRun',
+    registerName: NAMESPACE_REGISTER_NAME + 'beforeRun'
   },
   end: {
     hookType: 'tapAsync',
     hookName: 'afterEmit',
-    registerName: NAMESPACE_REGISTER_NAME + 'afterEmit',
-  },
+    registerName: NAMESPACE_REGISTER_NAME + 'afterEmit'
+  }
 };
 const BUILTIN_EVENT_NAMES = Object.keys(BUILTIN_EVENTS_MAP);
 
@@ -28,10 +25,10 @@ class webpackPlugin {
     this.hookTypesMap = {
       tap: (commands) => this.tabCallback(commands),
       tapPromise: (commands) => this.tapPromiseCallback(commands),
-      tapAsync: (commands) => this.tapAsyncCallback(commands),
+      tapAsync: (commands) => this.tapAsyncCallback(commands)
     };
   }
-
+  
   /**
    * @desc execute according command type
    * @param commands {Object}
@@ -39,30 +36,9 @@ class webpackPlugin {
    */
   async handleCommand(commands) {
     const { options: globalOptions = {} } = this.options;
-    for (const command in commands) {
-      if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
-        const { items = [], options = {} } = commands[command];
-        if (items.length === 0) continue;
-        const opts = Object.assign({}, globalOptions, options);
-        const { parallel } = globalOptions;
-        if (parallel) {
-          await masterCluster(
-            {
-              jobs: items,
-              cpu: parallel,
-              type: command,
-            },
-            opts
-          );
-        } else {
-          for (const item of items) {
-            await commander[command](item, opts);
-          }
-        }
-      }
-    }
+    handleCommand(commands, globalOptions);
   }
-
+  
   /**
    * @description translate 'options' to other options with hooks and types of webpack
    * @returns {Array}
@@ -111,26 +87,26 @@ class webpackPlugin {
             hookType,
             hookName,
             registerName,
-            commands,
+            commands
           });
         }
       }
     }
     return result;
   }
-
+  
   /**
    * @desc the type of tap hook callback
-   * @param commands {Array}
+   * @param commands {object}
    * @returns {Function}
    */
   tabCallback(commands) {
     return () => this.handleCommand(commands);
   }
-
+  
   /**
    * the type of tapAsync hook callback
-   * @param commands {Array}
+   * @param commands {object}
    * @returns {Function}
    */
   tapAsyncCallback(commands) {
@@ -139,10 +115,10 @@ class webpackPlugin {
       callback();
     };
   }
-
+  
   /**
    * the type of tapAsync hook callback
-   * @param commands {Array}
+   * @param commands {object}
    * @returns {Function}
    */
   tapPromiseCallback(commands) {
@@ -150,7 +126,7 @@ class webpackPlugin {
       await this.handleCommand(commands);
     };
   }
-
+  
   apply(compiler) {
     const options = this.translateHooks();
     for (const hookItem of options) {

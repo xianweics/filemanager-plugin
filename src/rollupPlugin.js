@@ -1,14 +1,12 @@
-import commander from './commander';
-import masterCluster from './masterCluster';
+import { handleCommand } from './handler';
 
-const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
 const EVENT_NAMES_MAP = {
   start: {
-    hook: 'buildStart',
+    hook: 'buildStart'
   },
   end: {
-    hook: 'generateBundle',
-  },
+    hook: 'generateBundle'
+  }
 };
 const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
 
@@ -26,7 +24,7 @@ const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
  *    }
  * ]
  */
-function extractHooks(opts) {
+export function extractHooks(opts) {
   const { events, customHooks = [], options: globalOptions = {} } = opts;
   const hooks = [];
   if (customHooks.length > 0) {
@@ -40,7 +38,7 @@ function extractHooks(opts) {
         hooks.push({
           hookName: EVENT_NAMES_MAP[event].hook,
           commands: events[event],
-          globalOptions,
+          globalOptions
         });
       }
     }
@@ -49,51 +47,17 @@ function extractHooks(opts) {
 }
 
 /**
- * @description execute according command type
- * @param commands {Object}
- * @param globalOptions
- * @returns {void}
- */
-async function commanderDone(commands, globalOptions) {
-  if (commands && Object.keys(commands).length > 0) {
-    for (const command in commands) {
-      if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
-        const { items, options } = commands[command];
-        if (items.length === 0) continue;
-
-        const opts = Object.assign({}, globalOptions, options);
-        const { parallel } = globalOptions;
-        if (parallel) {
-          await masterCluster(
-            {
-              jobs: items,
-              cpu: parallel,
-              type: command,
-            },
-            opts
-          );
-        } else {
-          for (const item of items) {
-            await commander[command](item, opts);
-          }
-        }
-      }
-    }
-  }
-}
-
-/**
  * @description Create each hook method
  * @param hooks {Array}
  * @returns {Object<Promise>}
  */
-function createHooks(hooks) {
+export function createHooks(hooks) {
   const hookObj = {};
   if (hooks.length < 1) return hookObj;
   for (const hook of hooks) {
     const { hookName, commands, globalOptions } = hook;
     hookObj[hookName] = async function () {
-      await commanderDone(commands, globalOptions);
+      await handleCommand(commands, globalOptions);
     };
   }
   return hookObj;
@@ -103,11 +67,8 @@ function rollupPlugin(opts) {
   const hooks = extractHooks(opts);
   return {
     name: 'file-manager',
-    ...createHooks(hooks),
+    ...createHooks(hooks)
   };
 }
 
-rollupPlugin.extractHooks = extractHooks;
-rollupPlugin.commanderDone = commanderDone;
-rollupPlugin.createHooks = createHooks;
 export default rollupPlugin;
