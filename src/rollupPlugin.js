@@ -2,11 +2,11 @@ import { handleCommand } from './handler';
 
 const EVENT_NAMES_MAP = {
   start: {
-    hook: 'buildStart'
+    hook: 'buildStart',
   },
   end: {
-    hook: 'generateBundle'
-  }
+    hook: 'generateBundle',
+  },
 };
 const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
 
@@ -25,20 +25,20 @@ const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
  * ]
  */
 export function extractHooks(opts) {
-  const { events, customHooks = [], options: globalOptions = {} } = opts;
-  const hooks = [];
+  const { events = {}, customHooks = [], options: globalOptions = {} } = opts;
+  let hooks = [];
   if (customHooks.length > 0) {
-    for (const hook of customHooks) {
+    hooks = customHooks.map((hook) => {
       hook.globalOptions = globalOptions;
-      hooks.push(hook);
-    }
+      return hook;
+    });
   } else {
     for (const event in events) {
       if (events.hasOwnProperty(event) && EVENT_NAMES.includes(event)) {
         hooks.push({
           hookName: EVENT_NAMES_MAP[event].hook,
           commands: events[event],
-          globalOptions
+          globalOptions,
         });
       }
     }
@@ -52,22 +52,20 @@ export function extractHooks(opts) {
  * @returns {Object<Promise>}
  */
 export function createHooks(hooks) {
-  const hookObj = {};
-  if (hooks.length < 1) return hookObj;
-  for (const hook of hooks) {
-    const { hookName, commands, globalOptions } = hook;
-    hookObj[hookName] = async function () {
+  return hooks.reduce((pre, cur) => {
+    const { hookName, commands, globalOptions } = cur;
+    pre[hookName] = async () => {
       await handleCommand(commands, globalOptions);
     };
-  }
-  return hookObj;
+    return pre;
+  }, {});
 }
 
 function rollupPlugin(opts) {
-  const hooks = extractHooks(opts);
+  if (Object.prototype.toString.call(opts) !== '[object Object]') return;
   return {
     name: 'file-manager',
-    ...createHooks(hooks)
+    ...createHooks(extractHooks(opts)),
   };
 }
 

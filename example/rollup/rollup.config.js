@@ -157,7 +157,8 @@ export default {
         },
       ],
       options: {
-        parallel: 4
+        parallel: 4,
+        cache: true
         // log: 'error', // error || all
       }
     }),

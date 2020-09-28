@@ -9,7 +9,7 @@ const copy = ({ source, destination }, options = {}) => {
   const wrapSources = Array.isArray(source) ? source : [source];
   
   try {
-    const sources = wrapSources.map((source) => glob.sync(source) || []);
+    const sources = wrapSources.map((source) => glob.sync(source));
     for (const source of flat(sources)) {
       const dest = join(destination, basename(source));
       fs.copySync(source, dest);

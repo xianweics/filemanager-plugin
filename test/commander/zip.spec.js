@@ -17,7 +17,10 @@ mockTemplate('Test zip', (rootPath) => {
         
         const mockSource = path.join(rootPath, 'zip');
         fs.ensureDirSync(mockSource);
+        expect(fs.pathExistsSync(mockSource)).equals(true);
+  
         const mockDestination = path.join(rootPath, 'zip', 'index.html.gzip');
+        
         await zip({
           source: mockSource,
           destination: mockDestination,
@@ -25,7 +28,8 @@ mockTemplate('Test zip', (rootPath) => {
         });
         expect(handlerError.called).equals(true);
         handlerError.restore();
-      });
+      }
+    );
     
     it('Gzip a valid file, handlerInfo will be called', async () => {
       const handlerInfo = sinon.stub(utils.logger, 'info');
@@ -33,9 +37,11 @@ mockTemplate('Test zip', (rootPath) => {
       
       const mockSource = path.join(rootPath, 'zip', 'index.html');
       fs.ensureFileSync(mockSource);
-      const mockDestination = path.join(rootPath, 'zip', 'index.html.gz');
       expect(fs.pathExistsSync(mockSource)).equals(true);
+      
+      const mockDestination = path.join(rootPath, 'zip', 'index.html.gz');
       expect(fs.pathExistsSync(mockDestination)).equals(false);
+      
       await zip({
         source: mockSource,
         destination: mockDestination,
@@ -50,11 +56,11 @@ mockTemplate('Test zip', (rootPath) => {
   describe('Test zip when type is zip, tar or tgz', () => {
     it('Zip a valid file, it will be zipped successfully', async () => {
       const handlerInfo = sinon.stub(utils.logger, 'info');
-      
       const mockSource = path.join(rootPath, 'zip', 'index.html');
       fs.ensureFileSync(mockSource);
-      const mockDestination = path.join(rootPath, 'zip', 'index.html.zip');
       expect(fs.pathExistsSync(mockSource)).equals(true);
+      
+      const mockDestination = path.join(rootPath, 'zip', 'index.html.zip');
       expect(fs.pathExistsSync(mockDestination)).equals(false);
       
       await zip({
@@ -79,14 +85,15 @@ mockTemplate('Test zip', (rootPath) => {
       });
       expect(handlerError.called).equals(true);
       handlerError.restore();
-    });
+    }
+  );
   
   it('When source is not exist, handlerError will be called',
     async () => {
       const handlerError = sinon.stub(utils.logger, 'error');
       expect(handlerError.called).equals(false);
-      
       const mockSource = path.join(rootPath, 'zip');
+      
       await zip({
         source: mockSource,
         destination: '',
@@ -94,5 +101,6 @@ mockTemplate('Test zip', (rootPath) => {
       });
       expect(handlerError.called).equals(true);
       handlerError.restore();
-    });
+    }
+  );
 });

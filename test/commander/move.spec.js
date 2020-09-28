@@ -9,33 +9,37 @@ const expect = chai.expect;
 const fs = require('fs-extra');
 
 mockTemplate('Test move', (rootPath) => {
-  it('Move a valid file, handlerInfo will be called', async () => {
+  it('Move a valid file, handlerInfo will be called', () => {
     const handlerInfo = sinon.stub(utils.logger, 'info');
     expect(handlerInfo.called).equals(false);
     
     const mockSource = path.join(rootPath, 'move', 'index.html');
     fs.ensureFileSync(mockSource);
-    const mockDestination = path.join(rootPath, 'move', 'index1.html');
     expect(fs.pathExistsSync(mockSource)).equals(true);
+  
+    const mockDestination = path.join(rootPath, 'move', 'dist');
     expect(fs.pathExistsSync(mockDestination)).equals(false);
-    await move({
+    
+    move({
       source: mockSource,
       destination: mockDestination
     });
-    expect(fs.pathExistsSync(mockDestination)).equals(true);
+    expect(fs.pathExistsSync(path.join(mockDestination, 'index.html'))).equals(true);
     expect(handlerInfo.called).equals(true);
     handlerInfo.restore();
   });
   
-  it('Move an invalid file, handlerError will be called', async () => {
+  
+  it('Move an invalid file, handlerError will be called', () => {
     const handlerError = sinon.stub(utils.logger, 'error');
     expect(handlerError.called).equals(false);
     
-    await move({
+    const result = move({
       source: null,
       destination: null
     });
     expect(handlerError.called).equals(true);
+    expect(result).to.be.an('undefined');
     handlerError.restore();
   });
 });

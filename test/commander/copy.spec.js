@@ -9,30 +9,56 @@ const expect = chai.expect;
 const fs = require('fs-extra');
 
 mockTemplate('Test copy', (rootPath) => {
-  it('Copy an existing file, handlerInfo will be called', async () => {
-    const handlerInfo = sinon.stub(utils.logger, 'info');
-    expect(handlerInfo.called).equals(false);
-    const mockSource = path.join(rootPath, 'copy', 'index.html');
-    fs.ensureFileSync(mockSource);
-    expect(fs.pathExistsSync(mockSource)).equals(true);
-    const mockDestination = path.join('testCache', 'copy', 'index1.html');
-    expect(fs.pathExistsSync(mockDestination)).equals(false);
-    await copy({
-      source: mockSource,
-      destination: mockDestination
-    }, {});
-    expect(fs.pathExistsSync(mockDestination)).equals(true);
-    expect(handlerInfo.called).equals(true);
-    handlerInfo.restore();
-  });
-  it('Copy an invalid file, handlerError will be called', async () => {
+  it('Copy an existing file, when source is a string,, handlerInfo will be called',
+    () => {
+      const handlerInfo = sinon.stub(utils.logger, 'info');
+      expect(handlerInfo.called).equals(false);
+      
+      const mockSource = path.join(rootPath, 'copy', 'index.html');
+      fs.ensureFileSync(mockSource);
+      expect(fs.pathExistsSync(mockSource)).equals(true);
+      
+      const mockDestination = path.join(rootPath, 'copy', 'dist');
+      expect(fs.pathExistsSync(mockDestination)).equals(false);
+      
+      copy({
+        source: mockSource,
+        destination: mockDestination
+      }, {});
+      expect(fs.pathExistsSync(mockDestination)).equals(true);
+      expect(handlerInfo.called).equals(true);
+      handlerInfo.restore();
+    });
+  
+  it('Copy an existing file, when source is an array, handlerInfo will be called',
+    () => {
+      const handlerInfo = sinon.stub(utils.logger, 'info');
+      expect(handlerInfo.called).equals(false);
+      
+      const mockSource = path.join(rootPath, 'copy', 'index.html');
+      fs.ensureFileSync(mockSource);
+      expect(fs.pathExistsSync(mockSource)).equals(true);
+      
+      const mockDestination = path.join(rootPath, 'copy', 'dist');
+      expect(fs.pathExistsSync(mockDestination)).equals(false);
+      
+      copy({
+        source: [mockSource],
+        destination: mockDestination
+      });
+      expect(fs.pathExistsSync(mockDestination)).equals(true);
+      expect(handlerInfo.called).equals(true);
+      handlerInfo.restore();
+    });
+  
+  it('Copy an invalid file, handlerError will be called', () => {
     const handlerError = sinon.stub(utils.logger, 'error');
     expect(handlerError.called).equals(false);
     
-    await copy({
+    copy({
       source: null,
       destination: null
-    }, {});
+    });
     expect(handlerError.called).equals(true);
     handlerError.restore();
   });

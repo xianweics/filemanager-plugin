@@ -19,9 +19,9 @@ const zip = async (
   globalOptions = {}
 ) => {
   const { log: logType } = globalOptions;
-
+  
   try {
-    const sources = glob.sync(source) || [];
+    const sources = glob.sync(source);
     if (sources.length === 0) {
       logger.error(`zip error: '${source}' is not exist`);
       return;

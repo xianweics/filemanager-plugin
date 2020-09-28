@@ -8,24 +8,25 @@ import * as utils from '../../src/utils';
 import { template as mockTemplate } from '../mock';
 
 mockTemplate('Test delete', (rootPath) => {
-  it('Delete an existing file, handlerInfo will be called', async () => {
+  it('Delete an existing file, handlerInfo will be called', () => {
     const handlerInfo = sinon.stub(utils.logger, 'info');
     expect(handlerInfo.called).equals(false);
-    
+
     const mockPath = path.join(rootPath, 'del', 'index.html');
     fs.ensureFileSync(mockPath);
     expect(fs.pathExistsSync(mockPath)).equals(true);
-    await del(mockPath);
+    
+    del(mockPath);
     expect(fs.pathExistsSync(mockPath)).equals(false);
     expect(handlerInfo.called).equals(true);
     handlerInfo.restore();
   });
   
-  it('Delete an invalid file, handlerError will be called', async () => {
+  it('Delete an invalid file, handlerError will be called', () => {
     const handlerError = sinon.stub(utils.logger, 'error');
     expect(handlerError.called).equals(false);
     
-    await del(null);
+    del(null);
     expect(handlerError.called).equals(true);
     handlerError.restore();
   });

@@ -4,11 +4,11 @@ const path = require('path');
 const template = (name, desc) => {
   const rootPath = path.join(__dirname, '..', 'testCache');
   describe(name, () => {
-    after(() => {
+    afterEach(() => {
       fs.removeSync(rootPath);
     });
     
-    before(() => {
+    beforeEach(() => {
       fs.removeSync(rootPath);
     });
     desc(rootPath);

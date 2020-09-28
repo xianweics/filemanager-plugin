@@ -2,7 +2,11 @@ import masterCluster from './masterCluster';
 import commander from './commander';
 
 const COMMAND_LIST = ['copy', 'move', 'del', 'zip', 'unzip', 'rename'];
-const cacheSingle = (() => {
+/**
+ * @description singleton mode
+ * @returns {function}
+ */
+export const cacheSingle = (() => {
   let instance = null;
   const obj = {};
   return () => {
@@ -11,11 +15,17 @@ const cacheSingle = (() => {
   };
 })();
 
-export async function handleCommand(commands, globalOptions) {
+/**
+ * @description Execute different actions according to commands,
+ * do multi-progress depending on the parallel of the globalOptions parameter
+ * @param commands {object}
+ * @param globalOptions {object}
+ * @returns {Promise<void>}
+ */
+export async function handleCommand(commands = {}, globalOptions = {}) {
   for (const command in commands) {
     if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
-      const { items, options } = commands[command];
-      if (items.length === 0) continue;
+      const { items = [], options = {} } = commands[command] || {};
       
       const opts = Object.assign({}, globalOptions, options);
       const { parallel } = globalOptions;

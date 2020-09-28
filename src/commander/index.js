@@ -5,12 +5,11 @@ import zip from './zip';
 import unzip from './unzip';
 import rename from './rename';
 
-const commander = {
+export default {
   copy,
   move,
   del,
   zip,
   unzip,
-  rename,
+  rename
 };
-export default commander;

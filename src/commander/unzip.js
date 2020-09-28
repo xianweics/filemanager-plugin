@@ -20,7 +20,7 @@ const unzip = async (
   const { log: logType } = globalOptions;
 
   try {
-    const sources = glob.sync(source) || [];
+    const sources = glob.sync(source);
     for (const source of sources) {
       await new Promise((resolve, reject) => {
         compressing[type]

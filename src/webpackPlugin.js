@@ -5,40 +5,38 @@ const NAMESPACE_REGISTER_NAME = 'REGISTER_';
 const BUILTIN_EVENTS_MAP = {
   start: {
     hookType: 'tapAsync',
-    hookName: 'beforeRun',
-    registerName: NAMESPACE_REGISTER_NAME + 'beforeRun'
+    hookName: 'beforeCompile',
+    registerName: NAMESPACE_REGISTER_NAME + 'beforeCompile',
   },
   end: {
     hookType: 'tapAsync',
-    hookName: 'afterEmit',
-    registerName: NAMESPACE_REGISTER_NAME + 'afterEmit'
-  }
+    hookName: 'done',
+    registerName: NAMESPACE_REGISTER_NAME + 'done',
+  },
 };
 const BUILTIN_EVENT_NAMES = Object.keys(BUILTIN_EVENTS_MAP);
+const SUPPORT_HOOKS_TYPE = ['tap', 'tapPromise', 'tapAsync'];
 
 class webpackPlugin {
   constructor(opts) {
-    this.options = {};
+    this.opts = {};
     if (Object.prototype.toString.call(opts) === '[object Object]') {
-      this.options = opts;
+      this.opts = opts;
     }
-    this.hookTypesMap = {
-      tap: (commands) => this.tabCallback(commands),
-      tapPromise: (commands) => this.tapPromiseCallback(commands),
-      tapAsync: (commands) => this.tapAsyncCallback(commands)
+  }
+
+  /**
+   * @description runs according to different operates like delete, when different hooks called
+   * @param commands {object}
+   * @returns {function}
+   */
+  hooksRegisterCallback(commands) {
+    return async (compilation, callback) => {
+      await handleCommand(commands, this.opts?.options);
+      callback && callback();
     };
   }
-  
-  /**
-   * @desc execute according command type
-   * @param commands {Object}
-   * @returns {Promise<void>}
-   */
-  async handleCommand(commands) {
-    const { options: globalOptions = {} } = this.options;
-    handleCommand(commands, globalOptions);
-  }
-  
+
   /**
    * @description translate 'options' to other options with hooks and types of webpack
    * @returns {Array}
@@ -52,17 +50,14 @@ class webpackPlugin {
    *     del: {
    *       items: [
    *          { source: './unzip/a.tar', destination: './dist/unzip/a', type: 'tar', options: {}},
-   *       ],
-   *       options: {
-   *         before: () => {}
-   *       }
+   *       ]
    *     }
    *   }
    * }
    * ]
    */
   translateHooks() {
-    const { events = {}, customHooks = [] } = this.options;
+    const { events = {}, customHooks = [] } = this.opts;
     let result = [];
     if (customHooks.length > 0) {
       result = customHooks.map((hook) => {
@@ -76,66 +71,28 @@ class webpackPlugin {
       for (const event in events) {
         if (
           events.hasOwnProperty(event) &&
-          BUILTIN_EVENT_NAMES.includes(event)
+          BUILTIN_EVENT_NAMES.includes(event) &&
+          events[event]
         ) {
-          const commands = events[event];
-          if (!commands) continue;
-          const { hookType, hookName, registerName } = BUILTIN_EVENTS_MAP[
-            event
-          ];
           result.push({
-            hookType,
-            hookName,
-            registerName,
-            commands
+            ...BUILTIN_EVENTS_MAP[event],
+            commands: events[event],
           });
         }
       }
     }
     return result;
   }
-  
-  /**
-   * @desc the type of tap hook callback
-   * @param commands {object}
-   * @returns {Function}
-   */
-  tabCallback(commands) {
-    return () => this.handleCommand(commands);
-  }
-  
-  /**
-   * the type of tapAsync hook callback
-   * @param commands {object}
-   * @returns {Function}
-   */
-  tapAsyncCallback(commands) {
-    return async (compilation, callback) => {
-      await this.handleCommand(commands);
-      callback();
-    };
-  }
-  
-  /**
-   * the type of tapAsync hook callback
-   * @param commands {object}
-   * @returns {Function}
-   */
-  tapPromiseCallback(commands) {
-    return async () => {
-      await this.handleCommand(commands);
-    };
-  }
-  
+
   apply(compiler) {
     const options = this.translateHooks();
     for (const hookItem of options) {
       const { hookType, hookName, commands, registerName } = hookItem;
-      if (!this.hookTypesMap[hookType]) continue;
+      if (!SUPPORT_HOOKS_TYPE.includes(hookType)) continue;
       try {
         compiler.hooks[hookName][hookType](
           registerName,
-          this.hookTypesMap[hookType](commands)
+          this.hooksRegisterCallback(commands)
         );
       } catch (e) {
         logger.error(`File manager error: ${e}`);
