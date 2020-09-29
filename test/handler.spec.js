@@ -27,7 +27,7 @@ describe('Test handler file', () => {
         }, {
           parallel: true
         });
-
+        
         expect(mockMasterCluster.called).equals(true);
         mockMasterCluster.restore();
       }
@@ -40,6 +40,8 @@ describe('Test handler file', () => {
           del: {
             items: ['./cache']
           }
+        }, {
+          cache: false
         });
         expect(commanderDel.called).equals(true);
         commanderDel.restore();
@@ -48,23 +50,31 @@ describe('Test handler file', () => {
     
     it(
       `'globalOptions with truly cache pass the parameter and handleCommand function runs twice,
-      cache would be effected and the process would stop`,
+      cache would be effected and commander action would only run once`,
       async () => {
-        const commanderDel = sinon.stub(commander, 'del');
+        const commanderCopy = sinon.stub(commander, 'copy');
         await handleCommand({
-          del: {
-            items: ['./cache']
+          copy: {
+            items: [
+              {
+                source: './cache',
+                destination: './cache'
+              }]
           }
-        }, { cache: true });
+        });
         
         await handleCommand({
-          del: {
-            items: ['./cache']
+          copy: {
+            items: [
+              {
+                source: './cache',
+                destination: './cache'
+              }]
           }
+          
         }, { cache: true });
-        expect(commanderDel.calledOnce).equals(true);
-        commanderDel.restore();
-        
+        expect(commanderCopy.calledOnce).equals(true);
+        commanderCopy.restore();
       }
     );
   });

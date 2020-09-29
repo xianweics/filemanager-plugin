@@ -1,6 +1,6 @@
 import path from 'path';
 import zip from '../../src/commander/zip';
-import { template as mockTemplate } from '../mock';
+import { template as mockTemplate } from '../__mock__/mock';
 import * as utils from '../../src/utils';
 
 const chai = require('chai');

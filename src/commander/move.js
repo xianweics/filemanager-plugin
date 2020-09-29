@@ -5,9 +5,9 @@ const glob = require('glob');
 const path = require('path');
 const move = ({ source, destination }, options = {}) => {
   const { log: logType } = options;
-  
+
   try {
-    glob.sync(source).forEach(source => {
+    glob.sync(source).forEach((source) => {
       const dest = path.join(destination, path.basename(source));
       fs.moveSync(source, dest);
       logger

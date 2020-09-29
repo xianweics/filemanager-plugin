@@ -5,7 +5,7 @@ const sinon = require('sinon');
 import path from 'path';
 import del from '../../src/commander/del';
 import * as utils from '../../src/utils';
-import { template as mockTemplate } from '../mock';
+import { template as mockTemplate } from '../__mock__/mock';
 
 mockTemplate('Test delete', (rootPath) => {
   it('Delete an existing file, handlerInfo will be called', () => {

@@ -1,6 +1,6 @@
 import path from 'path';
 import copy from '../../src/commander/copy';
-import { template as mockTemplate } from '../mock';
+import { template as mockTemplate } from '../__mock__/mock';
 import * as utils from '../../src/utils';
 
 const sinon = require('sinon');

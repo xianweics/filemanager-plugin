@@ -1,7 +1,7 @@
 import * as utils from '../../src/utils';
 import path from 'path';
 import rename from '../../src/commander/rename';
-import { template as mockTemplate } from '../mock';
+import { template as mockTemplate } from '../__mock__/mock';
 
 const chai = require('chai');
 const expect = chai.expect;

@@ -26,19 +26,19 @@ export async function handleCommand(commands = {}, globalOptions = {}) {
   for (const command in commands) {
     if (commands.hasOwnProperty(command) && COMMAND_LIST.includes(command)) {
       const { items = [], options = {} } = commands[command] || {};
-      
+
       const opts = Object.assign({}, globalOptions, options);
       const { parallel } = globalOptions;
-      const { cache: optCache } = opts;
+      const { cache: optCache = true } = opts;
       const content = JSON.stringify(items);
       if (optCache && cacheSingle()[command] === content) continue;
-      
+
       if (parallel) {
         await masterCluster(
           {
             jobs: items,
             cpu: parallel,
-            type: command
+            type: command,
           },
           opts
         );

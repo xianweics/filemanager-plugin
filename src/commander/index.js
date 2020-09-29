@@ -11,5 +11,6 @@ export default {
   del,
   zip,
   unzip,
-  rename
+  rename,
 };
+

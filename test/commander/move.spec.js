@@ -1,7 +1,7 @@
 import * as utils from '../../src/utils';
 import path from 'path';
 import move from '../../src/commander/move';
-import { template as mockTemplate } from '../mock';
+import { template as mockTemplate } from '../__mock__/mock';
 
 const sinon = require('sinon');
 const chai = require('chai');

@@ -8,7 +8,7 @@
 
 # Overview
 
-This filemanager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or directories
+This file manager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or directories
  before and after webpack/rollup builds. Also, you can customize the lifecycle of **webpack** or **rollup** during
   building.
 
@@ -21,7 +21,7 @@ This filemanager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move
 
 > Control the running order during building.
 
-- `start {Object}`: Register actions to [`beforeRun`](https://webpack.js.org/api/compiler-hooks/#beforeRun) hook to compiler, actions which you set will be run before running the compiler.
+- `start {Object}`: Register actions to [`beforeCompile`](https://webpack.js.org/api/compiler-hooks/#beforecompile) hook to compiler. Executes a plugin after compilation parameters are created.
 - `end {Object}`: Register actions to [`done`](https://webpack.js.org/api/compiler-hooks/#done) hook to compiler, actions will be executed when the compilation has completed.
 
 In the example below, the start event with `del` command will run first, 
@@ -64,7 +64,7 @@ module.exports = {
 
 ## customHooks
 
-> Supports for custom lifecycle for webpack or rollup to control the running order.
+> Supports for the custom lifecycle for webpack or rollup to control the running order.
 > In addition, **when `customHooks` is set, `events` will be ignored.**
 
 - `hookName {String}`: Register hook of webpack or rollup. Commands will run when each hook is called. [webpack hooks](https://webpack.js.org/api/compiler-hooks/). [rollup hooks](https://github.com/rollup/rollup/blob/master/docs/05-plugin-development.md).
@@ -320,7 +320,7 @@ module.exports = {
 
 ## options
 
-> Global configuration for file manger operation
+> The global configuration for file manager operation
 
 - `parallel {Number}`: Use multi-process parallel running to improve the task speed. 
 Max number of concurrent runs: `os.cpus().length - 1`. Default is closing.
@@ -348,6 +348,40 @@ module.exports = {
 };
 // start with three process to run task.
 // success: delete './dist'
+```
+
+- `cache {Boolean}`: If you set `true`, it would only once during building. It's highly efficient for development
+ mode. Also, you can override the value by each action. Default is `true`.
+
+```javascript
+const FileManagerPlugin = require('filemanager-plugin').WebpackFilemanager;
+
+module.exports = {
+  plugins: [
+    new FileManagerPlugin({
+      events: {
+        start: {
+          del: {
+            items: ['./dist']
+          },
+          copy: {
+            items: [
+              { source: './src/demo', destination: './dest/demo'}
+            ],
+            options: {
+              cache: false // it would override cache of global options, so that it would run when webpack hot reload
+            } 
+          },
+        }
+      },
+      options: {
+        parallel: 3,
+        log: 'all',
+        cache: true
+      }
+    })
+  ]
+};
 ```
 
 # Upgrade

@@ -1,6 +1,6 @@
 import * as utils from '../../src/utils';
 import unzip from '../../src/commander/unzip';
-import { template as mockTemplate } from '../mock';
+import { template as mockTemplate } from '../__mock__/mock';
 import path from 'path';
 
 const fs = require('fs-extra');

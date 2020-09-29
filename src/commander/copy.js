@@ -7,7 +7,7 @@ const { basename, join } = require('path');
 const copy = ({ source, destination }, options = {}) => {
   const { log: logType } = options;
   const wrapSources = Array.isArray(source) ? source : [source];
-  
+
   try {
     const sources = wrapSources.map((source) => glob.sync(source));
     for (const source of flat(sources)) {
