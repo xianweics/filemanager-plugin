@@ -21,7 +21,7 @@
     "glob"
   ],
   "engines": {
-    "node": ">= 10.0.0",
+    "node": ">= 10.16.0",
     "webpack": ">= 4.0.0"
   },
   "license": "MIT",

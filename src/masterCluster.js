@@ -7,21 +7,21 @@ function masterCluster({ jobs, type, cpu }, options) {
   return new Promise((resolve, reject) => {
     cluster.setupMaster({
       exec: join(__dirname, 'workerCluster.js'),
-      silent: false
+      silent: false,
     });
     if (cluster.isMaster) {
       const workerID = [];
       let countCompleted = 0;
       let forkCount = 0;
       let maxCpu = getMaxCup(cpu, jobs.length);
-      
+
       while (forkCount < maxCpu) {
         const wk = cluster.fork();
         workerID.push(wk.id);
         wk.send({
           job: jobs[forkCount++],
           type,
-          options
+          options,
         });
       }
       cluster.on('error', (e) => {
@@ -36,7 +36,7 @@ function masterCluster({ jobs, type, cpu }, options) {
             this.send({
               job: jobs[forkCount++],
               type,
-              options
+              options,
             });
           }
           if (countCompleted === jobsLength) {
