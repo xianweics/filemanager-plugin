@@ -1,4 +1,4 @@
-const commander = require('./commander');
+import commander from './commander';
 
 process.on('message', async (msg) => {
   const { job, type, options } = msg;
