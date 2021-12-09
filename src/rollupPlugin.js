@@ -1,13 +1,10 @@
 import { handleCommand } from './handler';
 
 const EVENT_NAMES_MAP = {
-  start: {
-    hook: 'buildStart',
-  },
-  end: {
-    hook: 'generateBundle',
-  },
+  start: 'buildStart',
+  end: 'buildEnd'
 };
+
 const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
 
 /**
@@ -25,7 +22,11 @@ const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
  * ]
  */
 export function extractHooks(opts) {
-  const { events = {}, customHooks = [], options: globalOptions = {} } = opts;
+  const {
+    events = {},
+    customHooks = [],
+    options: globalOptions = {}
+  } = opts;
   let hooks = [];
   if (customHooks.length > 0) {
     hooks = customHooks.map((hook) => {
@@ -36,9 +37,9 @@ export function extractHooks(opts) {
     for (const event in events) {
       if (events.hasOwnProperty(event) && EVENT_NAMES.includes(event)) {
         hooks.push({
-          hookName: EVENT_NAMES_MAP[event].hook,
+          hookName: EVENT_NAMES_MAP[event],
           commands: events[event],
-          globalOptions,
+          globalOptions
         });
       }
     }
@@ -53,7 +54,11 @@ export function extractHooks(opts) {
  */
 export function createHooks(hooks) {
   return hooks.reduce((pre, cur) => {
-    const { hookName, commands, globalOptions } = cur;
+    const {
+      hookName,
+      commands,
+      globalOptions
+    } = cur;
     pre[hookName] = async () => {
       await handleCommand(commands, globalOptions);
     };
@@ -65,7 +70,7 @@ function rollupPlugin(opts) {
   if (Object.prototype.toString.call(opts) !== '[object Object]') return;
   return {
     name: 'file-manager',
-    ...createHooks(extractHooks(opts)),
+    ...createHooks(extractHooks(opts))
   };
 }
 
