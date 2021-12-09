@@ -9,7 +9,8 @@
 # Overview
 
 This file manager plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or directories
- before and after webpack/rollup builds. Also, you can customize the lifecycle of **webpack** or **rollup** during
+ before and after webpack/rollup/vite builds. Also, you can customize the lifecycle of **webpack**, **rollup** or 
+**vite** during
   building.
 
 # Installation
@@ -64,10 +65,13 @@ module.exports = {
 
 ## customHooks
 
-> Supports for the custom lifecycle for webpack or rollup to control the running order.
+> Supports for the custom lifecycle for webpack, vite or rollup to control the running order.
 > In addition, **when `customHooks` is set, `events` will be ignored.**
 
-- `hookName {String}`: Register hook of webpack or rollup. Commands will run when each hook is called. [webpack hooks](https://webpack.js.org/api/compiler-hooks/). [rollup hooks](https://github.com/rollup/rollup/blob/master/docs/05-plugin-development.md).
+- `hookName {String}`: Register hook of webpack, vite or rollup. Commands will run when each hook is called.
+  ([webpack hooks](https://webpack.js.org/api/compiler-hooks/), 
+  [rollup hooks](https://github.com/rollup/rollup/blob/master/docs/05-plugin-development.md/), 
+  [vite hooks](https://vitejs.dev/guide/api-plugin.html#universal-hooks)).
 - `commands {Array}`: Setting actions. Commands will run, when each hook which you registered is triggered.
 - `hookType {String}`: Depending on the hook type, It only supports **webpack**.
 
@@ -107,6 +111,26 @@ const RollupFilemanager = require('filemanager-plugin').RollupFilemanager;
 module.exports = {
   plugins: [
     new RollupFilemanager({
+      customHooks: [
+        {
+          hookName: 'generateBundle',
+          commands: {
+            del: {
+              items: ['./dist']
+              // All file under './dist' will be deleted, when generateBundle hook is called
+            }
+          }
+        }
+      ]
+    })
+  ]
+};
+
+// vite
+const ViteFilemanager = require('filemanager-plugin').ViteFilemanager;
+module.exports = {
+  plugins: [
+    ViteFilemanager({
       customHooks: [
         {
           hookName: 'generateBundle',
