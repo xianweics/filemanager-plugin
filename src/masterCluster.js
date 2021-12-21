@@ -1,27 +1,30 @@
 const os = require('os');
-const cluster = require('cluster');
 const { join } = require('path');
-import { logger } from './utils';
+const cluster = require('cluster');
+const { logger } = require('./utils');
 
-function masterCluster({ jobs, type, cpu }, options) {
+function masterCluster({
+  jobs,
+  type,
+  cpu
+}, options) {
   return new Promise((resolve, reject) => {
-    cluster.setupMaster({
+    (cluster.setupMaster || cluster.setupPrimary)({
       exec: join(__dirname, 'workerCluster.js'),
-      silent: false,
+      silent: false
     });
-    if (cluster.isMaster) {
+    if (cluster.isMaster || cluster.isPrimary) {
       const workerID = [];
       let countCompleted = 0;
       let forkCount = 0;
       let maxCpu = getMaxCup(cpu, jobs.length);
-
       while (forkCount < maxCpu) {
         const wk = cluster.fork();
         workerID.push(wk.id);
         wk.send({
           job: jobs[forkCount++],
           type,
-          options,
+          options
         });
       }
       cluster.on('error', (e) => {
@@ -36,7 +39,7 @@ function masterCluster({ jobs, type, cpu }, options) {
             this.send({
               job: jobs[forkCount++],
               type,
-              options,
+              options
             });
           }
           if (countCompleted === jobsLength) {
@@ -61,4 +64,4 @@ function getMaxCup(cpu, jobsLength) {
   return Math.min(maxCpu, jobsLength);
 }
 
-export default masterCluster;
+module.exports = masterCluster;

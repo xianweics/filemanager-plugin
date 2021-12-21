@@ -1,9 +1,8 @@
-import { logger } from '../utils';
-
+const { logger } = require('../utils');
 const Compressing = require('compressing');
 const fs = require('fs-extra');
-const path = require('path');
 const glob = require('glob');
+const { dirname } = require('path');
 
 /**
  * @desc Zip file/folder. Support zip, tar, gzip.
@@ -15,18 +14,22 @@ const glob = require('glob');
  * @returns {Promise<void>}
  */
 const zip = async (
-  { source, destination, type = 'zip' },
+  {
+    source,
+    destination,
+    type = 'zip'
+  },
   globalOptions = {}
 ) => {
   const { log: logType } = globalOptions;
-
+  
   try {
     const sources = glob.sync(source);
     if (sources.length === 0) {
       logger.error(`zip error: '${source}' is not exist`);
       return;
     }
-    fs.ensureDirSync(path.dirname(destination));
+    fs.ensureDirSync(dirname(destination));
     if (type === 'gzip') {
       // gzip
       const hasDirectory = sources.find((source) =>
@@ -76,4 +79,4 @@ const zip = async (
   }
 };
 
-export default zip;
+module.exports = zip;

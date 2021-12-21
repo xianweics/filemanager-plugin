@@ -1,9 +1,16 @@
-import { flat } from '../src/utils';
+import { flat, cacheSingle } from "../src/utils";
 
-const expect = require('chai').expect;
-
-describe('Test utils', () => {
-  it('Test flat method', () => {
-    expect(flat([1, 2, [3, [4]]])).eql([1, 2, 3, 4]);
+describe("test utils", () => {
+  it("test flat method", () => {
+    expect(flat([1, 2, [3, [4]]])).toMatchObject([1, 2, 3, 4]);
   });
+  
+  it(
+    `test cacheSingle method: 'cacheSingle' should be the same as the previous one that created`,
+    () => {
+      const cs = cacheSingle();
+      expect(cs).toMatchObject(cacheSingle());
+    });
 });
+
+

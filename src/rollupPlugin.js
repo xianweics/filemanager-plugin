@@ -1,5 +1,4 @@
-import { handleCommand } from './handler';
-
+const { handleCommand } = require('./handler');
 const EVENT_NAMES_MAP = {
   start: 'buildStart',
   end: 'buildEnd'
@@ -21,7 +20,7 @@ const EVENT_NAMES = Object.keys(EVENT_NAMES_MAP);
  *    }
  * ]
  */
-export function extractHooks(opts) {
+function extractHooks(opts) {
   const {
     events = {},
     customHooks = [],
@@ -52,7 +51,7 @@ export function extractHooks(opts) {
  * @param hooks {Array}
  * @returns {Object<Promise>}
  */
-export function createHooks(hooks) {
+function createHooks(hooks) {
   return hooks.reduce((pre, cur) => {
     const {
       hookName,
@@ -74,4 +73,4 @@ function rollupPlugin(opts) {
   };
 }
 
-export default rollupPlugin;
+module.exports = rollupPlugin;

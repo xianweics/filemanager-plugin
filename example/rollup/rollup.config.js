@@ -1,62 +1,32 @@
-import babel from "rollup-plugin-babel";
-import resolve from "@rollup/plugin-node-resolve";
-import json from "@rollup/plugin-json";
 import serve from "rollup-plugin-serve";
-
-const rollupFilemanager = require('../../lib').RollupFilemanager;
+const filemanager = require("../../lib").RollupFilemanager;
 
 export default {
-  input: './src/index.js',
+  input: "./src/index.js",
   output: {
-    file: 'dist/index.js',
-    name: 'main',
-    format: 'umd'
+    file: "dist/index.js",
+    name: "main",
+    format: "umd"
   },
   watch: {
-    include: './src/**'
+    include: "./src/**"
   },
   plugins: [
-    rollupFilemanager({
+    filemanager({
       events: {
         start: {
           del: {
-            items: ['./dist']
+            items: ["./dist"]
           }
         },
         end: {
-          zip: {
+          move: {
             items: [
               {
-                source: './src/zip/a',
-                destination: './dist/zip/a.tar',
-                type: 'tar'
-              },
-              {
-                source: './src/zip/b',
-                destination: './dist/zip/b.zip'
-              },
-              {
-                source: './src/zip/c',
-                destination: './dist/zip/c.tgz',
-                type: 'tgz'
-              },
-              {
-                source: './src/zip/b.html',
-                destination: './dist/zip/b.gz',
-                type: 'gzip'
+                source: "./src/move/a",
+                destination: "./dist/move/a"
               }
-            ]
-          },
-          copy: {
-            items: [
-              {
-                source: './src/copy/a',
-                destination: './dist/copy/a'
-              },
-              {
-                source: './src/copy/b.html',
-                destination: './dist/copy/b.html'
-              }
+              // { source: './src/move', destination: './dist/move' },
             ]
           },
           rename: {
@@ -68,101 +38,129 @@ export default {
               // }
             ]
           },
-          unzip: {
+          zip: {
             items: [
               {
-                source: './src/unzip/a.tar',
-                destination: './dist/unzip/a',
-                type: 'tar'
+                source: "./src/zip/a",
+                destination: "./dist/zip/a.tar",
+                type: "tar"
               },
               {
-                source: './src/unzip/b.tgz',
-                destination: './dist/unzip/b',
-                type: 'tgz'
+                source: "./src/zip/b",
+                destination: "./dist/zip/b.zip"
               },
               {
-                source: './src/unzip/c.zip',
-                destination: './dist/unzip/c'
+                source: "./src/zip/c",
+                destination: "./dist/zip/c.tgz",
+                type: "tgz"
               },
               {
-                source: './src/unzip/d.gz',
-                destination: './dist/unzip/d.html',
-                type: 'gzip'
+                source: "./src/zip/b.html",
+                destination: "./dist/zip/b.gz",
+                type: "gzip"
               }
             ]
           },
-          move: {
+          unzip: {
             items: [
               {
-                source: './src/move/a',
-                destination: './dist/move/a'
+                source: "./src/unzip/a.tar",
+                destination: "./dist/unzip/a",
+                type: "tar"
+              },
+              {
+                source: "./src/unzip/b.tgz",
+                destination: "./dist/unzip/b",
+                type: "tgz"
+              },
+              {
+                source: "./src/unzip/c.zip",
+                destination: "./dist/unzip/c"
+              },
+              {
+                source: "./src/unzip/d.gz",
+                destination: "./dist/unzip/d.html",
+                type: "gzip"
               }
-              // { source: './src/move', destination: './dist/move' },
+            ]
+          },
+          copy: {
+            items: [
+              {
+                source: "./src/copy/a",
+                destination: "./dist/copy/a"
+              },
+              {
+                source: "./src/copy/b.html",
+                destination: "./dist/copy/b.html"
+              }
             ]
           }
         }
       },
-      // customHooks: [
-      //   {
-      //     hookName: 'buildEnd',
-      //     commands: {
-      //       rename: {
-      //         items: [
-      //           // { path: './src/rename', oldName: 'a', newName: 'b' }
-      //         ]
-      //       },
-      //       copy: {
-      //         items: [
-      //           {
-      //             source: './src/copy/a',
-      //             destination: './dist/copy/a'
-      //           },
-      //           {
-      //             source: './src/copy/b.html',
-      //             destination: './dist/copy/b.html'
-      //           }
-      //         ]
-      //       }
-      //     }
-      //   },
-      //   {
-      //     hookName: 'buildStart', // rollup hooks: buildEnd | transform | load .....
-      //     commands: {
-      //       del: {
-      //         items: ['./dist']
-      //       },
-      //       zip: {
-      //         items: [
-      //           {
-      //             source: './src/zip/a',
-      //             destination: './dist/zip/a.tar',
-      //             type: 'tar'
-      //           },
-      //           {
-      //             source: './src/zip/b',
-      //             destination: './dist/zip/b.zip'
-      //           },
-      //           {
-      //             source: './src/zip/c',
-      //             destination: './dist/zip/c.tgz',
-      //             type: 'tgz'
-      //           },
-      //           {
-      //             source: './src/zip/b.html',
-      //             destination: './dist/zip/b.gz',
-      //             type: 'gzip'
-      //           }
-      //         ]
-      //       }
-      //     }
-      //   },
-      // ],
+      customHooks: [
+        {
+          hookName: 'buildEnd',
+          commands: {
+            rename: {
+              items: [
+                // { path: './src/rename', oldName: 'a', newName: 'b' }
+              ]
+            },
+            copy: {
+              items: [
+                {
+                  source: './src/copy/a',
+                  destination: './dist/copy/a'
+                },
+                {
+                  source: './src/copy/b.html',
+                  destination: './dist/copy/b.html'
+                }
+              ]
+            }
+          }
+        },
+        {
+          hookName: 'buildStart', // rollup hooks: buildEnd | transform | load .....
+          commands: {
+            del: {
+              items: ['./dist']
+            },
+            zip: {
+              items: [
+                {
+                  source: './src/zip/a',
+                  destination: './dist/zip/a.tar',
+                  type: 'tar'
+                },
+                {
+                  source: './src/zip/b',
+                  destination: './dist/zip/b.zip'
+                },
+                {
+                  source: './src/zip/c',
+                  destination: './dist/zip/c.tgz',
+                  type: 'tgz'
+                },
+                {
+                  source: './src/zip/b.html',
+                  destination: './dist/zip/b.gz',
+                  type: 'gzip'
+                }
+              ]
+            }
+          }
+        },
+      ],
+      options: {
+        // parallel: 4,
+        // cache: true
+        // log: 'error', // error || all
+      }
     }),
-    resolve({
-      mainFields: ['jsnext', 'module', 'main']
-    }),
-    json(),
-    babel({ runtimeHelpers: true }),
-    serve({})
+    serve({
+    
+    })
   ]
 };

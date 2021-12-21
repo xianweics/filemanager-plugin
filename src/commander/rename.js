@@ -1,13 +1,17 @@
-import fs from 'fs';
-import { logger } from '../utils';
-import { join } from 'path';
+const { renameSync } = require('fs-extra');
+const { join } = require('path');
+const { logger } = require('../utils');
 
-const rename = ({ path, oldName, newName }, options = {}) => {
+const rename = ({
+  path,
+  oldName,
+  newName
+}, options = {}) => {
   const { log: logType } = options;
   try {
     const oldPath = join(path, oldName);
     const newPath = join(path, newName);
-    fs.renameSync(oldPath, newPath);
+    renameSync(oldPath, newPath);
     logger
       .setType(logType)
       .info(`success: rename '${oldName}' to '${newName}'`);
@@ -16,4 +20,4 @@ const rename = ({ path, oldName, newName }, options = {}) => {
   }
 };
 
-export default rename;
+module.exports = rename;

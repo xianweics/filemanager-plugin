@@ -1,7 +1,6 @@
-import { logger } from '../utils';
-
 const compressing = require('compressing');
 const glob = require('glob');
+const { logger } = require('../utils');
 
 /**
  * @desc Unzip file/folder. Support zip, tar, gzip.
@@ -14,11 +13,15 @@ const glob = require('glob');
  */
 
 const unzip = async (
-  { source, destination, type = 'zip' },
+  {
+    source,
+    destination,
+    type = 'zip'
+  },
   globalOptions = {}
 ) => {
   const { log: logType } = globalOptions;
-
+  
   try {
     const sources = glob.sync(source);
     for (const source of sources) {
@@ -42,4 +45,4 @@ const unzip = async (
   }
 };
 
-export default unzip;
+module.exports = unzip;

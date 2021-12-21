@@ -1,10 +1,18 @@
-import { flat, logger } from '../utils';
-
+const {
+  flat,
+  logger
+} = require('../utils');
 const glob = require('glob');
 const fs = require('fs-extra');
-const { basename, join } = require('path');
+const {
+  basename,
+  join
+} = require('path');
 
-const copy = ({ source, destination }, options = {}) => {
+const copy = ({
+  source,
+  destination
+}, options = {}) => {
   const { log: logType } = options;
   const wrapSources = Array.isArray(source) ? source : [source];
 
@@ -22,4 +30,4 @@ const copy = ({ source, destination }, options = {}) => {
   }
 };
 
-export default copy;
+module.exports = copy;

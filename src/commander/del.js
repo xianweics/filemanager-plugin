@@ -1,7 +1,6 @@
-import { logger } from '../utils';
-
-const fs = require('fs-extra');
+const { logger } = require('../utils');
 const glob = require('glob');
+const fs = require('fs-extra');
 
 const del = (file, options = {}) => {
   const { log: logType } = options;
@@ -16,4 +15,4 @@ const del = (file, options = {}) => {
   }
 };
 
-export default del;
+module.exports = del;

@@ -1,4 +1,5 @@
-import WebpackFilemanager from './webpackPlugin';
-import RollupFilemanager from './rollupPlugin';
-
-export { WebpackFilemanager, RollupFilemanager, RollupFilemanager as ViteFilemanager };
+const wpPlugin = require('./webpackPlugin');
+const ruPlugin = require('./rollupPlugin');
+module.exports.WebpackFilemanager = wpPlugin;
+module.exports.RollupFilemanager = ruPlugin;
+module.exports.ViteFilemanager = ruPlugin;

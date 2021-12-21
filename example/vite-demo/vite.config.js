@@ -10,6 +10,15 @@ module.exports = {
           }
         },
         end: {
+          move: {
+            items: [
+              {
+                source: './src/move/a',
+                destination: './dist/move/a'
+              }
+              // { source: './src/move', destination: './dist/move' },
+            ]
+          },
           zip: {
             items: [
               {
@@ -30,18 +39,6 @@ module.exports = {
                 source: './src/zip/b.html',
                 destination: './dist/zip/b.gz',
                 type: 'gzip'
-              }
-            ]
-          },
-          copy: {
-            items: [
-              {
-                source: './src/copy/a',
-                destination: './dist/copy/a'
-              },
-              {
-                source: './src/copy/b.html',
-                destination: './dist/copy/b.html'
               }
             ]
           },
@@ -77,19 +74,22 @@ module.exports = {
               }
             ]
           },
-          move: {
+          copy: {
             items: [
               {
-                source: './src/move/a',
-                destination: './dist/move/a'
+                source: './src/copy/a',
+                destination: './dist/copy/a'
+              },
+              {
+                source: './src/copy/b.html',
+                destination: './dist/copy/b.html'
               }
-              // { source: './src/move', destination: './dist/move' },
             ]
           }
         }
       },
       options: {
-        // parallel: 4,
+        parallel: 4,
         // cache: true
         // log: 'error', // error || all
       }

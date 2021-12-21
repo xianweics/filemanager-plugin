@@ -1,15 +1,17 @@
-import { logger } from '../utils';
-
-const fs = require('fs-extra');
+const { logger } = require('../utils');
 const glob = require('glob');
-const path = require('path');
+const { moveSync } = require('fs-extra');
+const {
+  basename,
+  join
+} = require('path');
 const move = ({ source, destination }, options = {}) => {
   const { log: logType } = options;
 
   try {
     glob.sync(source).forEach((source) => {
-      const dest = path.join(destination, path.basename(source));
-      fs.moveSync(source, dest);
+      const dest = join(destination, basename(source));
+      moveSync(source, dest);
       logger
         .setType(logType)
         .info(`move: move '${source}' to '${destination}'`);
@@ -19,4 +21,4 @@ const move = ({ source, destination }, options = {}) => {
   }
 };
 
-export default move;
+module.exports = move;

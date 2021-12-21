@@ -6,17 +6,12 @@
   "license": "ISC",
   "scripts": {
     "start": "node_modules/.bin/rollup --config rollup.config.js  --watch",
-    "build": "node_modules/.bin/rollup --config rollup.config.js",
-    "postinstall": "npm dedupe"
+    "build": "node_modules/.bin/rollup --config rollup.config.js"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
-    "@rollup/plugin-commonjs": "^15.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^9.0.0",
     "rollup": "^2.27.1",
-    "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-serve": "^1.1.0"
   },
   "dependencies": {}

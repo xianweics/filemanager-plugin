@@ -4,6 +4,7 @@ node_js:
   - 10
   - 12
   - 14
+  - 16
 
 os:
   - linux
@@ -22,8 +23,8 @@ git:
 script:
   - npm run build
 
-before_script:
-  - npm install mocha rollup @babel/register @babel/core rimraf nyc -g
-
-after_success:
-  - npm run test:coveralls
+jobs:
+  include:
+    - stage: Produce Coverage
+      node_js: 14
+      script: ./coveralls/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
