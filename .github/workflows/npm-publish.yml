@@ -1,9 +1,10 @@
 name: NPM publish
 
 on:
-  release:
-    types: [published]
-
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
 jobs:
   build:
     runs-on: ubuntu-latest
