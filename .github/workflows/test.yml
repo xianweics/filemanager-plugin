@@ -30,7 +30,7 @@ jobs:
           node --version
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build project
         run: npm run build
@@ -38,6 +38,11 @@ jobs:
       - name: Run coverage
         run: npm run test:coverage
 
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
   finish:
     needs: test
     runs-on: ubuntu-latest
