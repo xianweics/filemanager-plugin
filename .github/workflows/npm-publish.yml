@@ -11,23 +11,22 @@ jobs:
     steps:
     - run: echo "${{ toJson(${{ github.event) }}"
     - uses: actions/checkout@master
-      with:
-        ref: ${{ github.event.release.target_commitish }}
     - name: Use Node.js 16
       uses: actions/setup-node@master
       with:
         node-version: 16
         registry-url: https://registry.npmjs.org/
     - run: npm ci
-    - run: git config --global user.name "xianweics"
-    - run: git config --global user.email "xianweics@163.com"
-    - run: npm version ${{ github.event.release.tag_name }}
     - run: npm run build
     - run: npm test
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
-    - run: git push
+    - name: update version 
+      run: |
+        npm version patch
+        git add package.json
+        git commit -m "update version"
+        git push
       env:
         github-token: ${{ secrets.github_token }}
-
