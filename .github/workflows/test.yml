@@ -25,7 +25,7 @@ jobs:
           cache: npm
 
       - name: Environment information
-      - run: |
+        run: |
           npm --version
           node --version
 
@@ -37,6 +37,7 @@ jobs:
 
       - name: Run coverage
         run: npm run test:coverage
+
   finish:
     needs: test
     runs-on: ubuntu-latest
