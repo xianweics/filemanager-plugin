@@ -21,7 +21,7 @@ jobs:
       - name: Node version - ${{ matrix.nodeVersion }}
         uses: actions/setup-node@master
         with:
-          version: ${{ matrix.nodeVersion }}
+          node-version: ${{ matrix.nodeVersion }}
           cache: npm
 
       - name: Environment information
