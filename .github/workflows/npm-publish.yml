@@ -2,14 +2,12 @@ name: NPM publish
 
 on:
   push:
-    # Sequence of patterns matched against refs/tags
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "${{ toJson(${{ github.event) }}"
     - uses: actions/checkout@master
     - name: Use Node.js 16
       uses: actions/setup-node@master
