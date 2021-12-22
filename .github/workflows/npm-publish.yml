@@ -29,7 +29,7 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
     - name: update version 
       run: |
-        git add package.json
+        git add .
         git commit -m "update version"
         git push
       env:
