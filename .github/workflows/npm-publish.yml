@@ -1,7 +1,4 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
-
-name: filemanger plugin
+name: npm publish
 
 on:
   release:
@@ -27,6 +24,10 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
+      - run: npm version patch
+      - run: git add package.json
+      - run: git commit -m "update version"
+      - run: git push
       - run: npm ci
       - run: npm publish
         env:
