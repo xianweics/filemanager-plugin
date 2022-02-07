@@ -284,9 +284,10 @@ module.exports = {
       end: {
         copy: {
           items: [
-            { source: './src/demo1', destination: './dest/demo'},
-            { source: ['./src/demo/*.html'], destination: './dest/demo'}
-            // All html files under './src/demo' will be copied to './dest/demo'
+            // All .js files under './src/demo' will be copied to './dest/demo' and keep directory hierarchy.
+            { source: './src/demo1/**/*.js', destination: './dest/demo', isFlat: false},
+            // All .html files under './src/demo' will be copied to './dest/demo'
+            { source: ['./src/demo/*.html'], destination: './dest/demo', globOptions: {silent: false}}
           ]
         }
       }
@@ -297,6 +298,10 @@ module.exports = {
 
 - `source {String | Array}`: Copied source path. It supports [glob pattern](https://github.com/isaacs/node-glob). 
 - `destination {String}`: Copied destination path.
+- `globOptions {Object}`: Allows to configure the glob pattern matching library used by the plugin. [See the list of 
+  supported options](https://github.com/isaacs/node-glob#options).
+- `isFlat {Boolean}`: Whether Removing directory structure/folder hierarchy when copying with recursive. Default is 
+  `true`.
 
 #### `move` example
 

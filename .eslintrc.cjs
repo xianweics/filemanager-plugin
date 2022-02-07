@@ -1,21 +1,16 @@
 module.exports = {
   root: true,
   parser: "@babel/eslint-parser",
-  parserOptions: {
-    requireConfigFile: false
-  },
   env: {
     node: true,
     commonjs: true,
-    es6: true,
-    mocha: true,
+    es6: true
   },
   globals: {
     describe: true,
     document: true,
     it: true,
     expect: true,
-    alert: true,
     __dirname: true,
     window: true,
   },

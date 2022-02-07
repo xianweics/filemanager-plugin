@@ -92,8 +92,8 @@ class webpackPlugin {
   }
   
   apply(compiler) {
-    const options = this.translateHooks();
-    for (const hookItem of options) {
+    const hooks = this.translateHooks();
+    for (const hookItem of hooks) {
       const {
         hookType,
         hookName,

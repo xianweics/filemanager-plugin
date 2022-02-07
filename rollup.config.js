@@ -16,7 +16,8 @@ export default {
     "colors\/safe",
     "fs-extra",
     "cluster",
-    "compressing"
+    "compressing",
+    "glob-parent"
   ],
   watch: {
     include: "src/**"

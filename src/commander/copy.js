@@ -2,6 +2,7 @@ const {
   flat,
   logger
 } = require('../utils');
+const globParent = require('glob-parent');
 const glob = require('glob');
 const fs = require('fs-extra');
 const {
@@ -11,15 +12,24 @@ const {
 
 const copy = ({
   source,
-  destination
-}, options = {}) => {
-  const { log: logType } = options;
+  destination,
+  globOptions = {},
+  ...restOption
+}, globalOptions = {}) => {
+  const {
+    log: logType
+  } = globalOptions;
+  const {
+    isFlat = true
+  } = restOption;
   const wrapSources = Array.isArray(source) ? source : [source];
-
   try {
-    const sources = wrapSources.map((source) => glob.sync(source));
+    const sources = wrapSources.map((source) => glob.sync(source, globOptions));
+    const parentPath = globParent(source, {});
     for (const source of flat(sources)) {
-      const dest = join(destination, basename(source));
+      const withFolderBaseName = source.substr(parentPath.length);
+      const dest = join(destination,
+        isFlat ? basename(source) : withFolderBaseName);
       fs.copySync(source, dest);
       logger
         .setType(logType)
