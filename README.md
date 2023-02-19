@@ -151,12 +151,12 @@ module.exports = {
 
 |  Name   | Type  |  Description |
 |  :---   | :---  |      ---     |
-| `zip`    | `{Array}` | Zip files or directories by using `tar`, `tgz`, `gzip` or `zip`. However, `gzip` only supports compress single file. You need to use `tgz` to zip a directory. |
-| `unzip`  | `{Array}` | Unzip files or directories. The usage is Same as `zip`. |
-| `del`    | `{Array}` | Delete multiple files or directories. |
-| `copy`   | `{Array}` | Copy multiple files or directories. |
-| `move`   | `{Array}` | Move multiple files or directories. |
-| `rename` | `{Array}` | Rename multiple files or directories. |
+| [`zip`](#zip-example)    | `{Array}` | Zip files or directories by using `tar`, `tgz`, `gzip` or `zip`. However, `gzip` only supports compress single file. You need to use `tgz` to zip a directory. |
+| [`unzip`](#unzip-example)  | `{Array}` | Unzip files or directories. The usage is Same as `zip`. |
+| [`del`](#del-example)    | `{Array}` | Delete multiple files or directories. |
+| [`copy`](#copy-example)    | `{Array}` | Copy multiple files or directories. |
+| [`move`](#move-example)   | `{Array}` | Move multiple files or directories. |
+| [`rename`](#rename-example)  | `{Array}` | Rename multiple files or directories. |
 
 These commands would be called when each hook which has been registered is called.
 Also, each action will be executed in order base on `Array` order.
@@ -287,7 +287,9 @@ module.exports = {
             // All .js files under './src/demo' will be copied to './dest/demo' and keep directory hierarchy.
             { source: './src/demo1/**/*.js', destination: './dest/demo', isFlat: false},
             // All .html files under './src/demo' will be copied to './dest/demo'
-            { source: ['./src/demo/*.html'], destination: './dest/demo', globOptions: {silent: false}}
+            { source: ['./src/demo/*.html'], destination: './dest/demo', globOptions: {silent: false}},
+            // index.html under './src/demo' will be copied as 'newIndex.html' under './dest/demo'
+            { source: ['./src/demo/index.html'], destination: './dest/demo', name : 'newIndex.html'}
           ]
         }
       }
@@ -302,6 +304,8 @@ module.exports = {
   supported options](https://github.com/isaacs/node-glob#options).
 - `isFlat {Boolean}`: Whether Removing directory structure/folder hierarchy when copying with recursive. Default is 
   `true`.
+- `name {String}`: When you need to rename a file. **Notice**: It would be effective when `source` is a or a list of 
+  files. Default is empty string which means it would be ignored.
 
 #### `move` example
 

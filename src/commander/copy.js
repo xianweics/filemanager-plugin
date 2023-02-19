@@ -4,7 +4,11 @@ const {
 } = require('../utils');
 const globParent = require('glob-parent');
 const glob = require('glob');
-const fs = require('fs-extra');
+const {
+  copySync,
+  renameSync,
+  statSync
+} = require('fs-extra');
 const {
   basename,
   join
@@ -20,7 +24,8 @@ const copy = ({
     log: logType
   } = globalOptions;
   const {
-    isFlat = true
+    isFlat = true,
+    name = ''
   } = restOption;
   const wrapSources = Array.isArray(source) ? source : [source];
   try {
@@ -30,7 +35,10 @@ const copy = ({
       const withFolderBaseName = source.substr(parentPath.length);
       const dest = join(destination,
         isFlat ? basename(source) : withFolderBaseName);
-      fs.copySync(source, dest);
+      copySync(source, dest);
+      if (name && statSync(source).isFile()) {
+        renameSync(dest, join(destination, name));
+      }
       logger
         .setType(logType)
         .info(`success: copy '${source}' to '${destination}'`);
