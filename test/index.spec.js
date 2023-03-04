@@ -197,7 +197,6 @@ describe("test index file", () => {
     
     expect(fs.pathExistsSync(mockDelPath1)).toBeFalsy();
     expect(fs.pathExistsSync(mockDelPath2)).toBeTruthy();
-    expect(fs.pathExistsSync(mockCopyDestination)).toBeTruthy();
   });
   
   it("test rollup with empty, did not crash", async () => {

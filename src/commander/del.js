@@ -1,11 +1,11 @@
 const { logger } = require('../utils');
-const glob = require('glob');
+const { globSync } = require('glob');
 const fs = require('fs-extra');
 
 const del = (file, options = {}) => {
   const { log: logType } = options;
   try {
-    const files = glob.sync(file);
+    const files = globSync(file);
     for (const file of files) {
       fs.removeSync(file);
       logger.setType(logType).info(`success: delete '${file}'`);

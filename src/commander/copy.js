@@ -3,7 +3,7 @@ const {
   logger
 } = require('../utils');
 const globParent = require('glob-parent');
-const glob = require('glob');
+const { globSync } = require('glob');
 const {
   copySync,
   renameSync,
@@ -29,7 +29,7 @@ const copy = ({
   } = restOption;
   const wrapSources = Array.isArray(source) ? source : [source];
   try {
-    const sources = wrapSources.map((source) => glob.sync(source, globOptions));
+    const sources = wrapSources.map((source) => globSync(source, globOptions));
     const parentPath = globParent(source, {});
     for (const source of flat(sources)) {
       const withFolderBaseName = source.substr(parentPath.length);

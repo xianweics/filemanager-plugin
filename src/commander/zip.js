@@ -1,7 +1,7 @@
 const { logger } = require('../utils');
 const Compressing = require('compressing');
 const fs = require('fs-extra');
-const glob = require('glob');
+const { globSync } = require('glob');
 const { dirname } = require('path');
 
 /**
@@ -24,7 +24,7 @@ const zip = async (
   const { log: logType } = globalOptions;
   
   try {
-    const sources = glob.sync(source);
+    const sources = globSync(source);
     if (sources.length === 0) {
       logger.error(`zip error: '${source}' is not exist`);
       return;

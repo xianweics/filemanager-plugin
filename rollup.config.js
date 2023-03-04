@@ -1,4 +1,4 @@
-import { eslint } from "rollup-plugin-eslint";
+import eslint from "@rollup/plugin-eslint";
 import friendlyFormatter from "eslint-friendly-formatter";
 import commonjs from "@rollup/plugin-commonjs";
 
@@ -7,7 +7,7 @@ export default {
   output: {
     dir: "lib",
     format: "cjs",
-    exports: "named"
+    exports: 'named'
   },
   external: [
     "path",
@@ -24,7 +24,7 @@ export default {
   },
   plugins: [
     eslint({
-      include: ["src/**"],
+      include: ["src/**/*.js"],
       formatter: friendlyFormatter,
       throwOnError: true,
       fix: true

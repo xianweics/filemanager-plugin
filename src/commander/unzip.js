@@ -1,5 +1,5 @@
 const compressing = require('compressing');
-const glob = require('glob');
+const { globSync } = require('glob');
 const { logger } = require('../utils');
 
 /**
@@ -23,7 +23,7 @@ const unzip = async (
   const { log: logType } = globalOptions;
   
   try {
-    const sources = glob.sync(source);
+    const sources = globSync(source);
     for (const source of sources) {
       await new Promise((resolve, reject) => {
         compressing[type]

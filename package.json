@@ -1,6 +1,6 @@
 {
   "name": "filemanager-plugin",
-  "version": "2.8.2",
+  "version": "2.8.3",
   "description": "Filemanager-plugin allows you to delete, zip/unzip(.zip/.tar/.tar.gz), move, rename, copy files or directories before and after webpack/rollup builds. Also, you can customize the lifecycle of webpack or rollup during building.",
   "main": "lib/index.js",
   "files": [
@@ -36,7 +36,7 @@
     "install:demo-vite": "cd example/vite-demo && npm i",
     "dev:install": "npm-run-all -p install:*",
     "source:clean": "rimraf lib",
-    "source:build": "rollup -c rollup.config.js --watch",
+    "source:build": "rollup -c rollup.config.js --bundleConfigAsCjs",
     "build": "npm-run-all -s source:clean source:build",
     "test": "jest",
     "test:watch": "npm test -- --watch",
@@ -51,27 +51,27 @@
   ],
   "dependencies": {
     "colors": "^1.4.0",
-    "compressing": "^1.5.1",
-    "fs-extra": "^10.0.0",
-    "glob": "^7.2.0",
+    "compressing": "^1.8.0",
+    "fs-extra": "^11.1.0",
+    "glob": "^9.2.1",
     "glob-parent": "^6.0.2"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.16.3",
-    "@babel/plugin-transform-modules-commonjs": "^7.16.5",
-    "@rollup/plugin-commonjs": "^21.0.1",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.21.2",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-eslint": "^9.0.3",
     "coveralls": "^3.1.1",
     "cross-env": "^7.0.3",
-    "eslint": "^8.4.1",
+    "eslint": "^8.35.0",
     "eslint-friendly-formatter": "^4.0.1",
-    "jest": "^27.4.5",
-    "jsdoc": "^3.6.10",
+    "jest": "^29.4.3",
+    "jsdoc": "^4.0.2",
     "npm-run-all": "^4.1.5",
     "pre-commit": "^1.2.2",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.61.0",
-    "rollup-plugin-eslint": "^7.0.0",
+    "rimraf": "^4.3.0",
+    "rollup": "^3.18.0",
     "tui-jsdoc-template": "^1.2.2",
-    "webpack": "^5.65.0"
+    "webpack": "^5.75.0"
   }
 }
