@@ -67,9 +67,11 @@ function createHooks(hooks) {
 
 function rollupPlugin(opts) {
   if (Object.prototype.toString.call(opts) !== '[object Object]') return;
+  const { events, customHooks, options, ...restOpts } = opts;
   return {
     name: 'file-manager',
-    ...createHooks(extractHooks(opts))
+    ...createHooks(extractHooks(opts)),
+    ...restOpts
   };
 }
 
