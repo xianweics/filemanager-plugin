@@ -5,13 +5,12 @@ const {
   basename,
   join
 } = require('path');
-const move = ({ source, destination }, options = {}) => {
+const move = ({ source, destination, option }, options = {}) => {
   const { log: logType } = options;
-
   try {
     globSync(source).forEach((source) => {
       const dest = join(destination, basename(source));
-      moveSync(source, dest);
+      moveSync(source, dest, option);
       logger
         .setType(logType)
         .info(`move: move '${source}' to '${destination}'`);

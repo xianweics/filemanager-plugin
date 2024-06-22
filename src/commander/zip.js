@@ -9,7 +9,7 @@ const { dirname } = require('path');
  * @param source {string}
  * @param destination {string}
  * @param type {string}
- * @param globalOptions
+ * @param globalOptions {Object}
  * @param option {Object}
  * @returns {Promise<void>}
  */
@@ -17,7 +17,8 @@ const zip = async (
   {
     source,
     destination,
-    type = 'zip'
+    type = 'zip',
+    option
   },
   globalOptions = {}
 ) => {
@@ -41,7 +42,7 @@ const zip = async (
       }
       await new Promise((resolve, reject) => {
         Compressing.gzip
-          .compressFile(source, destination)
+          .compressFile(source, destination, option)
           .then(() => {
             logger
               .setType(logType)

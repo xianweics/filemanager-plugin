@@ -16,7 +16,8 @@ const unzip = async (
   {
     source,
     destination,
-    type = 'zip'
+    type = 'zip',
+    option
   },
   globalOptions = {}
 ) => {
@@ -27,7 +28,7 @@ const unzip = async (
     for (const source of sources) {
       await new Promise((resolve, reject) => {
         compressing[type]
-          .uncompress(source, destination)
+          .uncompress(source, destination, option)
           .then(() => {
             logger
               .setType(logType)

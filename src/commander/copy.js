@@ -17,6 +17,7 @@ const {
 const copy = ({
   source,
   destination,
+  copyOption,
   globOptions = {},
   ...restOption
 }, globalOptions = {}) => {
@@ -35,7 +36,7 @@ const copy = ({
       const withFolderBaseName = source.substr(parentPath.length);
       const dest = join(destination,
         isFlat ? basename(source) : withFolderBaseName);
-      copySync(source, dest);
+      copySync(source, dest, copyOption);
       if (name && statSync(source).isFile()) {
         renameSync(dest, join(destination, name));
       }

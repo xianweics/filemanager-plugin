@@ -16,12 +16,13 @@
   "keywords": [
     "webpack",
     "rollup",
+    "vite",
     "file manager",
     "nodejs",
     "glob"
   ],
   "engines": {
-    "node": ">= 10.16.0",
+    "node": ">= 14",
     "webpack": ">= 4.0.0"
   },
   "license": "MIT",
@@ -30,7 +31,7 @@
   },
   "homepage": "https://github.com/xianweics/filemanager-plugin#readme",
   "scripts": {
-    "install:source": "npm i",
+    "install:source": "npm ci",
     "install:demo-webpack": "cd example/webpack && npm i",
     "install:demo-rollup": "cd example/rollup && npm i",
     "install:demo-vite": "cd example/vite-demo && npm i",

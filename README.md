@@ -222,6 +222,7 @@ module.exports = {
 - `source {String}`: Compressed source path which can be a file or directory. It supports [glob pattern](https://github.com/isaacs/node-glob). 
 - `destination {String}`: Compressed destination path.
 - `type {String}`: Compressed type. Default is `zip`.
+- `option {Object}`: Other optional configuration for zip.
 
 #### `unzip` example
 
@@ -251,7 +252,8 @@ module.exports = {
 - `source {String}`: Uncompressed source path. It supports [glob pattern](https://github.com/isaacs/node-glob). 
 - `destination {String}`: Uncompressed destination path.
 - `type {String}`: Uncompressed type. Default is `zip`.
-
+- `option {Object}`: Other optional configuration for unzip.
+- 
 #### `del` example
 
 ```javascript
@@ -306,6 +308,7 @@ module.exports = {
   `true`.
 - `name {String}`: When you need to rename a file. **Notice**: It would be effective when `source` is a or a list of 
   files. Default is empty string which means it would be ignored.
+- `copyOption {Object}`: Allows to set optional configuration for copy.
 
 #### `move` example
 
@@ -329,6 +332,7 @@ module.exports = {
 
 - `source {String}`: Moved source path. It supports [glob pattern](https://github.com/isaacs/node-glob).
 - `destination {String}`: Moved destination path.
+- `option {Object}`: Optional configuration for moving.
 
 #### `rename` example
 
@@ -355,7 +359,7 @@ module.exports = {
 
 > The global configuration for file manager operation
 
-- `parallel {Number}`: Use multi-process parallel running to improve the task speed. 
+- `parallel {Number}`: Use multi-processes parallel running to improve the task speed. 
 Max number of concurrent runs: `os.cpus().length - 1`. Default is closing.
 - `log {String}`: Show which information you need during building. Default is `all`.
 
